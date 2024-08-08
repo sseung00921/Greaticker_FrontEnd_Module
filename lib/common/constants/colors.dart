@@ -1,0 +1,1 @@
+final int OUR_MAIN_BASE_COLOR = 0xFFF3E2A9;
