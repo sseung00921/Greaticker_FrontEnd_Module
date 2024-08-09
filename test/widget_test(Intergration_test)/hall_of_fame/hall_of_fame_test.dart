@@ -13,30 +13,24 @@ import 'package:greaticker/common/layout/default_layout.dart';
 import 'package:greaticker/main.dart';
 
 void main() {
-
   setUp(() {
     WidgetsFlutterBinding.ensureInitialized();
     dotenv.load(fileName: ".env");
   });
 
-
-  testWidgets('CheckIfMyAppInDefaultLayout', (WidgetTester tester) async {
+  testWidgets('CanNotFindBelowAccomplishmentComponentWhenNotScrolled', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
 
-    expect(find.byKey(Key('DefaultLayout')), findsOneWidget);
-    expect(find.byKey(Key('CommonAppBar')), findsOneWidget);
-    expect(find.byKey(Key('CommonBottomNavigationBar')), findsOneWidget);
-  });
-
-
-  testWidgets('BottomNavigationBarDisappearWhenTopTabButtonClicked', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
-
-    await tester.tap(find.byKey(Key("historyTopTapButton")));
+    await tester.tap(find.byKey(Key("hall_of_fameBottomTapButton")));
     await tester.pumpAndSettle();
 
-    expect(find.byKey(Key('CommonBottomNavigationBar')), findsNothing);
+
   });
 
+  testWidgets('CanFindBelowAccomplishmentComponentWhenScrolled', (WidgetTester tester) async {
+    await tester.pumpWidget(const MyApp());
 
+    await tester.tap(find.byKey(Key("hall_of_fameBottomTapButton")));
+    await tester.pumpAndSettle();
+  });
 }

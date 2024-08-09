@@ -11,21 +11,12 @@ import 'package:greaticker/common/layout/default_layout.dart';
 
 import 'package:greaticker/main.dart';
 
-Center mockChild = Center(
-  child: Text(
-    'HomeScreen',
-    style: TextStyle(
-      color: Colors.black,
-    ),
-  ),
-);
-
+Center mockChild = Center(child: Container());
 Key MockKey = Key("DefaultLayout");
-
 String MockTitleKey = "home";
 
 void main() {
-  testWidgets('CheckIfTranslateKoreanDoRight', (WidgetTester tester) async {
+  testWidgets('TranslateToKoreanDoRight', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
       home: DefaultLayout(
           key: MockKey,
@@ -38,7 +29,7 @@ void main() {
     expect(find.text("Home"), findsNothing);
   });
 
-  testWidgets('CheckIfTranslateEnglishDoRight', (WidgetTester tester) async {
+  testWidgets('TranslateToEnglishDoRight', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
       home: DefaultLayout(
           key: MockKey,

@@ -18,7 +18,7 @@ void main() {
     dotenv.load(fileName: ".env");
   });
 
-  testWidgets('CheckIfBottomTapMoveToRightPage', (WidgetTester tester) async {
+  testWidgets('BottomTapMoveToRightPage', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
 
     await tester.tap(find.byKey(Key("homeBottomTapButton")));
@@ -43,7 +43,7 @@ void main() {
 
   });
 
-  testWidgets('CheckIfTopTapMoveToRightPage', (WidgetTester tester) async {
+  testWidgets('TopTapMoveToRightPage', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
 
     await tester.tap(find.byKey(Key("historyTopTapButton")));

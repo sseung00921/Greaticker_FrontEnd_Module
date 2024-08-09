@@ -1,12 +1,12 @@
 
 import 'package:go_router/go_router.dart';
 
-import '../../diary/screen/diary_screen.dart';
-import '../../hall_of_fame/screen/hall_of_fame_screen.dart';
-import '../../history/screen/history_screen.dart';
-import '../../home/screen/home_screen.dart';
-import '../../poppular_chart/screen/popular_chart_screen.dart';
-import '../../profile/screen/profile_screen.dart';
+import '../../diary/view/diary_screen.dart';
+import '../../hall_of_fame/view/hall_of_fame_screen.dart';
+import '../../history/view/history_screen.dart';
+import '../../home/view/home_screen.dart';
+import '../../poppular_chart/view/popular_chart_screen.dart';
+import '../../profile/view/profile_screen.dart';
 import '../constants/widget_keys.dart';
 
 final router = GoRouter(
