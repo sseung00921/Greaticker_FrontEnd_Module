@@ -3,14 +3,10 @@ import 'package:flutter/material.dart';
 class IconWithLabel extends StatelessWidget {
   final IconData icon;
   final String label;
-  final int index;
-  final bool isSelected;
 
   IconWithLabel({
     required this.icon,
     required this.label,
-    required this.index,
-    required this.isSelected,
   });
 
   @override
@@ -20,13 +16,13 @@ class IconWithLabel extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: isSelected ? Colors.blue : Colors.black,
+          color: Colors.black,
         ),
         Padding(
           padding: const EdgeInsets.only(top: 4.0),
           child: Text(
             label,
-            style: TextStyle(color: isSelected ? Colors.blue : Colors.black, fontSize: 12.0),
+            style: TextStyle(color: Colors.black, fontSize: 12.0),
           ),
         ),
       ],
