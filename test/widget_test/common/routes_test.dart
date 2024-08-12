@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:greaticker/common/layout/default_layout.dart';
 
@@ -18,8 +19,8 @@ void main() {
     dotenv.load(fileName: ".env");
   });
 
-  testWidgets('BottomTapMoveToRightPage', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
+  testWidgets('BottomTap move to right page', (WidgetTester tester) async {
+    await tester.pumpWidget(ProviderScope(child: const MyApp()));
 
     await tester.tap(find.byKey(Key("homeBottomTapButton")));
     await tester.pumpAndSettle();
@@ -32,6 +33,7 @@ void main() {
 
     await tester.tap(find.byKey(Key("hall_of_fameBottomTapButton")));
     await tester.pumpAndSettle();
+    await tester.pump(Duration(seconds: 10));
     expect(find.byKey(Key('DiaryScreen')), findsNothing);
     expect(find.byKey(Key('HallOfFameScreen')), findsOneWidget);
 
@@ -43,8 +45,8 @@ void main() {
 
   });
 
-  testWidgets('TopTapMoveToRightPage', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
+  testWidgets('TopTap move to right page', (WidgetTester tester) async {
+    await tester.pumpWidget(ProviderScope(child: const MyApp()));
 
     await tester.tap(find.byKey(Key("historyTopTapButton")));
     await tester.pumpAndSettle();

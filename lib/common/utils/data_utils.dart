@@ -3,9 +3,6 @@ import 'dart:convert';
 import 'package:greaticker/common/constants/data.dart';
 
 class DataUtils{
-  static DateTime stringToDateTime(String value){
-    return DateTime.parse(value);
-  }
 
   static String pathToUrl(String value){
     return 'http://$ip$value';

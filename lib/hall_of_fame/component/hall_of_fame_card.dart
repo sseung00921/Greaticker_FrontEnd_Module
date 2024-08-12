@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/fonts.dart';
+import 'package:greaticker/common/utils/date_time_utils.dart';
+import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
 
 class HallOfFameCard extends ConsumerWidget {
   final Key key;
@@ -59,7 +61,7 @@ class HallOfFameCard extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(
                     8.0,
                   ),
-                  child: Image.asset('asset/img/hall_of_fame/gold_medal.png'),
+                  child: Image.asset('assets/img/hall_of_fame/gold_medal.png'),
                 ),
               ),
             ),
@@ -71,7 +73,7 @@ class HallOfFameCard extends ConsumerWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 16.0,
+                    fontSize: 14.0,
                     fontWeight: FontWeight.w500,
                     fontFamily: YEONGDEOK_SEA,
                   ),
@@ -80,24 +82,40 @@ class HallOfFameCard extends ConsumerWidget {
                 ),
               ),
             ),
-            GestureDetector(
-              child: Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(right: 8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.favorite, color: Colors.black),
-                      SizedBox(width: 4),
-                      Text('123'),
-                    ],
-                  ),
+            SizedBox(
+              width: 65,
+              height: 61,
+              child: Padding(
+                padding: EdgeInsets.only(right: 8),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                        onTap: () => print("clicked like."),
+                        child: Icon(Icons.favorite_border_outlined, color: Colors.red)),
+                    SizedBox(width: 4),
+                    Expanded(child: Text(likeCount.toString())),
+                  ],
                 ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  factory HallOfFameCard.fromHallOfFameModel({
+    required HallOfFameModel model,
+  }) {
+    return HallOfFameCard(
+      key: Key('HallOfFameCard-${model.id}'),
+      id: model.id,
+      userNickName: model.userNickName,
+      likeCount: model.likeCount,
+      accomplishedTopic: model.accomplishedTopic,
+      userAuthId: model.userAuthId,
+      accomplishedDate: DateTimeUtils.dateTimeToString(model.createdDateTime, 'yyyy-MM-dd'),
     );
   }
 }

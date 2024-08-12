@@ -14,7 +14,7 @@ import 'package:greaticker/main.dart';
 Center mockChild = Center(child: Container());
 
 void main() {
-  testWidgets('TranslateToKoreanDoRight', (WidgetTester tester) async {
+  testWidgets('Translate to Korean do right', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
       home: DefaultLayout(
           key: Key("DefaultLayout"),
@@ -27,7 +27,7 @@ void main() {
     expect(find.text("Home"), findsNothing);
   });
 
-  testWidgets('TranslateToEnglishDoRight', (WidgetTester tester) async {
+  testWidgets('Translate to English do right', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
       home: DefaultLayout(
           key: Key("DefaultLayout"),

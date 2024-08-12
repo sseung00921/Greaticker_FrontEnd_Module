@@ -1,0 +1,3 @@
+const int DEFAULT_FETCH_COUNT = 10;
+
+const int MAX_PAGENATED_LIST_SIZE = 40;

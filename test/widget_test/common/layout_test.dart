@@ -20,7 +20,7 @@ void main() {
   });
 
 
-  testWidgets('MyAppIsInDefaultLayout', (WidgetTester tester) async {
+  testWidgets('MyApp is in defaultLayout', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
 
     expect(find.byKey(Key('DefaultLayout')), findsOneWidget);
@@ -29,7 +29,7 @@ void main() {
   });
 
 
-  testWidgets('BottomNavigationBarDisappearWhenTopTabButtonClicked', (WidgetTester tester) async {
+  testWidgets('BottomNavigationBar disappear when TopTabButton clicked', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
 
     await tester.tap(find.byKey(Key("historyTopTapButton")));

@@ -1,1 +1,1 @@
-final String YEONGDEOK_SEA = "YeongdeokSea";
+const String YEONGDEOK_SEA = "YeongdeokSea";

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:greaticker/common/components/iconWithLabel.dart';
+import 'package:greaticker/common/component/iconWithLabel.dart';
 import 'package:greaticker/common/constants/colors.dart';
 import 'package:greaticker/common/constants/fonts.dart';
 import 'package:greaticker/common/constants/language/tap_label.dart';
