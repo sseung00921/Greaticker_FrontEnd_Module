@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:greaticker/common/components/iconWithLabel.dart';
+import 'package:greaticker/common/constants/colors.dart';
+import 'package:greaticker/common/constants/fonts.dart';
+import 'package:greaticker/common/constants/language/tap_label.dart';
 import 'package:greaticker/common/constants/language/title.dart';
 import 'package:greaticker/common/constants/tabs.dart';
-import 'package:greaticker/common/router/router.dart';
-import '../constants/colors.dart';
-import '../constants/fonts.dart';
-import '../constants/language/tap_label.dart';
+
+
 
 class DefaultLayout extends StatefulWidget {
   static String get routeName => 'DefaultLayout';

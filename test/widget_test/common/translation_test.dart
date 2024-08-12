@@ -12,17 +12,15 @@ import 'package:greaticker/common/layout/default_layout.dart';
 import 'package:greaticker/main.dart';
 
 Center mockChild = Center(child: Container());
-Key MockKey = Key("DefaultLayout");
-String MockTitleKey = "home";
 
 void main() {
   testWidgets('TranslateToKoreanDoRight', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
       home: DefaultLayout(
-          key: MockKey,
+          key: Key("DefaultLayout"),
           language: "KO",
           child: mockChild,
-          title_key: MockTitleKey),
+          title_key: "home"),
     ));
 
     expect(find.text("홈"), findsWidgets);
@@ -32,10 +30,10 @@ void main() {
   testWidgets('TranslateToEnglishDoRight', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
       home: DefaultLayout(
-          key: MockKey,
+          key: Key("DefaultLayout"),
           language: "EN",
           child: mockChild,
-          title_key: MockTitleKey),
+          title_key: "home"),
     ));
 
     expect(find.text("Home"), findsWidgets);
