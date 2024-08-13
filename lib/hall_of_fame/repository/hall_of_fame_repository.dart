@@ -29,3 +29,4 @@ abstract class HallOfFameRepository implements IBasePaginationRepository<HallOfF
     @Queries() PaginationParams? paginationParams = const PaginationParams(),
   });
 }
+

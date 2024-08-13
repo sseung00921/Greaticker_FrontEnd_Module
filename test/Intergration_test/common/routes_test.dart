@@ -5,22 +5,26 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:flutter_test/flutter_test.dart';
-import 'package:greaticker/common/layout/default_layout.dart';
 
 import 'package:greaticker/main.dart';
 
 void main() {
   setUp(() {
     WidgetsFlutterBinding.ensureInitialized();
-    dotenv.load(fileName: ".env");
+    final projectDir = Directory.current.path;
+    dotenv.load(fileName: "$projectDir/.env.test");
   });
 
   testWidgets('BottomTap move to right page', (WidgetTester tester) async {
     await tester.pumpWidget(ProviderScope(child: const MyApp()));
+    await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(Key("homeBottomTapButton")));
     await tester.pumpAndSettle();
@@ -33,7 +37,6 @@ void main() {
 
     await tester.tap(find.byKey(Key("hall_of_fameBottomTapButton")));
     await tester.pumpAndSettle();
-    await tester.pump(Duration(seconds: 10));
     expect(find.byKey(Key('DiaryScreen')), findsNothing);
     expect(find.byKey(Key('HallOfFameScreen')), findsOneWidget);
 
@@ -41,12 +44,11 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(Key('HallOfFameScreen')), findsNothing);
     expect(find.byKey(Key('PopularChartScreen')), findsOneWidget);
-
-
   });
 
   testWidgets('TopTap move to right page', (WidgetTester tester) async {
     await tester.pumpWidget(ProviderScope(child: const MyApp()));
+    await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(Key("historyTopTapButton")));
     await tester.pumpAndSettle();

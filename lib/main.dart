@@ -6,7 +6,7 @@ import 'package:greaticker/common/layout/default_layout.dart';
 import 'package:greaticker/common/router/router.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();  // 1번코드
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   runApp(ProviderScope(child: MyApp()));
 }

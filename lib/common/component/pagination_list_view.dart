@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:greaticker/common/constants/language/button.dart';
+import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
 import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/model/model_with_id.dart';
@@ -76,7 +79,7 @@ class _PaginationListViewState<T extends IModelWithId> extends ConsumerState<Pag
                   );
             },
             child: Text(
-              '다시시도',
+              BUTTON_DICT[dotenv.get(LANGUAGE)]!['retry']!
             ),
           ),
         ],

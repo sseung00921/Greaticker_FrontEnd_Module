@@ -1,6 +1,8 @@
 import 'package:debounce_throttle/debounce_throttle.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/pagenation.dart';
+import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/model/model_with_id.dart';
 import 'package:greaticker/common/model/pagination_params.dart';
@@ -51,11 +53,22 @@ U extends IBasePaginationRepository<T>>
     // true - CursorPaginationLoading()
     bool forceRefetch = false,
   }) async {
-    paginationThrottle.setValue(_PaginationInfo(
-      fetchMore: fetchMore,
-      fetchCount: fetchCount,
-      forceRefetch: forceRefetch,
-    ));
+
+    if (dotenv.get(ENVIRONMENT) == PROD) {
+      // 운영환경에서는 throttle을 적용한다.
+      paginationThrottle.setValue(_PaginationInfo(
+        fetchMore: fetchMore,
+        fetchCount: fetchCount,
+        forceRefetch: forceRefetch,
+      ));
+    } else if (dotenv.get(ENVIRONMENT) == TEST) {
+      // TEST환경에서는 throttle 적용 안한다.
+      _throttledPagination(_PaginationInfo(
+        fetchMore: fetchMore,
+        fetchCount: fetchCount,
+        forceRefetch: forceRefetch,
+      ));
+    }
   }
 
   _throttledPagination(_PaginationInfo info) async {

@@ -5,6 +5,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,12 +18,14 @@ void main() {
 
   setUp(() {
     WidgetsFlutterBinding.ensureInitialized();
-    dotenv.load(fileName: ".env");
+    final projectDir = Directory.current.path;
+    dotenv.load(fileName: "$projectDir/.env.test");
   });
 
 
   testWidgets('MyApp is in defaultLayout', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
 
     expect(find.byKey(Key('DefaultLayout')), findsOneWidget);
     expect(find.byKey(Key('CommonAppBar')), findsOneWidget);
@@ -31,6 +35,7 @@ void main() {
 
   testWidgets('BottomNavigationBar disappear when TopTabButton clicked', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(Key("historyTopTapButton")));
     await tester.pumpAndSettle();

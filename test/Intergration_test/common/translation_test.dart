@@ -22,6 +22,7 @@ void main() {
           child: mockChild,
           title_key: "home"),
     ));
+    await tester.pumpAndSettle();
 
     expect(find.text("홈"), findsWidgets);
     expect(find.text("Home"), findsNothing);
@@ -35,6 +36,7 @@ void main() {
           child: mockChild,
           title_key: "home"),
     ));
+    await tester.pumpAndSettle();
 
     expect(find.text("Home"), findsWidgets);
     expect(find.text("홈"), findsNothing);

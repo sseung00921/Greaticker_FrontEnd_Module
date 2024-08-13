@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
 
 import '../../common/layout/default_layout.dart';
@@ -28,7 +29,7 @@ class DiaryScreen extends StatelessWidget {
           ),
         ),
       ),
-      language: dotenv.get('LANGUAGE'),
+      language: dotenv.get(LANGUAGE),
     );
   }
 }

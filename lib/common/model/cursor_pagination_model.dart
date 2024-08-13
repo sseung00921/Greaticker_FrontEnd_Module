@@ -1,3 +1,4 @@
+import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'cursor_pagination_model.g.dart';

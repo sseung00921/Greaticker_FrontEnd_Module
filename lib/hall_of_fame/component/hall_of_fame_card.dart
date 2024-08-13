@@ -5,7 +5,7 @@ import 'package:greaticker/common/constants/fonts.dart';
 import 'package:greaticker/common/utils/date_time_utils.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
 
-class HallOfFameCard extends ConsumerWidget {
+class HallOfFameCard extends StatefulWidget {
   final Key key;
   final String id;
 
@@ -35,9 +35,74 @@ class HallOfFameCard extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    String dispalyedUserAuthId = this.userAuthId == null ? '' : '(${this.userAuthId})';
-    String displayedAccomplishedTopic = this.accomplishedTopic == null ? '' : this.accomplishedTopic!;
+  _HallOfFameCardState createState() => _HallOfFameCardState();
+
+  factory HallOfFameCard.fromHallOfFameModel({
+    required HallOfFameModel model,
+  }) {
+    return HallOfFameCard(
+      key: Key('HallOfFameCard-${model.id}'),
+      id: model.id,
+      userNickName: model.userNickName,
+      likeCount: model.likeCount,
+      accomplishedTopic: model.accomplishedTopic,
+      userAuthId: model.userAuthId,
+      accomplishedDate: DateTimeUtils.dateTimeToString(model.createdDateTime, 'yyyy-MM-dd'),
+    );
+  }
+}
+
+class _HallOfFameCardState extends State<HallOfFameCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+  Color _iconColor = Colors.grey;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+
+    _animation = Tween<double>(begin: 0, end: 2)
+        .chain(CurveTween(curve: Curves.elasticIn))
+        .animate(_controller)
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _controller.reverse(); // 한쪽 방향으로 회전이 끝나면 반대 방향으로 회전
+        } else if (status == AnimationStatus.dismissed) {
+          _controller.reset(); // 반대 방향으로 회전이 끝나면 다시 회전 시작
+        }
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onIconTapped() {
+    _controller.repeat(reverse: true); // 아이콘 클릭 시 반복적으로 회전
+    Future.delayed(Duration(milliseconds: 1000), () {
+      _controller.stop();
+      _controller.reset();// 일정 시간이 지난 후 회전을 멈춤
+    });
+
+    setState(() {
+      _iconColor = _iconColor == Colors.red ? Colors.grey : Colors.red; // 클릭할 때 아이콘 색상을 파란색으로 변경
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    String dispalyedUserAuthId =
+    widget.userAuthId == null ? '' : '(${widget.userAuthId})';
+    String displayedAccomplishedTopic =
+    widget.accomplishedTopic == null ? '' : widget.accomplishedTopic!;
 
     return Padding(
       padding: const EdgeInsets.all(4.0),
@@ -45,10 +110,10 @@ class HallOfFameCard extends ConsumerWidget {
         padding: const EdgeInsets.all(4.0),
         decoration: BoxDecoration(
           border: Border.all(
-          color: Colors.black, // 테두리 색상
-                width: 1.0, // 테두리 두께
-              ),
-              borderRadius: BorderRadius.circular(16.0), // 둥근 테두리 (Optional)
+            color: Colors.black, // 테두리 색상
+            width: 1.0, // 테두리 두께
+          ),
+          borderRadius: BorderRadius.circular(16.0), // 둥근 테두리 (Optional)
         ),
         child: Row(
           children: [
@@ -69,7 +134,7 @@ class HallOfFameCard extends ConsumerWidget {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  '${userNickName}${dispalyedUserAuthId}님이 ${accomplishedDate}에 ${displayedAccomplishedTopic} 목표를 달성하셨습니다',
+                  '${widget.userNickName}${dispalyedUserAuthId}님이 ${widget.accomplishedDate}에 ${displayedAccomplishedTopic} 목표를 달성하셨습니다',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black,
@@ -91,10 +156,21 @@ class HallOfFameCard extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     GestureDetector(
-                        onTap: () => print("clicked like."),
-                        child: Icon(Icons.favorite_border_outlined, color: Colors.red)),
+                      onTap: _onIconTapped,
+                      child: AnimatedBuilder(
+                        animation: _animation,
+                        builder: (context, child) {
+                          return Transform.rotate(
+                            angle: _animation.value,
+                            child: child,
+                          );
+                        },
+                        child: Icon(Icons.favorite_border_outlined,
+                            color: _iconColor),
+                      ),
+                    ),
                     SizedBox(width: 4),
-                    Expanded(child: Text(likeCount.toString())),
+                    Expanded(child: Text(widget.likeCount.toString())),
                   ],
                 ),
               ),
@@ -102,20 +178,6 @@ class HallOfFameCard extends ConsumerWidget {
           ],
         ),
       ),
-    );
-  }
-
-  factory HallOfFameCard.fromHallOfFameModel({
-    required HallOfFameModel model,
-  }) {
-    return HallOfFameCard(
-      key: Key('HallOfFameCard-${model.id}'),
-      id: model.id,
-      userNickName: model.userNickName,
-      likeCount: model.likeCount,
-      accomplishedTopic: model.accomplishedTopic,
-      userAuthId: model.userAuthId,
-      accomplishedDate: DateTimeUtils.dateTimeToString(model.createdDateTime, 'yyyy-MM-dd'),
     );
   }
 }

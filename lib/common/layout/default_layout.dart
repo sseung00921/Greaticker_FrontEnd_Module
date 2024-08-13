@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:greaticker/common/component/iconWithLabel.dart';
 import 'package:greaticker/common/constants/colors.dart';
 import 'package:greaticker/common/constants/fonts.dart';
+import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/language/tap_label.dart';
 import 'package:greaticker/common/constants/language/title.dart';
 import 'package:greaticker/common/constants/tabs.dart';
@@ -31,8 +33,8 @@ class DefaultLayout extends StatefulWidget {
 class _DefaultLayoutState extends State<DefaultLayout>
     with TickerProviderStateMixin {
   late final TabController bottomTabController;
-  late final Map<String, String> TAP_LABEL_DICT;
-  late final Map<String, String> TITLE_DICT;
+  late final Map<String, String> TAB_LABEL_TRANS_DICT;
+  late final Map<String, String> TITLE_TRANS_DICT;
   late String title;
   late int
       selectedTapIndex; //Bottom인덱스는 BottomNavigaionBar의 속성으로 구현할 수 있으므로 커스텀하게 구현할 필요가 없다.
@@ -41,10 +43,10 @@ class _DefaultLayoutState extends State<DefaultLayout>
   void initState() {
     super.initState();
 
-    TAP_LABEL_DICT = widget.language == 'KO' ? TAB_LABEL_KO : TAB_LABEL_EN;
-    TITLE_DICT = widget.language == 'KO' ? TITLE_KO : TITLE_EN;
+    TAB_LABEL_TRANS_DICT = TAB_LABEL_DICT[widget.language]!;
+    TITLE_TRANS_DICT = TITLE_DICT[widget.language]!;
 
-    title = TITLE_DICT[widget.title_key]!;
+    title = TITLE_TRANS_DICT[widget.title_key]!;
     selectedTapIndex = _transTitleKeyToIndex(widget.title_key)!;
   }
 
@@ -93,7 +95,7 @@ class _DefaultLayoutState extends State<DefaultLayout>
                             padding: EdgeInsets.symmetric(horizontal: 16.0),
                             child: IconWithLabel(
                               icon: e.icon,
-                              label: TAP_LABEL_DICT[e.label_key]!,
+                              label: TAB_LABEL_TRANS_DICT[e.label_key]!,
                             ),
                           ),
                         ),
@@ -125,7 +127,7 @@ class _DefaultLayoutState extends State<DefaultLayout>
               icon: Icon(
                 e.icon,
               ),
-              label: TAP_LABEL_DICT[e.label_key],
+              label: TAB_LABEL_TRANS_DICT[e.label_key],
             ),
           )
           .toList(),
