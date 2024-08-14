@@ -102,6 +102,19 @@ class _HallOfFameCardState extends State<HallOfFameCard>
     String displayedAccomplishedTopic =
     widget.accomplishedTopic == null ? '' : widget.accomplishedTopic!;
 
+    Text _cardText = Text(
+      '${widget.userNickName}${dispalyedUserAuthId}님이 ${widget.accomplishedDate}에 ${displayedAccomplishedTopic} 목표를 달성하셨습니다',
+      textAlign: TextAlign.justify,
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w500,
+        fontFamily: YEONGDEOK_SEA,
+      ),
+      maxLines: 3,
+      overflow: TextOverflow.ellipsis,
+    );
+
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: Container(
@@ -137,34 +150,12 @@ class _HallOfFameCardState extends State<HallOfFameCard>
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          content: Text(
-                            '${widget.userNickName}${dispalyedUserAuthId}님이 ${widget.accomplishedDate}에 ${displayedAccomplishedTopic} 목표를 달성하셨습니다',
-                            textAlign: TextAlign.justify,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: YEONGDEOK_SEA,
-                            ),
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          content: _cardText,
                         );
                       },
                     );
                   },
-                  child: Text(
-                    '${widget.userNickName}${dispalyedUserAuthId}님이 ${widget.accomplishedDate}에 ${displayedAccomplishedTopic} 목표를 달성하셨습니다',
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: YEONGDEOK_SEA,
-                    ),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  child: _cardText,
                 ),
               ),
             ),

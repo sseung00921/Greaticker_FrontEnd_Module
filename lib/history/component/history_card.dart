@@ -11,7 +11,6 @@ class HistoryCard extends StatelessWidget {
   final Key key;
   final HistoryKind historyKind;
   final String projectName;
-  final String? stickerImgUrl;
   final String? stickerName;
   final int? dayInARow;
   final String dateTime;
@@ -20,7 +19,6 @@ class HistoryCard extends StatelessWidget {
     required this.key,
     required this.historyKind,
     required this.projectName,
-    this.stickerImgUrl,
     this.stickerName,
     this.dayInARow,
     required this.dateTime,
@@ -42,6 +40,22 @@ class HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Text _cardText = Text(
+      HistoryUtils.historyContentMaker(
+          historyKind: historyKind,
+          projectName: projectName,
+          stickerName: stickerName,
+          dayInARow: dayInARow),
+      textAlign: TextAlign.justify,
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w500,
+        fontFamily: YEONGDEOK_SEA,
+      ),
+      maxLines: 3,
+      overflow: TextOverflow.ellipsis,
+    );
     return Padding(
         padding: const EdgeInsets.all(4.0),
         child: Container(
@@ -77,42 +91,12 @@ class HistoryCard extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            content: Text(
-                              HistoryUtils.historyContentMaker(
-                                  historyKind: historyKind,
-                                  projectName: projectName,
-                                  stickerName: stickerName,
-                                  dayInARow: dayInARow),
-                              textAlign: TextAlign.justify,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: YEONGDEOK_SEA,
-                              ),
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                            content: _cardText,
                           );
                         },
                       );
                     },
-                    child: Text(
-                      HistoryUtils.historyContentMaker(
-                          historyKind: historyKind,
-                          projectName: projectName,
-                          stickerName: stickerName,
-                          dayInARow: dayInARow),
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: YEONGDEOK_SEA,
-                      ),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    child: _cardText,
                   ),
                 ),
               ),
