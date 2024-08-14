@@ -81,6 +81,9 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/img/hall_of_fame/
+    - assets/img/history/
+    - assets/img/diary/sticker/
+    - assets/img/diary/
     - .env
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

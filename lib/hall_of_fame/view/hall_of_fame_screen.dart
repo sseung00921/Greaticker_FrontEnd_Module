@@ -4,13 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/component/pagination_list_view.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
+import 'package:greaticker/common/layout/default_layout.dart';
 import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/provider/pagination_provider.dart';
 import 'package:greaticker/hall_of_fame/component/hall_of_fame_card.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
 import 'package:greaticker/hall_of_fame/provider/hall_of_fame_provider.dart';
 
-import '../../common/layout/default_layout.dart';
 
 class HallOfFameScreen extends StatelessWidget {
   static String get routeName => 'HallOfFameScreen';

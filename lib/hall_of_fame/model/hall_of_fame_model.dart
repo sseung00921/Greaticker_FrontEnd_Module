@@ -11,7 +11,7 @@ class HallOfFameModel extends BaseModel implements IModelWithId   {
   // 유저 닉네임
   final String userNickName;
   // 달성한 목표
-  final String? accomplishedTopic;
+  final String? accomplishedGoal;
   // 유저 auth ID
   final String? userAuthId;
   // 좋아요 횟수
@@ -20,7 +20,7 @@ class HallOfFameModel extends BaseModel implements IModelWithId   {
   HallOfFameModel({
     required this.id,
     required this.userNickName,
-    this.accomplishedTopic,
+    this.accomplishedGoal,
     this.userAuthId,
     required this.likeCount,
     required super.createdDateTime,

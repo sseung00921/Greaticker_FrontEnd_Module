@@ -28,7 +28,7 @@ class MockHallOfFameRepository implements IBasePaginationRepository<HallOfFameMo
       id: (index + 1).toString(),
       userNickName: '뾰롱이',
       likeCount: 123,
-      accomplishedTopic: '간호조무사 시험 공부',
+      accomplishedGoal: '간호조무사 시험 공부',
       userAuthId: 'abc${index}',
       createdDateTime: DateTime(2024, 8, 12),
       updatedDateTime: DateTime(2024, 8, 12),
@@ -40,27 +40,6 @@ class MockHallOfFameRepository implements IBasePaginationRepository<HallOfFameMo
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-
-    CursorPaginationMeta mockMeta;
-    if (paginationParams!.after == null || int.parse(paginationParams.after!) < 90) {
-      mockMeta = CursorPaginationMeta(count: 10, hasMore: true);
-    } else {
-      mockMeta = CursorPaginationMeta(count: 10, hasMore: false);
-    }
-
-    List<HallOfFameModel> slicedMockData;
-    if (paginationParams!.after == null) {
-      slicedMockData = mockData.sublist(0, 10);
-    } else {
-      slicedMockData = mockData.sublist(
-          int.parse(paginationParams.after!),
-          int.parse(paginationParams.after!) + 10);
-    }
-    return CursorPagination(meta: mockMeta, data: slicedMockData);
-  }
-
-  Future<CursorPagination<HallOfFameModel>> paginateWithoutDelayForMockingTest ({PaginationParams? paginationParams = const PaginationParams()}) async {
-    //원활한 모킹 테스트를 위해 열어놓은 메서드이다.
 
     CursorPaginationMeta mockMeta;
     if (paginationParams!.after == null || int.parse(paginationParams.after!) < 90) {

@@ -18,11 +18,14 @@ import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
 import 'package:greaticker/hall_of_fame/provider/hall_of_fame_provider.dart';
 
 import 'package:greaticker/hall_of_fame/view/hall_of_fame_screen.dart';
+import 'package:greaticker/history/view/history_screen.dart';
 
 import 'package:greaticker/main.dart';
 
 import '../../mocks/provider/hall_of_fame/mock_hall_of_fame_provider.dart';
 import '../../mocks/provider/hall_of_fame/mock_hall_of_fame_provider_returning_error.dart';
+import '../../mocks/provider/history/mock_history_provider.dart';
+import '../../mocks/provider/history/mock_history_provider_returning_error.dart';
 
 void main() {
   setUp(() {
@@ -31,42 +34,42 @@ void main() {
     dotenv.load(fileName: "$projectDir/.env.test");
   });
 
-  testWidgets('Can Not find below HallOfFameCard when Not scrolled.',
+  testWidgets('Can Not find below HistoryCard when Not scrolled.',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       ProviderScope(
         child: MaterialApp(
-          home: HallOfFameScreen(
-            key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProvider,
+          home: HistoryScreen(
+            key: HISTORY_SCREEN_KEY,
+            provider: mockHistoryProvider,
           ),
         ),
       ),
     );
     await tester.pumpAndSettle();
-    final targetCardKey = Key('HallOfFameCard-100');
+    final targetCardKey = Key('HistoryCard-100');
 
     expect(find.byKey(targetCardKey), findsNothing);
   });
 
-  testWidgets('Can find below HallOfFameCard when scrolled.',
+  testWidgets('Can find below HistoryCard when scrolled.',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       ProviderScope(
         child: MaterialApp(
-          home: HallOfFameScreen(
-            key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProvider,
+          home: HistoryScreen(
+            key: HISTORY_SCREEN_KEY,
+            provider: mockHistoryProvider,
           ),
         ),
       ),
     );
     await tester.pumpAndSettle();
-    final targetCardKey = Key('HallOfFameCard-100');
+    final targetCardKey = Key('HistoryCard-100');
 
     await tester.dragUntilVisible(
       find.byKey(targetCardKey),
-      find.byKey(HALL_OF_FAME_SCREEN_KEY),
+      find.byKey(HISTORY_SCREEN_KEY),
       const Offset(0, -300),
     );
 
@@ -80,9 +83,9 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         child: MaterialApp(
-          home: HallOfFameScreen(
-            key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProviderReturningError,
+          home: HistoryScreen(
+            key: HISTORY_SCREEN_KEY,
+            provider: mockHistoryProviderReturningError,
           ),
         ),
       ),
@@ -96,9 +99,9 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         child: MaterialApp(
-          home: HallOfFameScreen(
-            key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProviderReturningError,
+          home: HistoryScreen(
+            key: HISTORY_SCREEN_KEY,
+            provider: mockHistoryProviderReturningError,
           ),
         ),
       ),
@@ -120,9 +123,9 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         child: MaterialApp(
-          home: HallOfFameScreen(
-            key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProvider,
+          home: HistoryScreen(
+            key: HISTORY_SCREEN_KEY,
+            provider: mockHistoryProvider,
           ),
         ),
       ),
@@ -138,21 +141,21 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         child: MaterialApp(
-          home: HallOfFameScreen(
-            key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProvider,
+          home: HistoryScreen(
+            key: HISTORY_SCREEN_KEY,
+            provider: mockHistoryProvider,
           ),
         ),
       ),
     );
     await tester.pumpAndSettle();
 
-    final targetCardKey = Key('HallOfFameCard-1');
+    final targetCardKey = Key('HistoryCard-1');
     Widget widget = tester.widget(find.byKey(targetCardKey));
     expect(find.byWidget(widget), findsOneWidget);
 
     await tester.drag(
-      find.byKey(HALL_OF_FAME_SCREEN_KEY),
+      find.byKey(HISTORY_SCREEN_KEY),
       const Offset(0, 10000),
     );
     await tester.pumpAndSettle();
@@ -161,13 +164,14 @@ void main() {
     expect(find.byKey(targetCardKey), findsOneWidget);
   });
 
-  testWidgets('show alertDialog When card is clicked', (WidgetTester tester) async {
+  testWidgets('show alertDialog When card is clicked',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       ProviderScope(
         child: MaterialApp(
-          home: HallOfFameScreen(
-            key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProvider,
+          home: HistoryScreen(
+            key: HISTORY_SCREEN_KEY,
+            provider: mockHistoryProvider,
           ),
         ),
       ),
@@ -175,7 +179,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(AlertDialog), findsNothing);
 
-    final targetCardKey = Key('HallOfFameCard-1');
+    final targetCardKey = Key('HistoryCard-1');
 
     await tester.tap(find.byKey(targetCardKey));
     await tester.pumpAndSettle();

@@ -1,0 +1,140 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:greaticker/common/constants/fonts.dart';
+import 'package:greaticker/common/utils/date_time_utils.dart';
+import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
+import 'package:greaticker/history/model/enum/history_kind.dart';
+import 'package:greaticker/history/model/history_model.dart';
+import 'package:greaticker/history/utils/history_utils.dart';
+
+class HistoryCard extends StatelessWidget {
+  final Key key;
+  final HistoryKind historyKind;
+  final String projectName;
+  final String? stickerImgUrl;
+  final String? stickerName;
+  final int? dayInARow;
+  final String dateTime;
+
+  const HistoryCard({
+    required this.key,
+    required this.historyKind,
+    required this.projectName,
+    this.stickerImgUrl,
+    this.stickerName,
+    this.dayInARow,
+    required this.dateTime,
+  });
+
+  factory HistoryCard.fromHistoryModel({
+    required HistoryModel model,
+  }) {
+    return HistoryCard(
+      key: Key('HistoryCard-${model.id}'),
+      historyKind: model.historyKind,
+      projectName: model.projectName,
+      stickerName: model.stickerName,
+      dayInARow: model.dayInARow,
+      dateTime:
+          DateTimeUtils.dateTimeToString(model.createdDateTime, 'yyyyMM-dd'),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Container(
+            padding: const EdgeInsets.all(4.0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black, // 테두리 색상
+                width: 1.0, // 테두리 두께
+              ),
+              borderRadius: BorderRadius.circular(16.0), // 둥근 테두리 (Optional)
+            ),
+            child: Row(children: [
+              Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: SizedBox(
+                  width: 75,
+                  height: 75,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                      8.0,
+                    ),
+                    child: Image.asset(HistoryUtils.historyImageUrlSelector(
+                        historyKind: historyKind, stickerName: stickerName)),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Text(
+                              HistoryUtils.historyContentMaker(
+                                  historyKind: historyKind,
+                                  projectName: projectName,
+                                  stickerName: stickerName,
+                                  dayInARow: dayInARow),
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: YEONGDEOK_SEA,
+                              ),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    child: Text(
+                      HistoryUtils.historyContentMaker(
+                          historyKind: historyKind,
+                          projectName: projectName,
+                          stickerName: stickerName,
+                          dayInARow: dayInARow),
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: YEONGDEOK_SEA,
+                      ),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 65,
+                height: 61,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 8),
+                  child: Center(
+                    child: Text(
+                      dateTime.substring(0, 4) + '\n' + dateTime.substring(4),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: YEONGDEOK_SEA,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ])));
+  }
+}

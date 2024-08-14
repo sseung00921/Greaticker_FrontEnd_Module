@@ -7,7 +7,7 @@ import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
 
 class HallOfFameCard extends StatefulWidget {
   final Key key;
-  final String id;
+
 
   // 유저 닉네임
   final String userNickName;
@@ -26,7 +26,6 @@ class HallOfFameCard extends StatefulWidget {
 
   const HallOfFameCard({
     required this.key,
-    required this.id,
     required this.userNickName,
     this.accomplishedTopic,
     this.userAuthId,
@@ -42,10 +41,9 @@ class HallOfFameCard extends StatefulWidget {
   }) {
     return HallOfFameCard(
       key: Key('HallOfFameCard-${model.id}'),
-      id: model.id,
       userNickName: model.userNickName,
       likeCount: model.likeCount,
-      accomplishedTopic: model.accomplishedTopic,
+      accomplishedTopic: model.accomplishedGoal,
       userAuthId: model.userAuthId,
       accomplishedDate: DateTimeUtils.dateTimeToString(model.createdDateTime, 'yyyy-MM-dd'),
     );
@@ -133,17 +131,40 @@ class _HallOfFameCardState extends State<HallOfFameCard>
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  '${widget.userNickName}${dispalyedUserAuthId}님이 ${widget.accomplishedDate}에 ${displayedAccomplishedTopic} 목표를 달성하셨습니다',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: YEONGDEOK_SEA,
+                child: GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text(
+                            '${widget.userNickName}${dispalyedUserAuthId}님이 ${widget.accomplishedDate}에 ${displayedAccomplishedTopic} 목표를 달성하셨습니다',
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: YEONGDEOK_SEA,
+                            ),
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: Text(
+                    '${widget.userNickName}${dispalyedUserAuthId}님이 ${widget.accomplishedDate}에 ${displayedAccomplishedTopic} 목표를 달성하셨습니다',
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: YEONGDEOK_SEA,
+                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),

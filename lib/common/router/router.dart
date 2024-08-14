@@ -3,6 +3,7 @@ import 'package:greaticker/common/constants/widget_keys.dart';
 import 'package:greaticker/diary/view/diary_screen.dart';
 import 'package:greaticker/hall_of_fame/provider/hall_of_fame_provider.dart';
 import 'package:greaticker/hall_of_fame/view/hall_of_fame_screen.dart';
+import 'package:greaticker/history/provider/history_provider.dart';
 import 'package:greaticker/history/view/history_screen.dart';
 import 'package:greaticker/home/view/home_screen.dart';
 import 'package:greaticker/poppular_chart/view/popular_chart_screen.dart';
@@ -62,7 +63,7 @@ final router = GoRouter(initialLocation: '/home', routes: [
     path: '/history',
     name: HistoryScreen.routeName,
     pageBuilder: (_, state) => CustomTransitionPage(
-        child: HistoryScreen(key: HISTORY_SCREEN_KEY),
+        child: HistoryScreen(key: HISTORY_SCREEN_KEY, provider: historyProvider,),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child; // 애니메이션 없이 바로 전환
         },
