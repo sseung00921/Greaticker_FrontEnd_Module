@@ -10,10 +10,10 @@ void main() {
         HistoryUtils.historyContentMaker(
           historyKind: HistoryKind.getSticker,
           projectName: 'Fitness',
-          stickerName: 'LittleWin',
+          stickerName: 'Littlewin',
           dayInARow: 5,
         ),
-        'Fitness 목표 달성 5일 차 완료 스티커 "LittleWin"을 획득하셨습니다.',
+        'Fitness 목표 달성 5일 차 완료 스티커 "Littlewin"을 획득하셨습니다.',
       );
     });
 
@@ -71,9 +71,9 @@ void main() {
       expect(
         HistoryUtils.historyImageUrlSelector(
           historyKind: HistoryKind.getSticker,
-          stickerName: 'LittleWin',
+          stickerName: 'Littlewin',
         ),
-        'assets/img/diary/sticker/LittleWin_sticker.png',
+        'assets/img/diary/sticker/Littlewin_sticker.png',
       );
     });
 

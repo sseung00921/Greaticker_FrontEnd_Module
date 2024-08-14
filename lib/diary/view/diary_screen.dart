@@ -22,10 +22,22 @@ class DiaryScreen extends StatelessWidget {
       key: DEFAULT_LAYOUT_KEY,
       title_key: "diary",
       child: Center(
-        child: Text(
-          'DiaryScreen',
-          style: TextStyle(
-            color: Colors.black,
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/img/diary/background_book.png'),
+              fit: BoxFit.cover, // 이미지의 크기를 컨테이너에 맞춤
+            ),
+          ),
+          child: Center(
+            child: Text(
+              'DiaryScreen',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
       ),

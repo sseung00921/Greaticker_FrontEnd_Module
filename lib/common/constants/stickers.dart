@@ -1,0 +1,27 @@
+const Map<String, String> STICKER_ID_NAME_MAPPER = {
+  "1" : "Littlewin",
+  "2" : "Botchi",
+  "3" : "Jingle",
+  "4" : "Zumba",
+  "5" : "Glo",
+  "6" : "Lief",
+  "7" : "Meilin",
+  "8" : "Chocomong",
+  "9" : "Sauni",
+  "10" : "Baker",
+  "11" : "Leo",
+  "12" : "Jun",
+  "13" : "Dotori",
+  "14" : "Taehoon",
+  "15" : "Taeho",
+  "16" : "Milkybot",
+  "17" : "Liesel",
+  "18" : "Purlu",
+  "19" : "Mirawin",
+  "20" : "Plumphy",
+  "21" : "Bowdy",
+  "22" : "Purly",
+  "23" : "Bubbly",
+  "24" : "Podong"
+
+};

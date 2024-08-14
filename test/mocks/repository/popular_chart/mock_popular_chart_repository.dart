@@ -27,7 +27,7 @@ class MockPopularChartRepository implements IBasePaginationRepository<PopularCha
   List<PopularChartModel> mockData = List<PopularChartModel>.generate(30, (index) {
       return PopularChartModel(
         id: (index + 1).toString(),
-        stickerName: "LittleWin",
+        stickerName: "Littlewin",
         stickerDescription: "잘했스티커의 마스코트 캐릭터에요!!",
         rank: index + 1,
         hitCnt: 123,
