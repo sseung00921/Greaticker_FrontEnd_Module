@@ -20,11 +20,13 @@ class DiaryStateNotifier extends StateNotifier<DiaryModelBase> {
 
   final MockDiaryRepository repository;
 
-  DiaryStateNotifier({required this.repository}) : super(DiaryModelLoading());
+  DiaryStateNotifier({required this.repository}) : super(DiaryModelLoading()) {
+    getDiaryModel();
+  }
 
-  Future<void> getDiaryModel(String userId) async {
+  Future<void> getDiaryModel() async {
     try {
-      final resp = await repository.getDiaryModel(userId: userId);
+      final resp = await repository.getDiaryModel();
       state = resp;
     } catch (e, stack) {
       print(e);

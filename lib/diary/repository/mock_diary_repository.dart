@@ -19,14 +19,13 @@ class MockDiaryRepository {
   MockDiaryRepository(Dio dio, {required String baseUrl});
 
 
-  DiaryModel mockData = DiaryModel(id: "1", stickerInventory: List<String>.generate(30, (index) => (index + 1).toString()),);
+  DiaryModel mockData = DiaryModel(id: "1", stickerInventory: ["1","12","21","20","8","11","24","16","3","7","14","4","10","9","19","2","22","23","15","5","18","13","6","17"]);
 
 
-  Future<DiaryModel> getDiaryModel ({required String userId}) async {
+  Future<DiaryModel> getDiaryModel () async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-
     return mockData;
   }
 }

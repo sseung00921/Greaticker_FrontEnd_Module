@@ -22,8 +22,6 @@ abstract class DiaryRepository {
 
   @GET('/')
   @Headers({'accessToken': 'true'})
-  Future<DiaryModel> getDiaryModel({
-    @Query('userId') required String userId
-  });
+  Future<DiaryModel> getDiaryModel();
 }
 
