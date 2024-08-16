@@ -32,7 +32,7 @@ class PopularChartScreen extends StatelessWidget {
       title_key: "popular_chart",
       child: PaginationListView<PopularChartModel>(
           provider: provider,
-          itemBuilder: <HistoryModel>(_, index, model) {
+          itemBuilder: <PopularChartModel>(_, index, model) {
             return PopularChartCard.fromPopularChartModel(
               model: model,
             );

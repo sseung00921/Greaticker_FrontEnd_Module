@@ -10,15 +10,11 @@ part 'popular_chart_model.g.dart';
 class PopularChartModel extends BaseModel implements IModelWithId   {
   final String id;
   final int rank;
-  final String stickerName;
-  final String stickerDescription;
   final int hitCnt;
 
   PopularChartModel({
     required this.id,
     required this.rank,
-    required this.stickerName,
-    required this.stickerDescription,
     required this.hitCnt,
     required super.createdDateTime,
     required super.updatedDateTime,

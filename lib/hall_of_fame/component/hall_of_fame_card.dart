@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/fonts.dart';
+import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/utils/date_time_utils.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
 
@@ -103,7 +105,7 @@ class _HallOfFameCardState extends State<HallOfFameCard>
     widget.accomplishedTopic == null ? '' : widget.accomplishedTopic!;
 
     Text _cardText = Text(
-      '${widget.userNickName}${dispalyedUserAuthId}님이 ${widget.accomplishedDate}에 ${displayedAccomplishedTopic} 목표를 달성하셨습니다',
+      _accomplishmentComment(dispalyedUserAuthId, displayedAccomplishedTopic),
       textAlign: TextAlign.justify,
       style: TextStyle(
         color: Colors.black,
@@ -191,5 +193,17 @@ class _HallOfFameCardState extends State<HallOfFameCard>
         ),
       ),
     );
+  }
+
+  String _accomplishmentComment(String dispalyedUserAuthId, String displayedAccomplishedTopic) {
+    if (dotenv.get(LANGUAGE) == 'KO') {
+      return '${widget.userNickName}${dispalyedUserAuthId}님이 ${widget
+          .accomplishedDate}에 ${displayedAccomplishedTopic} 목표를 달성하셨습니다';
+    } else if (dotenv.get(LANGUAGE) == 'EN') {
+      return '${widget.userNickName}${dispalyedUserAuthId} has achieved the ${displayedAccomplishedTopic} goal on ${widget
+          .accomplishedDate}';
+    } else {
+      throw Exception();
+    }
   }
 }

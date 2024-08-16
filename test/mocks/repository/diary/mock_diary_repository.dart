@@ -56,3 +56,5 @@ class MockDiaryRepository extends DiaryRepositoryBase {
     return mockData;
   }
 }
+
+class MockDiaryRepositoryBase {}

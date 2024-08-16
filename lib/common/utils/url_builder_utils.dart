@@ -1,4 +1,4 @@
-import 'package:greaticker/common/constants/stickers.dart';
+import 'package:greaticker/common/constants/language/stickers.dart';
 import 'package:greaticker/common/exception/un_listed_sticker_number_exception.dart';
 
 class UrlBuilderUtils {

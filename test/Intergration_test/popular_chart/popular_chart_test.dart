@@ -68,7 +68,7 @@ void main() {
           ),
         );
     await tester.pumpAndSettle();
-    final targetCardKey = Key('PopularChartCard-30');
+    final targetCardKey = Key('PopularChartCard-24');
 
     await tester.dragUntilVisible(
       find.byKey(targetCardKey),

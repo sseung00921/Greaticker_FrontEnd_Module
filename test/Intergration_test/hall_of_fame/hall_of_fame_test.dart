@@ -12,14 +12,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
-import 'package:greaticker/common/model/cursor_pagination_model.dart';
-import 'package:greaticker/common/model/pagination_params.dart';
-import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
-import 'package:greaticker/hall_of_fame/provider/hall_of_fame_provider.dart';
-
 import 'package:greaticker/hall_of_fame/view/hall_of_fame_screen.dart';
-
-import 'package:greaticker/main.dart';
 
 import '../../mocks/provider/hall_of_fame/mock_hall_of_fame_provider.dart';
 import '../../mocks/provider/hall_of_fame/mock_hall_of_fame_provider_returning_error.dart';

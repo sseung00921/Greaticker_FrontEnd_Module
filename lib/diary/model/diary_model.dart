@@ -20,10 +20,12 @@ class DiaryModelLoading extends DiaryModelBase {}
 class DiaryModel extends DiaryModelBase implements IModelWithId   {
   final String id;
   final List<String> stickerInventory;
+  final Set<String> hitFavoriteList;
 
   DiaryModel({
     required this.id,
     required this.stickerInventory,
+    required this.hitFavoriteList,
   });
 
   factory DiaryModel.fromJson(Map<String, dynamic> json) =>

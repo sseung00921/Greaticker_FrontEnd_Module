@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:greaticker/common/constants/fonts.dart';
-import 'package:greaticker/common/utils/date_time_utils.dart';
+import 'package:greaticker/common/constants/language/common.dart';
+import 'package:greaticker/common/constants/language/stickers.dart';
 import 'package:greaticker/common/utils/integer_format_utils.dart';
 import 'package:greaticker/common/utils/url_builder_utils.dart';
-import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
-import 'package:greaticker/history/model/enum/history_kind.dart';
-import 'package:greaticker/history/model/history_model.dart';
-import 'package:greaticker/history/utils/history_utils.dart';
 import 'package:greaticker/popular_chart/model/popular_chart_model.dart';
 
 class PopularChartCard extends StatelessWidget {
   final Key key;
+  final String stickerId;
   final int rank;
-  final String stickerName;
-  final String stickerDescription;
   final int hitCnt;
 
   const PopularChartCard({
     required this.key,
+    required this.stickerId,
     required this.rank,
-    required this.stickerName,
-    required this.stickerDescription,
     required this.hitCnt,
   });
 
@@ -30,15 +25,17 @@ class PopularChartCard extends StatelessWidget {
   }) {
     return PopularChartCard(
       key: Key('PopularChartCard-${model.id}'),
+      stickerId: model.id,
       rank: model.rank,
-      stickerName: model.stickerName,
-      stickerDescription: model.stickerDescription,
       hitCnt: model.hitCnt,
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    String stickerName = STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![stickerId]!["name"]!;
+    String stickerDescription = STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![stickerId]!["description"]!;
+
     return Padding(
         padding: const EdgeInsets.all(4.0),
         child: Container(
@@ -84,8 +81,7 @@ class PopularChartCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                       8.0,
                     ),
-                    child: Image.asset(UrlBuilderUtils.imageUrlBuilderByStickerName(
-                        stickerName)),
+                    child: Image.asset(UrlBuilderUtils.imageUrlBuilderByStickerId(stickerId)),
                   ),
                 ),
               ),

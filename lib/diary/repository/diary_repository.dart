@@ -17,7 +17,7 @@ final DiaryRepositoryProvider = Provider<DiaryRepository>(
 
 // http://$ip/product
 @RestApi()
-abstract class DiaryRepository {
+abstract class DiaryRepository extends DiaryRepositoryBase{
   factory DiaryRepository(Dio dio, {String baseUrl}) = _DiaryRepository;
 
   @GET('/')
@@ -25,3 +25,7 @@ abstract class DiaryRepository {
   Future<DiaryModel> getDiaryModel();
 }
 
+abstract class DiaryRepositoryBase {
+
+  Future<DiaryModel> getDiaryModel();
+}
