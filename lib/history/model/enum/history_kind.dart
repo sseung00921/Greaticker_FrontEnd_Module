@@ -1,7 +1,7 @@
 enum HistoryKind {
-  getSticker,
-  accomplishGoal,
-  deleteGoal,
-  startGoal,
-  resetGoal
+  GET_STICKER,
+  ACCOMPLISH_GOAL,
+  DELETE_GOAL,
+  START_GOAL,
+  RESET_GOAL,
 }

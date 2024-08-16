@@ -8,7 +8,7 @@ void main() {
     test('returns correct message for getSticker', () {
       expect(
         HistoryUtils.historyContentMaker(
-          historyKind: HistoryKind.getSticker,
+          historyKind: HistoryKind.GET_STICKER,
           projectName: 'Fitness',
           stickerName: 'Littlewin',
           dayInARow: 5,
@@ -20,7 +20,7 @@ void main() {
     test('returns correct message for accomplishGoal', () {
       expect(
         HistoryUtils.historyContentMaker(
-          historyKind: HistoryKind.accomplishGoal,
+          historyKind: HistoryKind.ACCOMPLISH_GOAL,
           projectName: 'Fitness',
         ),
         'Fitness 목표를 달성하셨습니다. 신규 목표를 시작하기 전까지는 모은 스티커들이 다이어리에 유지됩니다!',
@@ -30,7 +30,7 @@ void main() {
     test('returns correct message for deleteGoal', () {
       expect(
         HistoryUtils.historyContentMaker(
-          historyKind: HistoryKind.deleteGoal,
+          historyKind: HistoryKind.DELETE_GOAL,
           projectName: 'Fitness',
         ),
         'Fitness 목표를 삭제하셨습니다. 새로운 목표를 생성해보세요!',
@@ -40,7 +40,7 @@ void main() {
     test('returns correct message for startGoal', () {
       expect(
         HistoryUtils.historyContentMaker(
-          historyKind: HistoryKind.startGoal,
+          historyKind: HistoryKind.START_GOAL,
           projectName: 'Fitness',
         ),
         '새로운 Fitness 목표를 시작하셨습니다! 30일 동안 잘 달성하시기를 응원합니다!',
@@ -50,7 +50,7 @@ void main() {
     test('returns correct message for resetGoal', () {
       expect(
         HistoryUtils.historyContentMaker(
-          historyKind: HistoryKind.resetGoal,
+          historyKind: HistoryKind.RESET_GOAL,
           projectName: 'Fitness',
           dayInARow: 7,
         ),
@@ -70,7 +70,7 @@ void main() {
     test('returns correct URL for getSticker', () {
       expect(
         HistoryUtils.historyImageUrlSelector(
-          historyKind: HistoryKind.getSticker,
+          historyKind: HistoryKind.GET_STICKER,
           stickerName: 'Littlewin',
         ),
         'assets/img/diary/sticker/Littlewin_sticker.png',
@@ -80,7 +80,7 @@ void main() {
     test('returns correct URL for accomplishGoal', () {
       expect(
         HistoryUtils.historyImageUrlSelector(
-          historyKind: HistoryKind.accomplishGoal,
+          historyKind: HistoryKind.ACCOMPLISH_GOAL,
         ),
         'assets/img/history/accomplish_goal.png',
       );
@@ -89,7 +89,7 @@ void main() {
     test('returns correct URL for deleteGoal', () {
       expect(
         HistoryUtils.historyImageUrlSelector(
-          historyKind: HistoryKind.deleteGoal,
+          historyKind: HistoryKind.DELETE_GOAL,
         ),
         'assets/img/history/delete_goal.png',
       );
@@ -98,7 +98,7 @@ void main() {
     test('returns correct URL for startGoal', () {
       expect(
         HistoryUtils.historyImageUrlSelector(
-          historyKind: HistoryKind.startGoal,
+          historyKind: HistoryKind.START_GOAL,
         ),
         'assets/img/history/start_goal.png',
       );
@@ -107,7 +107,7 @@ void main() {
     test('returns correct URL for resetGoal', () {
       expect(
         HistoryUtils.historyImageUrlSelector(
-          historyKind: HistoryKind.resetGoal,
+          historyKind: HistoryKind.RESET_GOAL,
         ),
         'assets/img/history/reset_goal.png',
       );

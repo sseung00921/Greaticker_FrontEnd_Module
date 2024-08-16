@@ -1,4 +1,3 @@
-
 import 'package:greaticker/common/model/base_model.dart';
 import 'package:greaticker/common/model/model_with_id.dart';
 import 'package:greaticker/history/model/enum/history_kind.dart';

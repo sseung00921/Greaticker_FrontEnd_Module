@@ -27,7 +27,7 @@ class MockHistoryRepository implements IBasePaginationRepository<HistoryModel> {
     if (index % 5 == 0) {
       return HistoryModel(
         id: (index + 1).toString(),
-        historyKind: HistoryKind.getSticker,
+        historyKind: HistoryKind.GET_STICKER,
         projectName: "앱 만들기",
         stickerName: "Littlewin",
         dayInARow: 8,
@@ -37,7 +37,7 @@ class MockHistoryRepository implements IBasePaginationRepository<HistoryModel> {
     } else if (index % 5 == 1) {
       return HistoryModel(
         id: (index + 1).toString(),
-        historyKind: HistoryKind.startGoal,
+        historyKind: HistoryKind.START_GOAL,
         projectName: "앱 만들기",
         dayInARow: 3,
         createdDateTime: DateTime(2024, 8, 14),
@@ -46,7 +46,7 @@ class MockHistoryRepository implements IBasePaginationRepository<HistoryModel> {
     } else if (index % 5 == 2) {
       return HistoryModel(
         id: (index + 1).toString(),
-        historyKind: HistoryKind.accomplishGoal,
+        historyKind: HistoryKind.ACCOMPLISH_GOAL,
         projectName: "앱 만들기",
         dayInARow: 10,
         createdDateTime: DateTime(2024, 8, 14),
@@ -55,7 +55,7 @@ class MockHistoryRepository implements IBasePaginationRepository<HistoryModel> {
     } else if (index % 5 == 3) {
       return HistoryModel(
         id: (index + 1).toString(),
-        historyKind: HistoryKind.resetGoal,
+        historyKind: HistoryKind.RESET_GOAL,
         projectName: "앱 만들기",
         dayInARow: 17,
         createdDateTime: DateTime(2024, 8, 14),
@@ -64,7 +64,7 @@ class MockHistoryRepository implements IBasePaginationRepository<HistoryModel> {
     } else if (index % 5 == 4) {
       return HistoryModel(
         id: (index + 1).toString(),
-        historyKind: HistoryKind.deleteGoal,
+        historyKind: HistoryKind.DELETE_GOAL,
         projectName: "앱 만들기",
         dayInARow: 15,
         createdDateTime: DateTime(2024, 8, 14),
@@ -73,7 +73,7 @@ class MockHistoryRepository implements IBasePaginationRepository<HistoryModel> {
     } else {
       return HistoryModel(
         id: (index + 1).toString(),
-        historyKind: HistoryKind.getSticker,
+        historyKind: HistoryKind.GET_STICKER,
         projectName: "앱 만들기",
         stickerName: "Littlewin",
         dayInARow: 8,
