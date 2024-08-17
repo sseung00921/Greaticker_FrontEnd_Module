@@ -7,7 +7,7 @@ import 'package:greaticker/common/constants/language/common.dart';
 Future<void> showYesNoDialog(
     {required BuildContext context,
      required String comment,
-     required VoidCallback onYes,
+     required Future<void> Function() onYes,
      VoidCallback? afterModal,}
     ) {
   return showDialog<void>(
@@ -50,9 +50,9 @@ Future<void> showYesNoDialog(
                 borderRadius: BorderRadius.circular(10.0),
               ),
             ),
-            onPressed: () {
+            onPressed: () async {
               Navigator.of(context).pop();
-              onYes(); // Yes action
+              await onYes(); // Yes action
               if (afterModal != null) {
                 afterModal();
               }

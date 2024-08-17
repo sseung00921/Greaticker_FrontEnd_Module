@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
 import 'package:greaticker/common/layout/default_layout.dart';
@@ -21,6 +22,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      supportedLocales: [
+        const Locale('en', 'US'), // 영어
+        const Locale('ko', 'KR'), // 한국어
+        // 필요에 따라 다른 로케일 추가
+      ],
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       routerConfig: router,
     );
   }

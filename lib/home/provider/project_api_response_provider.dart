@@ -21,8 +21,9 @@ class ProjectApiResponseStateNotifier extends StateNotifier<ApiResponseBase> {
   ProjectApiResponseStateNotifier({required this.repository}) : super(ApiResponseLoading());
 
 
-  Future<void> getProjectModel({required ProjectRequestDto projectRequestDto}) async {
+  Future<void> updateProjectState({required ProjectRequestDto projectRequestDto}) async {
     try {
+      state = ApiResponseLoading();
       final resp = await repository.updateProjectState(projectRequestDto: projectRequestDto);
       state = resp;
     } catch (e, stack) {

@@ -15,16 +15,14 @@ StateNotifierProvider<ProjectStateNotifier, ProjectModelBase>((ref) {
   final repo = ref.watch(MockProjectRepositoryProvider);
   final notifier = ProjectStateNotifier(repository: repo);
 
-  ref.watch(gotStickerProvider);
-  ref.watch(projectApiResponseProvider);
-
   ref.listen<GotStickerModelBase>(gotStickerProvider, (previous, next) {
     if (next is GotStickerModelLoading) {
       notifier.setLoadingState();
     } else if (next is GotStickerModelError) {
       notifier.setErrorState();
     } else {
-      notifier.getProjectModel();
+      //이 코드는 백엔드 개발까지 구현된 직후 다시 주석을 해제해야함 ToBeOpened
+      //notifier.getProjectModel();
     };
   });
 
@@ -34,7 +32,8 @@ StateNotifierProvider<ProjectStateNotifier, ProjectModelBase>((ref) {
     } else if (next is ApiResponseError) {
       notifier.setErrorState();
     } else {
-      notifier.getProjectModel();
+      //이 코드는 백엔드 개발까지 구현된 직후 다시 주석을 해제해야함 ToBeOpened
+      //notifier.getProjectModel();
     };
   });
 
