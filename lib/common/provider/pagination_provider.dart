@@ -1,6 +1,8 @@
 import 'package:debounce_throttle/debounce_throttle.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:greaticker/common/constants/language/comment.dart';
+import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/pagenation.dart';
 import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/model/cursor_pagination_model.dart';
@@ -166,7 +168,7 @@ U extends IBasePaginationRepository<T>>
     } catch (e, stack) {
       print(e);
       print(stack);
-      state = CursorPaginationError(message: '데이터를 가져오지 못했습니다.');
+      state = CursorPaginationError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
     }
   }
 }

@@ -49,6 +49,7 @@ class MockDiaryRepository extends DiaryRepositoryBase {
     "20"
   });
 
+  @override
   Future<DiaryModel> getDiaryModel() async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));

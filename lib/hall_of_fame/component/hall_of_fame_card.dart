@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:greaticker/common/component/text_style.dart';
 import 'package:greaticker/common/constants/fonts.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/utils/date_time_utils.dart';
@@ -107,11 +108,9 @@ class _HallOfFameCardState extends State<HallOfFameCard>
     Text _cardText = Text(
       _accomplishmentComment(dispalyedUserAuthId, displayedAccomplishedTopic),
       textAlign: TextAlign.justify,
-      style: TextStyle(
-        color: Colors.black,
+      style: YeongdeokSeaTextStyle(
         fontSize: 14.0,
         fontWeight: FontWeight.w500,
-        fontFamily: YEONGDEOK_SEA,
       ),
       maxLines: 3,
       overflow: TextOverflow.ellipsis,

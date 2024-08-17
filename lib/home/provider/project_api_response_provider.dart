@@ -1,11 +1,15 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:greaticker/common/constants/language/comment.dart';
+import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/home/model/requestDto/project_request_dto.dart';
+import 'package:greaticker/home/repository/mock_project_repository.dart';
 import 'package:greaticker/home/repository/project_repository.dart';
 
 final projectApiResponseProvider =
 StateNotifierProvider<ProjectApiResponseStateNotifier, ApiResponseBase>((ref) {
-  final repo = ref.watch(ProjectRepositoryProvider);
+  final repo = ref.watch(MockProjectRepositoryProvider);
 
   return ProjectApiResponseStateNotifier(repository: repo);
 });
@@ -24,7 +28,7 @@ class ProjectApiResponseStateNotifier extends StateNotifier<ApiResponseBase> {
     } catch (e, stack) {
       print(e);
       print(stack);
-      state = ApiResponseError(message: '데이터를 가져오지 못했습니다.');
+      state = ApiResponseError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
     }
   }
 }

@@ -16,20 +16,32 @@ class ProjectModelError extends ProjectModelBase {
 class ProjectModelLoading extends ProjectModelBase {}
 
 @JsonSerializable()
-class ProjectModel extends ProjectModelBase implements IModelWithId   {
-  final String id;
+class ProjectModel extends ProjectModelBase {
   final ProjectStateKind projectStateKind;
   final String? projectName;
   final DateTime? startDay;
   final int? dayInARow;
 
   ProjectModel({
-    required this.id,
     required this.projectStateKind,
     this.projectName,
     this.startDay,
-    this.dayInARow,
+    this.dayInARow = 0,
   });
+
+  ProjectModel copyWith({
+    ProjectStateKind? projectStateKind,
+    String? projectName,
+    DateTime? startDay,
+    int? dayInARow,
+  }) {
+    return ProjectModel(
+      projectStateKind: projectStateKind ?? this.projectStateKind,
+      projectName: projectName ?? this.projectName,
+      startDay: startDay ?? this.startDay,
+      dayInARow: dayInARow ?? this.dayInARow,
+    );
+  }
 
   factory ProjectModel.fromJson(Map<String, dynamic> json) =>
       _$ProjectModelFromJson(json);

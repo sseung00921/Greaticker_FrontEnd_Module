@@ -12,9 +12,9 @@ import '../../common/layout/default_layout.dart';
 
 class DiaryScreen extends StatelessWidget {
   static String get routeName => 'DiaryScreen';
-  final StateNotifierProvider<DiaryStateNotifier, DiaryModelBase> provider;
 
   final Key key;
+  final StateNotifierProvider<DiaryStateNotifier, DiaryModelBase> provider;
 
   const DiaryScreen({
     required this.key,

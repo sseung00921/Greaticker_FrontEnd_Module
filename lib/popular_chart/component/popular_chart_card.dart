@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:greaticker/common/component/text_style.dart';
 import 'package:greaticker/common/constants/fonts.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/language/stickers.dart';
@@ -60,11 +61,9 @@ class PopularChartCard extends StatelessWidget {
                     child: Text(
                       IntegerFormatUtils.convertToOrdinal(rank) + '\n' + stickerName,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
+                      style: YeongdeokSeaTextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.w900,
-                        fontFamily: YEONGDEOK_SEA,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -91,11 +90,9 @@ class PopularChartCard extends StatelessWidget {
                   child: Text(
                     stickerDescription,
                     textAlign: TextAlign.justify,
-                    style: TextStyle(
-                      color: Colors.black,
+                    style: YeongdeokSeaTextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w500,
-                      fontFamily: YEONGDEOK_SEA,
                     ),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,

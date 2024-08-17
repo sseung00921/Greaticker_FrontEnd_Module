@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:greaticker/common/component/iconWithLabel.dart';
+import 'package:greaticker/common/component/text_style.dart';
 import 'package:greaticker/common/constants/colors.dart';
 import 'package:greaticker/common/constants/fonts.dart';
 import 'package:greaticker/common/constants/language/common.dart';
@@ -71,10 +72,9 @@ class _DefaultLayoutState extends State<DefaultLayout>
         elevation: 0,
         title: Text(
           title,
-          style: TextStyle(
+          style: YeongdeokSeaTextStyle(
             fontSize: 24.0,
             fontWeight: FontWeight.w900,
-            fontFamily: YEONGDEOK_SEA,
           ),
         ),
         foregroundColor: Colors.black,

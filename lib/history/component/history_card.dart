@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:greaticker/common/component/text_style.dart';
 import 'package:greaticker/common/constants/fonts.dart';
 import 'package:greaticker/common/utils/date_time_utils.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
@@ -47,11 +48,9 @@ class HistoryCard extends StatelessWidget {
           stickerName: stickerName,
           dayInARow: dayInARow),
       textAlign: TextAlign.justify,
-      style: TextStyle(
-        color: Colors.black,
+      style: YeongdeokSeaTextStyle(
         fontSize: 14.0,
         fontWeight: FontWeight.w500,
-        fontFamily: YEONGDEOK_SEA,
       ),
       maxLines: 3,
       overflow: TextOverflow.ellipsis,
@@ -109,11 +108,9 @@ class HistoryCard extends StatelessWidget {
                     child: Text(
                       dateTime.substring(0, 4) + '\n' + dateTime.substring(4),
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
+                      style: YeongdeokSeaTextStyle(
                         fontSize: 14.0,
                         fontWeight: FontWeight.w500,
-                        fontFamily: YEONGDEOK_SEA,
                       ),
                     ),
                   ),
