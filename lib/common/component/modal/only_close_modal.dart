@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:greaticker/common/component/text_style.dart';
+import 'package:greaticker/common/constants/language/button.dart';
+import 'package:greaticker/common/constants/language/common.dart';
 
 Future<void> showOnlyCloseDialog({
   required BuildContext context,
@@ -25,7 +28,7 @@ Future<void> showOnlyCloseDialog({
               Navigator.of(context).pop();
             },
             child: Text(
-              'close',
+              BUTTON_DICT[dotenv.get(LANGUAGE)]!['close']!,
             ),
           ),
         ],

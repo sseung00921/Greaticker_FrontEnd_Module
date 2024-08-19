@@ -9,9 +9,11 @@ part of 'got_sticker_model.dart';
 GotStickerModel _$GotStickerModelFromJson(Map<String, dynamic> json) =>
     GotStickerModel(
       id: json['id'] as String,
+      isAlreadyGotTodaySticker: json['isAlreadyGotTodaySticker'] as bool,
     );
 
 Map<String, dynamic> _$GotStickerModelToJson(GotStickerModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'isAlreadyGotTodaySticker': instance.isAlreadyGotTodaySticker,
     };

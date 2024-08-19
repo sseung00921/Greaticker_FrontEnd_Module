@@ -13,7 +13,7 @@ ProjectModel _$ProjectModelFromJson(Map<String, dynamic> json) => ProjectModel(
       startDay: json['startDay'] == null
           ? null
           : DateTime.parse(json['startDay'] as String),
-      dayInARow: (json['dayInARow'] as num?)?.toInt(),
+      dayInARow: (json['dayInARow'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$ProjectModelToJson(ProjectModel instance) =>
@@ -28,4 +28,5 @@ const _$ProjectStateKindEnumMap = {
   ProjectStateKind.NO_EXIST: 'NO_EXIST',
   ProjectStateKind.IN_PROGRESS: 'IN_PROGRESS',
   ProjectStateKind.COMPLETED: 'COMPLETED',
+  ProjectStateKind.RESET: 'RESET',
 };

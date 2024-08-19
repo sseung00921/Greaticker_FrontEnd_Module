@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
 import 'package:greaticker/home/component/home_view.dart';
+import 'package:greaticker/home/model/got_sticker_model.dart';
 import 'package:greaticker/home/model/project_model.dart';
+import 'package:greaticker/home/provider/got_sticker_provider.dart';
 import 'package:greaticker/home/provider/project_provider.dart';
 
 import '../../common/layout/default_layout.dart';
@@ -14,11 +16,13 @@ class HomeScreen extends StatelessWidget {
   static String get routeName => 'HomeScreen';
 
   final Key key;
-  final StateNotifierProvider<ProjectStateNotifier, ProjectModelBase> provider;
+  final StateNotifierProvider<ProjectStateNotifier, ProjectModelBase> projectProvider;
+  final StateNotifierProvider<GotStickerStateNotifier, GotStickerModelBase> gotStickerProvider;
 
   const HomeScreen({
     required this.key,
-    required this.provider,
+    required this.projectProvider,
+    required this.gotStickerProvider,
   }) : super(key: key);
 
   @override
@@ -27,7 +31,7 @@ class HomeScreen extends StatelessWidget {
     return DefaultLayout(
       key: DEFAULT_LAYOUT_KEY,
       title_key: "home",
-      child: HomeView(provider: provider,),
+      child: HomeView(projectProvider: projectProvider, gotStickerProvider: gotStickerProvider,),
       language: dotenv.get(LANGUAGE),
     );
   }

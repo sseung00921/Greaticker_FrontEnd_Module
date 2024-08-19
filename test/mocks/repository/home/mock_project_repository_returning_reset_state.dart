@@ -5,29 +5,26 @@ import 'package:greaticker/common/constants/data.dart';
 import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/dio/dio.dart';
 import 'package:greaticker/common/model/api_response.dart';
-import 'package:greaticker/diary/model/diary_model.dart';
 import 'package:greaticker/home/model/enum/project_state_kind.dart';
 import 'package:greaticker/home/model/got_sticker_model.dart';
 import 'package:greaticker/home/model/project_model.dart';
 import 'package:greaticker/home/model/requestDto/project_request_dto.dart';
 import 'package:greaticker/home/repository/project_repository.dart';
 
-final MockProjectRepositoryProvider = Provider<MockProjectRepository>(
-  (ref) {
+final MockProjectRepositoryReturningResetProvider = Provider<MockProjectRepositoryReturningReset>(
+      (ref) {
     final dio = ref.watch(dioProvider);
 
-    return MockProjectRepository(dio, baseUrl: 'http://$ip/home');
+    return MockProjectRepositoryReturningReset(dio, baseUrl: 'http://$ip/home');
   },
 );
 
-class MockProjectRepository extends ProjectRepositoryBase {
-  MockProjectRepository(Dio dio, {required String baseUrl});
+class MockProjectRepositoryReturningReset extends ProjectRepositoryBase {
+  MockProjectRepositoryReturningReset(Dio dio, {required String baseUrl});
 
-  ProjectModel mockInProgressStateData = ProjectModel(
-      projectName: "앱 만들기",
-      projectStateKind: ProjectStateKind.IN_PROGRESS,
-      startDay: DateTime.now().subtract(Duration(days: 29)),
-      dayInARow: 28);
+  ProjectModel mockResetStateData = ProjectModel(
+    projectStateKind: ProjectStateKind.RESET,
+  );
   GotStickerModel mockGotStickerData = GotStickerModel(id: "1", isAlreadyGotTodaySticker: false);
   ApiResponse<int> mockAipResponseData = ApiResponse<int>(isSuccess: true, isError: false);
 
@@ -36,7 +33,7 @@ class MockProjectRepository extends ProjectRepositoryBase {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return mockInProgressStateData;
+    return mockResetStateData;
   }
 
   @override

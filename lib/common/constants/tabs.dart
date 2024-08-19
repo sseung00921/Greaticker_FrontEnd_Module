@@ -19,12 +19,12 @@ const BOTTOM_TABS = [
     index: 0,
   ),
   TabInfo(
-    icon: Icons.book, // 다이어리 모양 아이콘
+    icon: Icons.menu_book, // 다이어리 모양 아이콘
     label_key: 'diary',
     index: 1,
   ),
   TabInfo(
-    icon: Icons.library_books, // 명예의 전당 모양 아이콘
+    icon: Icons.emoji_events, // 명예의 전당 모양 아이콘
     label_key: 'hall_of_fame',
     index: 2,
   ),
@@ -37,7 +37,7 @@ const BOTTOM_TABS = [
 
 const TOP_TABS = [
   TabInfo(
-    icon: Icons.access_time, // 시계모양 아이콘
+    icon: Icons.history, // 시계모양 아이콘
     label_key: 'history',
     index: 4,
   ),

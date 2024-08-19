@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:greaticker/common/component/text_style.dart';
+import 'package:greaticker/common/constants/language/button.dart';
+import 'package:greaticker/common/constants/language/common.dart';
 
 Future<void> showOneTextInputDialog({
   required BuildContext context,
@@ -48,7 +51,7 @@ Future<void> showOneTextInputDialog({
               }// 입력된 텍스트를 전달
             },
             child: Text(
-              'enter',
+                BUTTON_DICT[dotenv.get(LANGUAGE)]!['enter']!,
             ),
           ),
         ],

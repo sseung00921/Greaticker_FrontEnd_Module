@@ -20,8 +20,9 @@ class GotStickerStateNotifier extends StateNotifier<GotStickerModelBase> {
   GotStickerStateNotifier({required this.repository}) : super(GotStickerModelLoading());
 
 
-  Future<void> getProjectModel() async {
+  Future<void> getGotStickerModel() async {
     try {
+      state = GotStickerModelLoading();
       final resp = await repository.getNewSticker();
       state = resp;
     } catch (e, stack) {

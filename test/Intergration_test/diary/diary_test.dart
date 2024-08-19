@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:greaticker/common/constants/language/button.dart';
 import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
@@ -371,7 +372,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     await tester.pumpAndSettle();
-    expect(find.text("다시 시도"), findsOneWidget);
+    expect(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['retry']!), findsOneWidget);
   });
 
   testWidgets('try refetching when retry button clicked',
@@ -388,14 +389,14 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    Widget widget = tester.widget(find.text("다시 시도"));
+    Widget widget = tester.widget(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['retry']!));
     expect(find.byWidget(widget), findsOneWidget);
 
-    await tester.tap(find.text("다시 시도"));
+    await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['retry']!));
     await tester.pumpAndSettle();
 
     expect(find.byWidget(widget), findsNothing);
-    expect(find.text("다시 시도"), findsOneWidget);
+    expect(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['retry']!), findsOneWidget);
   });
 
   testWidgets('show circular progress indicator when loading',

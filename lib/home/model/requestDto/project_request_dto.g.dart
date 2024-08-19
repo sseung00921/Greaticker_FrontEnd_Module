@@ -28,4 +28,5 @@ const _$ProjectStateKindEnumMap = {
   ProjectStateKind.NO_EXIST: 'NO_EXIST',
   ProjectStateKind.IN_PROGRESS: 'IN_PROGRESS',
   ProjectStateKind.COMPLETED: 'COMPLETED',
+  ProjectStateKind.RESET: 'RESET',
 };

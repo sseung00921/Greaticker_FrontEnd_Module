@@ -7,7 +7,9 @@ const BUTTON_DICT= {
     "create_project" : "새 목표 생성하기",
     "delete_project" : "이 목표 삭제하기",
     "show_calendar" : "달력 보기 🔽",
-    "hide_calender" : "달력 접기 🔼",
+    "hide_calendar" : "달력 접기 🔼",
+    "close" : "close",
+    "enter" : "enter",
   },
   "EN" : {
     "yes" : "Yes",
@@ -17,6 +19,8 @@ const BUTTON_DICT= {
     "create_project" : "Create a new goal.",
     "delete_project" : "Delete this goal.",
     "show_calendar" : "Show Calender 🔽",
-    "hide_calender" : "Hide Calender 🔼",
+    "hide_calendar" : "Hide Calender 🔼",
+    "close" : "close",
+    "enter" : "enter",
   }
 };

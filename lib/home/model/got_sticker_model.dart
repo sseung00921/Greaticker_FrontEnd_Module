@@ -17,10 +17,11 @@ class GotStickerModelLoading extends GotStickerModelBase {}
 @JsonSerializable()
 class GotStickerModel extends GotStickerModelBase implements IModelWithId   {
   final String id;
-
+  final bool isAlreadyGotTodaySticker;
 
   GotStickerModel({
     required this.id,
+    required this.isAlreadyGotTodaySticker
   });
 
   factory GotStickerModel.fromJson(Map<String, dynamic> json) =>

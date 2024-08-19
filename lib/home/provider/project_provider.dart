@@ -22,7 +22,7 @@ StateNotifierProvider<ProjectStateNotifier, ProjectModelBase>((ref) {
       notifier.setErrorState();
     } else {
       //이 코드는 백엔드 개발까지 구현된 직후 다시 주석을 해제해야함 ToBeOpened
-      //notifier.getProjectModel();
+      notifier.getProjectModel();
     };
   });
 

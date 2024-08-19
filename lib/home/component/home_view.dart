@@ -10,22 +10,28 @@ import 'package:greaticker/common/constants/fonts.dart';
 import 'package:greaticker/common/constants/language/button.dart';
 import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
+import 'package:greaticker/common/constants/language/stickers.dart';
 import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/utils/url_builder_utils.dart';
 import 'package:greaticker/home/constants/project.dart';
 import 'package:greaticker/home/model/enum/project_state_kind.dart';
+import 'package:greaticker/home/model/got_sticker_model.dart';
 import 'package:greaticker/home/model/project_model.dart';
 import 'package:greaticker/home/model/requestDto/project_request_dto.dart';
+import 'package:greaticker/home/provider/got_sticker_provider.dart';
 import 'package:greaticker/home/provider/project_api_response_provider.dart';
 import 'package:greaticker/home/provider/project_provider.dart';
+import 'package:greaticker/home/utils/got_sticker_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomeView<T> extends ConsumerStatefulWidget {
-  final StateNotifierProvider<ProjectStateNotifier, ProjectModelBase> provider;
+  final StateNotifierProvider<ProjectStateNotifier, ProjectModelBase> projectProvider;
+  final StateNotifierProvider<GotStickerStateNotifier, GotStickerModelBase> gotStickerProvider;
 
   const HomeView({
     Key? key,
-    required this.provider,
+    required this.projectProvider,
+    required this.gotStickerProvider,
   }) : super(key: key);
 
   @override
@@ -38,7 +44,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
 
   @override
   Widget build(BuildContext context) {
-    final projectState = ref.watch(widget.provider);
+    final projectState = ref.watch(widget.projectProvider);
 
     // 완전 처음 로딩일때
     if (projectState is ProjectModelLoading) {
@@ -60,7 +66,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
           const SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: () {
-              ref.read(widget.provider.notifier).getProjectModel();
+              ref.read(widget.projectProvider.notifier).getProjectModel();
             },
             child: Text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['retry']!),
           ),
@@ -83,65 +89,83 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  _isCalendarVisible = !_isCalendarVisible;
-                });
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.calendar_month_outlined, color: Colors.black,),
-                  Text(
-                    _isCalendarVisible ? BUTTON_DICT[dotenv.get(LANGUAGE)]!['hide_calender']! : BUTTON_DICT[dotenv.get(LANGUAGE)]!['show_calendar']!,
-                    style: YeongdeokSeaTextStyle(
-                        fontSize: 20.0, fontWeight: FontWeight.w500),
-                  ),
-                ],
-              ),
-            ),
-            // 달력 위젯, 조건에 따라 보여주기/숨기기
-            _isCalendarVisible ? _TableClanderForHomeView(startDay: projectState.startDay!, dayInARow: projectState.dayInARow!,) : Container(),
-            Text(
-              projectState.projectName!,
-              style: YeongdeokSeaTextStyle(
-                fontSize: 36.0,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: LinearProgressIndicator(
-                      value: projectState.dayInARow! / COMPLETE_DAY_CNT,
-                      minHeight: 10,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _isCalendarVisible = !_isCalendarVisible;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.calendar_month_outlined,
+                      color: Colors.black,
                     ),
+                    Text(
+                      _isCalendarVisible
+                          ? BUTTON_DICT[dotenv.get(LANGUAGE)]!['hide_calendar']!
+                          : BUTTON_DICT[dotenv.get(LANGUAGE)]![
+                              'show_calendar']!,
+                      style: YeongdeokSeaTextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+              ),
+              // 달력 위젯, 조건에 따라 보여주기/숨기기
+              _isCalendarVisible
+                  ? _TableClanderForHomeView(
+                      startDay: projectState.startDay!,
+                      dayInARow: projectState.dayInARow!,
+                    )
+                  : Container(),
+              Text(
+                projectState.projectName ??
+                    COMMENT_DICT[dotenv.get(LANGUAGE)]!['no_goal_set']!,
+                style: YeongdeokSeaTextStyle(
+                  fontSize: 36.0,
+                  fontWeight: FontWeight.w500,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: LinearProgressIndicator(
+                        value: projectState.dayInARow! / COMPLETE_DAY_CNT,
+                        minHeight: 10,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      '${(projectState.dayInARow! / COMPLETE_DAY_CNT * 30).round()}/${COMPLETE_DAY_CNT}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _showOrHideGotStickerButton(projectState),
+                  SizedBox(
+                    width: 20,
                   ),
-                  SizedBox(width: 10),
-                  Text(
-                    '${(projectState.dayInARow! / COMPLETE_DAY_CNT * 30).round()}/${COMPLETE_DAY_CNT}',
-                    style: TextStyle(fontSize: 16),
-                  ),
+                  _showAppropriateProjectActionButton(projectState),
                 ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _showOrHideGotStickerButton(projectState),
-                SizedBox(width: 20,),
-                _showAppropriateProjectActionButton(projectState),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -186,30 +210,26 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
   ElevatedButton _buildGotStickerButton(ProjectModel projectState) {
     return ElevatedButton(
       onPressed: () async {
-        ProjectRequestDto projectRequestDto = ProjectRequestDto(
-            prevProjectState: ProjectStateKind.IN_PROGRESS,
-            nextProjectState: ProjectStateKind.COMPLETED);
-        await ref
-            .read(projectApiResponseProvider.notifier)
-            .updateProjectState(projectRequestDto: projectRequestDto);
+        await ref.read(widget.gotStickerProvider.notifier).getGotStickerModel();
 
-        await showImageWithConfettiAnimationDialog(
+        GotStickerModelBase gotStickerState = ref.read(widget.gotStickerProvider);
+        gotStickerState as GotStickerModel;
+
+        if (gotStickerState.isAlreadyGotTodaySticker == false) {
+          await showImageWithConfettiAnimationDialog(
             context: context,
-            comment: gotStickerComment(projectState, "리틀윈"),
-            imagePath: UrlBuilderUtils.imageUrlBuilderByStickerId("1"));
-        ref
-            .read(widget.provider.notifier)
-            .updateProjectState(projectState.copyWith(
-              dayInARow: projectState.dayInARow! + 1,
-            ));
+            comment: GotStickerUtils.gotStickerComment(projectState, STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![gotStickerState.id]!['name']!),
+            imagePath: UrlBuilderUtils.imageUrlBuilderByStickerId(gotStickerState.id),
+          );
+          plusOneDayInARow(projectState);
 
-        if (projectState.dayInARow == COMPLETE_DAY_CNT - 1) {
-          ref.read(widget.provider.notifier).updateProjectState(
-                projectState.copyWith(
-                    projectStateKind: ProjectStateKind.COMPLETED,
-                    dayInARow: 30),
-              );
+          if (projectState.dayInARow == COMPLETE_DAY_CNT - 1) {
+            updateProjectStateAsCompleted(projectState);
+          }
+        } else {
+          await showOnlyCloseDialog(context: context, comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['today_sticker_already_got']!);
         }
+
       },
       child: Text(
         BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!,
@@ -224,61 +244,41 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
     );
   }
 
-  String gotStickerComment(ProjectModel projectState, String stickerName) {
-    if (dotenv.get(LANGUAGE) == "KO") {
-      return "${projectState.dayInARow}일차 목표 달성 보상 ${stickerName} 스티커를 획득하셨습니다!";
-    } else if (dotenv.get(LANGUAGE) == "EN") {
-      return "The reward for achieving your goal on day ${projectState.dayInARow}: You've earned the ${stickerName} sticker!";
-    } else {
-      return "";
-    }
+  void updateProjectStateAsCompleted(ProjectModel projectState) {
+    ref.read(widget.projectProvider.notifier).updateProjectState(
+      projectState.copyWith(
+          projectStateKind: ProjectStateKind.COMPLETED,
+          dayInARow: 30),
+    );
+    showOnlyCloseDialog(
+        context: context,
+        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+        'complete_project_notice']!);
+  }
+
+  void plusOneDayInARow(ProjectModel projectState) {
+    ref
+        .read(widget.projectProvider.notifier)
+        .updateProjectState(projectState.copyWith(
+      dayInARow: projectState.dayInARow! + 1,
+    ));
   }
 
   ElevatedButton _buildCreateProjectButton(ProjectModel projectState) {
     return ElevatedButton(
       onPressed: () {
-        showYesNoDialog(
-          context: context,
-          comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-              'create_project_sticker_loss_notice']!,
-          onYes: () async {
-            showOneTextInputDialog(
-                context: context,
-                comment:
-                    COMMENT_DICT[dotenv.get(LANGUAGE)]!['create_project_try']!,
-                onSubmitted: (s) async {
-                  ProjectRequestDto projectRequestDto = ProjectRequestDto(
-                      prevProjectState: ProjectStateKind.NO_EXIST,
-                      nextProjectState: ProjectStateKind.IN_PROGRESS);
-                  await ref
-                      .read(projectApiResponseProvider.notifier)
-                      .updateProjectState(projectRequestDto: projectRequestDto);
-                  //아래는 임시적 프론트 엔드 테스트를 위한 코드일 뿐 백엔드까지 구현된 이후 아래 코드들은 반드시 삭제되야 한다. ToBeDeleted"
-                  ref.read(widget.provider.notifier).updateProjectState(
-                        projectState.copyWith(
-                            projectStateKind: ProjectStateKind.IN_PROGRESS,
-                            dayInARow: 28),
-                      );
-                },
-                afterModal: () {
-                  ApiResponseBase responseState =
-                      ref.read(projectApiResponseProvider);
-                  if (responseState is ApiResponseError ||
-                      responseState is ApiResponse && responseState.isError) {
-                    showOnlyCloseDialog(
-                      context: context,
-                      comment:
-                          COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
-                    );
-                  } else {
-                    showOnlyCloseDialog(
-                        context: context,
-                        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                            'create_project_complete']!);
-                  }
-                });
-          },
-        );
+        if (projectState.projectStateKind == ProjectStateKind.COMPLETED) {
+          showYesNoDialog(
+            context: context,
+            comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                'create_project_sticker_loss_notice']!,
+            onYes: () async {
+              showCreateProjectTextInputDialog(projectState);
+            },
+          );
+        } else if (projectState.projectStateKind == ProjectStateKind.NO_EXIST) {
+          showCreateProjectTextInputDialog(projectState);
+        }
       },
       child: Text(
         BUTTON_DICT[dotenv.get(LANGUAGE)]!['create_project']!,
@@ -291,6 +291,41 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
         fixedSize: Size(240, 30), // 너비 200, 높이 60
       ),
     );
+  }
+
+  Future<void> showCreateProjectTextInputDialog(ProjectModel projectState) {
+    return showOneTextInputDialog(
+        context: context,
+        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['create_project_try']!,
+        onSubmitted: (s) async {
+          ProjectRequestDto projectRequestDto = ProjectRequestDto(
+              prevProjectState: ProjectStateKind.NO_EXIST,
+              nextProjectState: ProjectStateKind.IN_PROGRESS);
+          await ref
+              .read(projectApiResponseProvider.notifier)
+              .updateProjectState(projectRequestDto: projectRequestDto);
+          //아래는 임시적 프론트 엔드 테스트를 위한 코드일 뿐 백엔드까지 구현된 이후 아래 코드들은 반드시 삭제되야 한다. ToBeDeleted"
+          ref.read(widget.projectProvider.notifier).updateProjectState(
+                projectState.copyWith(
+                    projectStateKind: ProjectStateKind.IN_PROGRESS,
+                    dayInARow: 28),
+              );
+        },
+        afterModal: () {
+          ApiResponseBase responseState = ref.read(projectApiResponseProvider);
+          if (responseState is ApiResponseError ||
+              responseState is ApiResponse && responseState.isError) {
+            showOnlyCloseDialog(
+              context: context,
+              comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+            );
+          } else {
+            showOnlyCloseDialog(
+                context: context,
+                comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                    'create_project_complete']!);
+          }
+        });
   }
 
   ElevatedButton _buildDeleteProjectButton(ProjectModel projectState) {
@@ -307,7 +342,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
                   .read(projectApiResponseProvider.notifier)
                   .updateProjectState(projectRequestDto: projectRequestDto);
               //아래는 임시적 프론트 엔드 테스트를 위한 코드일 뿐 백엔드까지 구현된 이후 아래 코드들은 반드시 삭제되야 한다. ToBeDeleted"
-              ref.read(widget.provider.notifier).updateProjectState(
+              ref.read(widget.projectProvider.notifier).updateProjectState(
                     projectState.copyWith(
                         projectStateKind: ProjectStateKind.NO_EXIST),
                   );
@@ -338,7 +373,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
   }
 
   void _changeProjectStateFromInProgressToNoExist(ProjectModel projectState) {
-    ref.read(widget.provider.notifier).updateProjectState(
+    ref.read(widget.projectProvider.notifier).updateProjectState(
           projectState.copyWith(
               projectStateKind: ProjectStateKind.NO_EXIST, dayInARow: 0),
         );
@@ -348,6 +383,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
 class _TableClanderForHomeView extends StatelessWidget {
   final DateTime startDay;
   final int dayInARow;
+
   const _TableClanderForHomeView({
     required this.startDay,
     required this.dayInARow,
@@ -364,7 +400,8 @@ class _TableClanderForHomeView extends StatelessWidget {
       lastDay: DateTime.utc(2030, 12, 31),
       focusedDay: DateTime.now(),
       selectedDayPredicate: (day) {
-        return day.isAfter(startDay) && day.isBefore(endDay);
+        return day.isAfter(startDay.subtract(Duration(days: 1))) &&
+            day.isBefore(endDay);
       },
       calendarStyle: CalendarStyle(
         todayDecoration: BoxDecoration(
@@ -372,7 +409,7 @@ class _TableClanderForHomeView extends StatelessWidget {
           shape: BoxShape.circle,
         ),
         selectedDecoration: BoxDecoration(
-          color: Colors.transparent,  // 배경을 투명하게 설정
+          color: Colors.transparent, // 배경을 투명하게 설정
         ),
       ),
       headerStyle: HeaderStyle(
@@ -391,7 +428,7 @@ class _TableClanderForHomeView extends StatelessWidget {
                   child: Icon(
                     Icons.check,
                     color: Colors.green[700], // 초록색 'V'자 체크 표시
-                    size: 32.0,              // 더 큰 아이콘 크기
+                    size: 32.0, // 더 큰 아이콘 크기
                   ),
                 ),
                 Text(
@@ -406,7 +443,6 @@ class _TableClanderForHomeView extends StatelessWidget {
           );
         },
       ),
-    )
-    ;
+    );
   }
 }
