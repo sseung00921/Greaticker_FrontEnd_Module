@@ -26,23 +26,26 @@ abstract class ProjectRepository extends ProjectRepositoryBase{
 
   @GET('/')
   @Headers({'accessToken': 'true'})
+  @override
   Future<ProjectModel> getProjectModel();
 
   @POST('/projectState')
   @Headers({'accessToken': 'true'})
-  Future<ApiResponse<int>> updateProjectState({
+  @override
+  Future<ApiResponse<String>> updateProjectState({
     @Body() required ProjectRequestDto projectRequestDto,
   });
 
   @GET('/')
   @Headers({'accessToken': 'true'})
+  @override
   Future<GotStickerModel> getNewSticker();
 }
 
 abstract class ProjectRepositoryBase {
 
   Future<ProjectModel> getProjectModel();
-  Future<ApiResponse<int>> updateProjectState({
+  Future<ApiResponse<String>> updateProjectState({
     required ProjectRequestDto projectRequestDto,
   });
   Future<GotStickerModel> getNewSticker();

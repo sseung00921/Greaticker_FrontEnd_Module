@@ -43,7 +43,7 @@ class _ProjectRepository implements ProjectRepository {
   }
 
   @override
-  Future<ApiResponse<int>> updateProjectState(
+  Future<ApiResponse<String>> updateProjectState(
       {required projectRequestDto}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -51,8 +51,8 @@ class _ProjectRepository implements ProjectRepository {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(projectRequestDto.toJson());
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<ApiResponse<int>>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ApiResponse<String>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -64,9 +64,9 @@ class _ProjectRepository implements ProjectRepository {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse<int>.fromJson(
+    final value = ApiResponse<String>.fromJson(
       _result.data!,
-      (json) => json as int,
+      (json) => json as String,
     );
     return value;
   }

@@ -15,6 +15,12 @@ const COMMENT_DICT= {
     "can_not_register_favorite_sticker_more_than_3" : "최애 스티커를 3개를 초과하여 등록할 수 없습니다.",
     "no_goal_set" : "목표 없음",
     "today_sticker_already_got" : "오늘의 스티커를 이미 획득하셨습니다.",
+    "change_nickname_try" : "바꿀 닉네임을 입력해 주세요.",
+    "change_nickname_completed" : "닉네임이 변경되었습니다.",
+    "over_nickname_length" : "닉네임은 26Byte(한글 2Byte, 영문자, 공백 1Byte)를 넘을 수 없습니다.",
+    "log_out_complete" : "로그아웃이 완료되었습니다.",
+    "delete_account_try" : "회원 탈퇴를 하시면 언제든지 재가입하실 수 있지만 지금까지 설정한 목표 정보와 모았던 스티커 정보가 삭제됩니다. 정말 회원 탈퇴를 하시겠습니까?",
+    "delete_account_complete" : "회원 탈퇴가 완료되었습니다.",
   },
   "EN" : {
     "network_error": "Failed to communicate with the server.",
@@ -30,5 +36,11 @@ const COMMENT_DICT= {
     "can_not_register_favorite_sticker_more_than_3" : "You cannot register more than 3 favorite stickers.",
     "no_goal_set" : "No goal",
     "today_sticker_already_got": "You have already received today's sticker.",
+    "change_nickname_try": "Please enter the new nickname.",
+    "change_nickname_completed": "The nickname has been changed.",
+    "over_nickname_length": "The nickname cannot exceed 26 bytes (Korean characters are 2 bytes, English letters and spaces are 1 byte).",
+    "log_out_complete": "Logout completed.",
+    "delete_account_try": "If you delete your account, you can re-register at any time, but your goal settings and collected stickers will be deleted. Are you sure you want to delete your account?",
+    "delete_account_complete": "Account deletion completed.",
   }
 };

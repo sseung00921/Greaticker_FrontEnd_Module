@@ -26,7 +26,7 @@ class MockProjectRepositoryReturningError extends ProjectRepositoryBase {
     projectStateKind: ProjectStateKind.NO_EXIST,
   );
   GotStickerModel mockGotStickerData = GotStickerModel(id: "1", isAlreadyGotTodaySticker: false);
-  ApiResponse<int> mockAipResponseData = ApiResponse<int>(isSuccess: true, isError: false);
+  ApiResponse<String> mockAipResponseData = ApiResponse<String>(isSuccess: true, isError: false);
 
   @override
   Future<ProjectModel> getProjectModel() async {
@@ -42,7 +42,7 @@ class MockProjectRepositoryReturningError extends ProjectRepositoryBase {
   }
 
   @override
-  Future<ApiResponse<int>> updateProjectState(
+  Future<ApiResponse<String>> updateProjectState(
       {required ProjectRequestDto projectRequestDto}) async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));

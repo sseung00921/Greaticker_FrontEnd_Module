@@ -10,6 +10,10 @@ const BUTTON_DICT= {
     "hide_calendar" : "달력 접기 🔼",
     "close" : "close",
     "enter" : "enter",
+    "change_nickname" : "변경",
+    "log_out" : "로그아웃",
+    "delete_account" : "회원 탈퇴",
+    "view_tutorial" : "듀토리얼 보기",
   },
   "EN" : {
     "yes" : "Yes",
@@ -22,5 +26,9 @@ const BUTTON_DICT= {
     "hide_calendar" : "Hide Calender 🔼",
     "close" : "close",
     "enter" : "enter",
+    "change_nickname" : "Change",
+    "log_out" : "Log Out",
+    "delete_account" : "Delete Account",
+    "view_tutorial" : "View Tutorial",
   }
 };

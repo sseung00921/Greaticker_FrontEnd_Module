@@ -371,13 +371,6 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
       ),
     );
   }
-
-  void _changeProjectStateFromInProgressToNoExist(ProjectModel projectState) {
-    ref.read(widget.projectProvider.notifier).updateProjectState(
-          projectState.copyWith(
-              projectStateKind: ProjectStateKind.NO_EXIST, dayInARow: 0),
-        );
-  }
 }
 
 class _TableClanderForHomeView extends StatelessWidget {

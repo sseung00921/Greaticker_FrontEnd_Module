@@ -7,8 +7,6 @@ import 'package:greaticker/common/dio/dio.dart';
 import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/model/pagination_params.dart';
 import 'package:greaticker/common/repository/base_pagination_repository.dart';
-import 'package:greaticker/history/model/enum/history_kind.dart';
-import 'package:greaticker/history/model/history_model.dart';
 import 'package:greaticker/popular_chart/model/popular_chart_model.dart';
 
 
