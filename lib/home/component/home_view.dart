@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:greaticker/common/component/modal/image_with_confetti_animation_modal.dart';
 import 'package:greaticker/common/component/modal/one_text_input_modal.dart';
 import 'package:greaticker/common/component/modal/only_close_modal.dart';
 import 'package:greaticker/common/component/modal/yes_no_modal.dart';
 import 'package:greaticker/common/component/text_style.dart';
-import 'package:greaticker/common/constants/fonts.dart';
 import 'package:greaticker/common/constants/language/button.dart';
 import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/language/stickers.dart';
+import 'package:greaticker/common/constants/params.dart';
 import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/utils/url_builder_utils.dart';
 import 'package:greaticker/home/constants/project.dart';
 import 'package:greaticker/home/model/enum/project_state_kind.dart';
 import 'package:greaticker/home/model/got_sticker_model.dart';
 import 'package:greaticker/home/model/project_model.dart';
-import 'package:greaticker/home/model/requestDto/project_request_dto.dart';
+import 'package:greaticker/home/model/request_dto/project_request_dto.dart';
 import 'package:greaticker/home/provider/got_sticker_provider.dart';
 import 'package:greaticker/home/provider/project_api_response_provider.dart';
 import 'package:greaticker/home/provider/project_provider.dart';
@@ -25,13 +26,17 @@ import 'package:greaticker/home/utils/got_sticker_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomeView<T> extends ConsumerStatefulWidget {
-  final StateNotifierProvider<ProjectStateNotifier, ProjectModelBase> projectProvider;
-  final StateNotifierProvider<GotStickerStateNotifier, GotStickerModelBase> gotStickerProvider;
+  final StateNotifierProvider<ProjectStateNotifier,
+      ProjectModelBase> projectProvider;
+  final StateNotifierProvider<GotStickerStateNotifier,
+      GotStickerModelBase> gotStickerProvider;
+  final String? showPopUp;
 
   const HomeView({
     Key? key,
     required this.projectProvider,
     required this.gotStickerProvider,
+    this.showPopUp,
   }) : super(key: key);
 
   @override
@@ -82,7 +87,21 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
         showOnlyCloseDialog(
             context: context,
             comment:
-                COMMENT_DICT[dotenv.get(LANGUAGE)]!['reset_project_notice']!);
+            COMMENT_DICT[dotenv.get(LANGUAGE)]!['reset_project_notice']!);
+      });
+    }
+
+    if (widget.showPopUp == LOG_OUT_COMPLETE ||
+        widget.showPopUp == DELETE_ACCOUNT_COMPLETE) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showOnlyCloseDialog(
+          context: context,
+          comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+          widget.showPopUp == LOG_OUT_COMPLETE
+              ? 'log_out_complete'
+              : 'delete_account_complete']!,
+        );
+        context.go("/home");
       });
     }
 
@@ -90,6 +109,9 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
       padding: const EdgeInsets.all(8.0),
       child: Center(
         child: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          primary: false,
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -110,7 +132,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
                       _isCalendarVisible
                           ? BUTTON_DICT[dotenv.get(LANGUAGE)]!['hide_calendar']!
                           : BUTTON_DICT[dotenv.get(LANGUAGE)]![
-                              'show_calendar']!,
+                      'show_calendar']!,
                       style: YeongdeokSeaTextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.w500),
                     ),
@@ -120,9 +142,9 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
               // 달력 위젯, 조건에 따라 보여주기/숨기기
               _isCalendarVisible
                   ? _TableClanderForHomeView(
-                      startDay: projectState.startDay!,
-                      dayInARow: projectState.dayInARow!,
-                    )
+                startDay: projectState.startDay!,
+                dayInARow: projectState.dayInARow!,
+              )
                   : Container(),
               Text(
                 projectState.projectName ??
@@ -148,22 +170,16 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
                     ),
                     SizedBox(width: 10),
                     Text(
-                      '${(projectState.dayInARow! / COMPLETE_DAY_CNT * 30).round()}/${COMPLETE_DAY_CNT}',
+                      '${(projectState.dayInARow! / COMPLETE_DAY_CNT * 30)
+                          .round()}/${COMPLETE_DAY_CNT}',
                       style: TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _showOrHideGotStickerButton(projectState),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  _showAppropriateProjectActionButton(projectState),
-                ],
-              ),
+              _showOrHideGotStickerButton(projectState),
+              _showAppropriateProjectActionButton(projectState),
+              _showRegisterHallOfFameButton(projectState),
             ],
           ),
         ),
@@ -191,7 +207,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
     if (projectState.projectStateKind == ProjectStateKind.IN_PROGRESS) {
       return Column(
         children: [
-          SizedBox(height: 20),
+          SizedBox(height: 5),
           // 두 번째 ElevatedButton
           _buildDeleteProjectButton(projectState),
         ],
@@ -199,11 +215,25 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
     } else {
       return Column(
         children: [
-          SizedBox(height: 10),
+          SizedBox(height: 20),
           // 두 번째 ElevatedButton
           _buildCreateProjectButton(projectState),
         ],
       );
+    }
+  }
+
+  Widget _showRegisterHallOfFameButton(ProjectModel projectState) {
+    if (projectState.projectStateKind == ProjectStateKind.COMPLETED) {
+      return Column(
+        children: [
+          SizedBox(height: 5),
+          // 두 번째 ElevatedButton
+          _buildRegisterHallOfFameButton(projectState),
+        ],
+      );
+    } else {
+      return Container();
     }
   }
 
@@ -212,14 +242,18 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
       onPressed: () async {
         await ref.read(widget.gotStickerProvider.notifier).getGotStickerModel();
 
-        GotStickerModelBase gotStickerState = ref.read(widget.gotStickerProvider);
+        GotStickerModelBase gotStickerState = ref.read(
+            widget.gotStickerProvider);
         gotStickerState as GotStickerModel;
 
         if (gotStickerState.isAlreadyGotTodaySticker == false) {
           await showImageWithConfettiAnimationDialog(
             context: context,
-            comment: GotStickerUtils.gotStickerComment(projectState, STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![gotStickerState.id]!['name']!),
-            imagePath: UrlBuilderUtils.imageUrlBuilderByStickerId(gotStickerState.id),
+            comment: GotStickerUtils.gotStickerComment(projectState,
+                STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(
+                    LANGUAGE)]![gotStickerState.id]!['name']!),
+            imagePath: UrlBuilderUtils.imageUrlBuilderByStickerId(
+                gotStickerState.id),
           );
           plusOneDayInARow(projectState);
 
@@ -227,9 +261,10 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
             updateProjectStateAsCompleted(projectState);
           }
         } else {
-          await showOnlyCloseDialog(context: context, comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['today_sticker_already_got']!);
+          await showOnlyCloseDialog(context: context,
+              comment: COMMENT_DICT[dotenv.get(
+                  LANGUAGE)]!['today_sticker_already_got']!);
         }
-
       },
       child: Text(
         BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!,
@@ -271,7 +306,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
           showYesNoDialog(
             context: context,
             comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                'create_project_sticker_loss_notice']!,
+            'create_project_sticker_loss_notice']!,
             onYes: () async {
               showCreateProjectTextInputDialog(projectState);
             },
@@ -306,10 +341,10 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
               .updateProjectState(projectRequestDto: projectRequestDto);
           //아래는 임시적 프론트 엔드 테스트를 위한 코드일 뿐 백엔드까지 구현된 이후 아래 코드들은 반드시 삭제되야 한다. ToBeDeleted"
           ref.read(widget.projectProvider.notifier).updateProjectState(
-                projectState.copyWith(
-                    projectStateKind: ProjectStateKind.IN_PROGRESS,
-                    dayInARow: 28),
-              );
+            projectState.copyWith(
+                projectStateKind: ProjectStateKind.IN_PROGRESS,
+                dayInARow: 28),
+          );
         },
         afterModal: () {
           ApiResponseBase responseState = ref.read(projectApiResponseProvider);
@@ -323,7 +358,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
             showOnlyCloseDialog(
                 context: context,
                 comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                    'create_project_complete']!);
+                'create_project_complete']!);
           }
         });
   }
@@ -343,34 +378,71 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
                   .updateProjectState(projectRequestDto: projectRequestDto);
               //아래는 임시적 프론트 엔드 테스트를 위한 코드일 뿐 백엔드까지 구현된 이후 아래 코드들은 반드시 삭제되야 한다. ToBeDeleted"
               ref.read(widget.projectProvider.notifier).updateProjectState(
-                    projectState.copyWith(
-                        projectStateKind: ProjectStateKind.NO_EXIST),
-                  );
+                projectState.copyWith(
+                    projectStateKind: ProjectStateKind.NO_EXIST),
+              );
             },
             afterModal: () {
               ApiResponseBase responseState =
-                  ref.read(projectApiResponseProvider);
+              ref.read(projectApiResponseProvider);
               if (responseState is ApiResponseError ||
                   responseState is ApiResponse && responseState.isError) {
                 showOnlyCloseDialog(
                   context: context,
                   comment:
-                      COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+                  COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
                 );
               } else {
                 showOnlyCloseDialog(
                     context: context,
                     comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                        'delete_project_complete']!);
+                    'delete_project_complete']!);
               }
             });
       },
-      child: Icon(
-        Icons.delete_forever_outlined,
-        color: Colors.black,
+      child: Text(
+        BUTTON_DICT[dotenv.get(LANGUAGE)]!['delete_project']!,
+        style: YeongdeokSeaTextStyle(
+          fontSize: 18.0,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      style: ElevatedButton.styleFrom(
+        fixedSize: Size(240, 30), // 너비 200, 높이 60
       ),
     );
   }
+
+  ElevatedButton _buildRegisterHallOfFameButton(ProjectModel projectState) {
+    return ElevatedButton(
+      onPressed: () {
+        if (projectState.projectStateKind == ProjectStateKind.COMPLETED) {
+          showYesNoDialog(
+            context: context,
+            comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+            'create_project_sticker_loss_notice']!,
+            onYes: () async {
+              showCreateProjectTextInputDialog(projectState);
+            },
+          );
+        } else if (projectState.projectStateKind == ProjectStateKind.NO_EXIST) {
+          showCreateProjectTextInputDialog(projectState);
+        }
+      },
+      child: Text(
+        BUTTON_DICT[dotenv.get(LANGUAGE)]!['register_hall_of_fame']!,
+        style: YeongdeokSeaTextStyle(
+          fontSize: 18.0,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      style: ElevatedButton.styleFrom(
+        fixedSize: Size(240, 30), // 너비 200, 높이 60
+      ),
+    );
+  }
+
+
 }
 
 class _TableClanderForHomeView extends StatelessWidget {
@@ -388,6 +460,7 @@ class _TableClanderForHomeView extends StatelessWidget {
     DateTime endDay = startDay.add(Duration(days: dayInARow - 1));
 
     return TableCalendar(
+      availableGestures: AvailableGestures.horizontalSwipe,
       locale: dotenv.get(LANGUAGE) == "KO" ? "ko_KR" : null,
       firstDay: DateTime.utc(2020, 1, 1),
       lastDay: DateTime.utc(2030, 12, 31),

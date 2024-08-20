@@ -70,6 +70,23 @@ void main() {
     expect(find.byKey(targetCardKey), findsOneWidget);
   });
 
+  testWidgets('Can see hitCount in HallOfFameCard.',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(
+          home: HallOfFameScreen(
+            key: HALL_OF_FAME_SCREEN_KEY,
+            provider: mockHallOfFameProvider,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text("123"), findsWidgets);
+  });
+
   testWidgets('show retry button when got exception during pagination.',
       (WidgetTester tester) async {
     await tester.pumpWidget(
@@ -83,7 +100,8 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['retry']!), findsOneWidget);
+    expect(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['retry']!),
+        findsOneWidget);
   });
 
   testWidgets('try refetching when retry button clicked',
@@ -100,14 +118,16 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    Widget widget = tester.widget(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['retry']!));
+    Widget widget =
+        tester.widget(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['retry']!));
     expect(find.byWidget(widget), findsOneWidget);
 
     await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['retry']!));
     await tester.pumpAndSettle();
 
     expect(find.byWidget(widget), findsNothing);
-    expect(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['retry']!), findsOneWidget);
+    expect(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['retry']!),
+        findsOneWidget);
   });
 
   testWidgets('show circular progress indicator when loading',
@@ -156,7 +176,8 @@ void main() {
     expect(find.byKey(targetCardKey), findsOneWidget);
   });
 
-  testWidgets('show alertDialog When card is clicked', (WidgetTester tester) async {
+  testWidgets('show alertDialog When card is clicked',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       ProviderScope(
         child: MaterialApp(

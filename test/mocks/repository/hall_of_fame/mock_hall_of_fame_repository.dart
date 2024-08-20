@@ -21,15 +21,29 @@ class MockHallOfFameRepository implements IBasePaginationRepository<HallOfFameMo
   MockHallOfFameRepository(Dio dio, {required String baseUrl});
 
   List<HallOfFameModel> mockData = List<HallOfFameModel>.generate(100, (index) {
-    return HallOfFameModel(
-      id: (index + 1).toString(),
-      userNickName: '뾰롱이',
-      likeCount: 123,
-      accomplishedGoal: '간호조무사 시험 공부',
-      userAuthId: 'abc${index}',
-      createdDateTime: DateTime(2024, 8, 12),
-      updatedDateTime: DateTime(2024, 8, 12),
-    );
+    if (index == 3 || index == 6) {
+      return HallOfFameModel(
+        id: (index + 1).toString(),
+        userNickName: '뾰롱이',
+        likeCount: 123,
+        accomplishedGoal: '간호조무사 시험 공부',
+        userAuthId: 'abc${index}',
+        createdDateTime: DateTime(2024, 8, 12),
+        updatedDateTime: DateTime(2024, 8, 12),
+        isWrittenByMe: true,
+      );
+    } else {
+      return HallOfFameModel(
+        id: (index + 1).toString(),
+        userNickName: '뾰롱이',
+        likeCount: 123,
+        accomplishedGoal: '간호조무사 시험 공부',
+        userAuthId: 'abc${index}',
+        createdDateTime: DateTime(2024, 8, 12),
+        updatedDateTime: DateTime(2024, 8, 12),
+        isWrittenByMe: false,
+      );
+    }
   });
 
 

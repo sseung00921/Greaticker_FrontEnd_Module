@@ -11,27 +11,33 @@ import 'package:greaticker/home/provider/project_provider.dart';
 
 import '../../common/layout/default_layout.dart';
 
-
 class HomeScreen extends StatelessWidget {
   static String get routeName => 'HomeScreen';
 
   final Key key;
-  final StateNotifierProvider<ProjectStateNotifier, ProjectModelBase> projectProvider;
-  final StateNotifierProvider<GotStickerStateNotifier, GotStickerModelBase> gotStickerProvider;
+  final StateNotifierProvider<ProjectStateNotifier, ProjectModelBase>
+      projectProvider;
+  final StateNotifierProvider<GotStickerStateNotifier, GotStickerModelBase>
+      gotStickerProvider;
+  final String? showPopUp;
 
   const HomeScreen({
     required this.key,
     required this.projectProvider,
     required this.gotStickerProvider,
+    this.showPopUp,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return DefaultLayout(
       key: DEFAULT_LAYOUT_KEY,
       title_key: "home",
-      child: HomeView(projectProvider: projectProvider, gotStickerProvider: gotStickerProvider,),
+      child: HomeView(
+        projectProvider: projectProvider,
+        gotStickerProvider: gotStickerProvider,
+        showPopUp: showPopUp,
+      ),
       language: dotenv.get(LANGUAGE),
     );
   }

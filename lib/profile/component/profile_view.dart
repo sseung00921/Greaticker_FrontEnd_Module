@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:greaticker/common/component/modal/only_close_modal.dart';
 import 'package:greaticker/common/component/modal/yes_no_modal.dart';
 import 'package:greaticker/common/component/text_style.dart';
@@ -8,7 +9,9 @@ import 'package:greaticker/common/constants/error_message/error_message.dart';
 import 'package:greaticker/common/constants/language/button.dart';
 import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
+import 'package:greaticker/common/constants/params.dart';
 import 'package:greaticker/common/model/api_response.dart';
+import 'package:greaticker/common/utils/api_utils.dart';
 import 'package:greaticker/profile/model/profile_model.dart';
 import 'package:greaticker/profile/model/request_dto/change_nickname_request_dto.dart';
 import 'package:greaticker/profile/provider/profile_api_response_provider.dart';
@@ -180,11 +183,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                         COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
                   );
                 } else {
-                  showOnlyCloseDialog(
-                    context: context,
-                    comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                        'log_out_complete']!,
-                  );
+                  context.go("/home?${SHOW_POP_UP}=${LOG_OUT_COMPLETE}");
                 }
               },
               child: Text(
@@ -208,22 +207,17 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                     await ref
                         .read(profileApiResponseProvider.notifier)
                         .deleteAccount();
-                    ApiResponseBase responseState =
-                        ref.read(profileApiResponseProvider);
+                    ApiResponseBase responseState = ref.read(profileApiResponseProvider);
                     if (responseState is ApiResponseError ||
                         responseState is ApiResponse && responseState.isError) {
                       showOnlyCloseDialog(
                         context: context,
-                        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                            'network_error']!,
+                        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
                       );
                     } else {
-                      showOnlyCloseDialog(
-                        context: context,
-                        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                            'delete_account_complete']!,
-                      );
+                      context.go("/home?${SHOW_POP_UP}=${DELETE_ACCOUNT_COMPLETE}");
                     }
+
                   },
                 );
               },

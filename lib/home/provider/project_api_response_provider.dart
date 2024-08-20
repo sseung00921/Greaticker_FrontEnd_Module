@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/model/api_response.dart';
-import 'package:greaticker/home/model/requestDto/project_request_dto.dart';
+import 'package:greaticker/home/model/request_dto/project_request_dto.dart';
 import 'package:greaticker/home/repository/mock_project_repository.dart';
 import 'package:greaticker/home/repository/project_repository.dart';
 

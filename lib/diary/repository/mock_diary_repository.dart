@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/data.dart';
 import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/dio/dio.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/diary/model/diary_model.dart';
+import 'package:greaticker/diary/model/request_dto/hit_favorite_to_sticker_request_dto.dart';
 import 'package:greaticker/diary/repository/diary_repository.dart';
 
 final MockDiaryRepositoryProvider = Provider<MockDiaryRepository>(
@@ -56,4 +58,13 @@ class MockDiaryRepository extends DiaryRepositoryBase {
     }
     return mockData;
   }
+
+  @override
+  Future<ApiResponse<String>> hitFavoriteSticker({required HitFavoriteToStickerRequestDto hitFavoriteToStickerRequestDto}) async {
+    if (dotenv.get(ENVIRONMENT) == PROD) {
+      await Future.delayed(Duration(seconds: 1));
+    }
+    return ApiResponse(isSuccess: true, isError: false);
+  }
+
 }

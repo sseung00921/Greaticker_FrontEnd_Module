@@ -8,7 +8,7 @@ import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/home/model/enum/project_state_kind.dart';
 import 'package:greaticker/home/model/got_sticker_model.dart';
 import 'package:greaticker/home/model/project_model.dart';
-import 'package:greaticker/home/model/requestDto/project_request_dto.dart';
+import 'package:greaticker/home/model/request_dto/project_request_dto.dart';
 import 'package:greaticker/home/repository/project_repository.dart';
 
 final MockProjectRepositoryReturningInProgressProvider = Provider<MockProjectRepositoryReturningInProgress>(

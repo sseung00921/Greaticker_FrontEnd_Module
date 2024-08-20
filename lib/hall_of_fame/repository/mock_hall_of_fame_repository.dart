@@ -4,10 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/data.dart';
 import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/dio/dio.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/model/pagination_params.dart';
 import 'package:greaticker/common/repository/base_pagination_repository.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_request_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
 
@@ -24,15 +26,29 @@ class MockHallOfFameRepository implements IBasePaginationRepository<HallOfFameMo
 
 
   List<HallOfFameModel> mockData = List<HallOfFameModel>.generate(100, (index) {
-    return HallOfFameModel(
-      id: (index + 1).toString(),
-      userNickName: '뾰롱이',
-      likeCount: 123,
-      accomplishedGoal: '간호조무사 시험 공부',
-      userAuthId: 'abc${index}',
-      createdDateTime: DateTime(2024, 8, 12),
-      updatedDateTime: DateTime(2024, 8, 12),
-    );
+    if (index == 3 || index == 6) {
+      return HallOfFameModel(
+        id: (index + 1).toString(),
+        userNickName: '뾰롱이',
+        likeCount: 123,
+        accomplishedGoal: '간호조무사 시험 공부',
+        userAuthId: 'abc${index}',
+        createdDateTime: DateTime(2024, 8, 12),
+        updatedDateTime: DateTime(2024, 8, 12),
+        isWrittenByMe: true,
+      );
+    } else {
+      return HallOfFameModel(
+        id: (index + 1).toString(),
+        userNickName: '뾰롱이',
+        likeCount: 123,
+        accomplishedGoal: '간호조무사 시험 공부',
+        userAuthId: 'abc${index}',
+        createdDateTime: DateTime(2024, 8, 12),
+        updatedDateTime: DateTime(2024, 8, 12),
+        isWrittenByMe: false,
+      );
+    }
   });
 
 
@@ -57,6 +73,26 @@ class MockHallOfFameRepository implements IBasePaginationRepository<HallOfFameMo
           int.parse(paginationParams.after!) + 10);
     }
     return CursorPagination(meta: mockMeta, data: slicedMockData);
+  }
+
+  Future<ApiResponse<String>> registerHallOfFame({
+    required HallOfFameRequestDto hallOfFameRequestDto,
+  }) async {
+    if (dotenv.get(ENVIRONMENT) == PROD) {
+      await Future.delayed(Duration(seconds: 1));
+    }
+
+    return ApiResponse(isSuccess: true, isError: false);
+  }
+
+  Future<ApiResponse<String>> reviseHallOfFamePrivacyPolice({
+    required HallOfFameRequestDto hallOfFameRequestDto,
+  }) async {
+    if (dotenv.get(ENVIRONMENT) == PROD) {
+      await Future.delayed(Duration(seconds: 1));
+    }
+
+    return ApiResponse(isSuccess: true, isError: false);
   }
 }
 

@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:greaticker/common/constants/params.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
 import 'package:greaticker/diary/provider/diary_provider.dart';
 import 'package:greaticker/diary/view/diary_screen.dart';
@@ -19,7 +20,12 @@ final router = GoRouter(initialLocation: '/home', routes: [
     path: '/home',
     name: HomeScreen.routeName,
     pageBuilder: (_, state) => CustomTransitionPage(
-        child: HomeScreen(key: HOME_SCREEN_KEY, projectProvider: projectProvider, gotStickerProvider: gotStickerProvider,),
+        child: HomeScreen(
+          key: HOME_SCREEN_KEY,
+          projectProvider: projectProvider,
+          gotStickerProvider: gotStickerProvider,
+          showPopUp: state.queryParameters[SHOW_POP_UP],
+        ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child; // 애니메이션 없이 바로 전환
         },
@@ -31,7 +37,10 @@ final router = GoRouter(initialLocation: '/home', routes: [
     path: '/diary',
     name: DiaryScreen.routeName,
     pageBuilder: (_, state) => CustomTransitionPage(
-        child: DiaryScreen(key: DIARY_SCREEN_KEY, provider: diaryProvider,),
+        child: DiaryScreen(
+          key: DIARY_SCREEN_KEY,
+          provider: diaryProvider,
+        ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child; // 애니메이션 없이 바로 전환
         },
@@ -43,7 +52,10 @@ final router = GoRouter(initialLocation: '/home', routes: [
     path: '/hall-of-fame',
     name: HallOfFameScreen.routeName,
     pageBuilder: (_, state) => CustomTransitionPage(
-        child: HallOfFameScreen(key: HALL_OF_FAME_SCREEN_KEY, provider: hallOfFameProvider,),
+        child: HallOfFameScreen(
+          key: HALL_OF_FAME_SCREEN_KEY,
+          provider: hallOfFameProvider,
+        ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child; // 애니메이션 없이 바로 전환
         },
@@ -55,7 +67,10 @@ final router = GoRouter(initialLocation: '/home', routes: [
     path: '/popular-chart',
     name: PopularChartScreen.routeName,
     pageBuilder: (_, state) => CustomTransitionPage(
-        child: PopularChartScreen(key: POPULAR_CHART_SCREEN_KEY, provider: popularChartProvider,),
+        child: PopularChartScreen(
+          key: POPULAR_CHART_SCREEN_KEY,
+          provider: popularChartProvider,
+        ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child; // 애니메이션 없이 바로 전환
         },
@@ -67,7 +82,10 @@ final router = GoRouter(initialLocation: '/home', routes: [
     path: '/history',
     name: HistoryScreen.routeName,
     pageBuilder: (_, state) => CustomTransitionPage(
-        child: HistoryScreen(key: HISTORY_SCREEN_KEY, provider: historyProvider,),
+        child: HistoryScreen(
+          key: HISTORY_SCREEN_KEY,
+          provider: historyProvider,
+        ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child; // 애니메이션 없이 바로 전환
         },
@@ -79,7 +97,10 @@ final router = GoRouter(initialLocation: '/home', routes: [
     path: '/profile',
     name: ProfileScreen.routeName,
     pageBuilder: (_, state) => CustomTransitionPage(
-        child: ProfileScreen(key: PROFILE_SCREEN_KEY, provider: profileProvider,),
+        child: ProfileScreen(
+          key: PROFILE_SCREEN_KEY,
+          provider: profileProvider,
+        ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child; // 애니메이션 없이 바로 전환
         },

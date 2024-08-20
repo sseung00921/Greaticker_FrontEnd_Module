@@ -68,7 +68,8 @@ void main() {
 
     expect(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!),
         findsOneWidget);
-    expect(find.byIcon(Icons.delete_forever_outlined), findsOneWidget);
+    expect(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['delete_project']!),
+        findsOneWidget);
   });
 
   testWidgets('Show the "Create Projects" button when the status is "No Exist"',
@@ -322,7 +323,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.delete_forever_outlined));
+    await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['delete_project']!));
     await tester.pumpAndSettle();
 
     expect(find.byType(AlertDialog), findsOneWidget);

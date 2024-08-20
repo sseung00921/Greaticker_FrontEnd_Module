@@ -2,7 +2,9 @@ import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/data.dart';
 import 'package:greaticker/common/dio/dio.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/diary/model/diary_model.dart';
+import 'package:greaticker/diary/model/request_dto/hit_favorite_to_sticker_request_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'diary_repository.g.dart';
@@ -22,10 +24,17 @@ abstract class DiaryRepository extends DiaryRepositoryBase{
 
   @GET('/')
   @Headers({'accessToken': 'true'})
+  @override
   Future<DiaryModel> getDiaryModel();
+
+  @POST('/hit-favorite-sticker')
+  @Headers({'accessToken': 'true'})
+  @override
+  Future<ApiResponse<String>> hitFavoriteSticker({required HitFavoriteToStickerRequestDto hitFavoriteToStickerRequestDto});
 }
 
 abstract class DiaryRepositoryBase {
 
   Future<DiaryModel> getDiaryModel();
+  Future<ApiResponse<String>> hitFavoriteSticker({required HitFavoriteToStickerRequestDto hitFavoriteToStickerRequestDto});
 }

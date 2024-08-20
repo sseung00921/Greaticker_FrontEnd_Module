@@ -14,6 +14,7 @@ const BUTTON_DICT= {
     "log_out" : "로그아웃",
     "delete_account" : "회원 탈퇴",
     "view_tutorial" : "듀토리얼 보기",
+    "register_hall_of_fame" : "명예의 전당에 등록하기",
   },
   "EN" : {
     "yes" : "Yes",
@@ -30,5 +31,6 @@ const BUTTON_DICT= {
     "log_out" : "Log Out",
     "delete_account" : "Delete Account",
     "view_tutorial" : "View Tutorial",
+    "register_hall_of_fame" : "Induct into the Hall of Fame",
   }
 };

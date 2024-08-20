@@ -171,4 +171,12 @@ U extends IBasePaginationRepository<T>>
       state = CursorPaginationError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
     }
   }
+
+  void setLoadingState() {
+    state = CursorPaginationLoading();
+  }
+
+  void setErrorState() {
+    state = CursorPaginationError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+  }
 }
