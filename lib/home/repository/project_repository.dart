@@ -38,7 +38,7 @@ abstract class ProjectRepository extends ProjectRepositoryBase{
   @GET('/')
   @Headers({'accessToken': 'true'})
   @override
-  Future<GotStickerModel> getNewSticker();
+  Future<ApiResponse<GotStickerModel>> getNewSticker();
 }
 
 abstract class ProjectRepositoryBase {
@@ -47,6 +47,6 @@ abstract class ProjectRepositoryBase {
   Future<ApiResponse<String>> updateProjectState({
     required ProjectRequestDto projectRequestDto,
   });
-  Future<GotStickerModel> getNewSticker();
+  Future<ApiResponse<GotStickerModel>> getNewSticker();
 
 }

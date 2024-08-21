@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/home/model/got_sticker_model.dart';
 import 'package:greaticker/home/model/project_model.dart';
 import 'package:greaticker/home/provider/project_provider.dart';
@@ -11,7 +12,7 @@ StateNotifierProvider<ProjectStateNotifier, ProjectModelBase>((ref) {
   final repo = ref.watch(MockProjectRepositoryReturningAlreadyGotTodayStickerProvider);
   final notifier = ProjectStateNotifier(repository: repo);
 
-  ref.listen<GotStickerModelBase>(mockGotStickerProviderReturningAlreadyGotTodaySticker, (previous, next) {
+  ref.listen<ApiResponseBase>(mockGotStickerProviderReturningAlreadyGotTodaySticker, (previous, next) {
     if (next is GotStickerModelLoading) {
       notifier.setLoadingState();
     } else if (next is GotStickerModelError) {

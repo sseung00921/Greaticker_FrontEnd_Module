@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:greaticker/common/constants/widget_keys.dart';
-import 'package:greaticker/common/layout/default_layout.dart';
 import 'package:greaticker/common/router/router.dart';
 
 void main() async {

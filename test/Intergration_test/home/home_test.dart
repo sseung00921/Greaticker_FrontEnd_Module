@@ -10,6 +10,7 @@ import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/language/stickers.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/home/model/got_sticker_model.dart';
 import 'package:greaticker/home/model/project_model.dart';
 import 'package:greaticker/home/utils/got_sticker_utils.dart';
@@ -370,7 +371,9 @@ void main() {
 
     final ProjectModelBase currentProjectState = container.read(mockProjectProviderReturningInProgress);
     currentProjectState as ProjectModel;
-    final GotStickerModelBase currentGotStickerState = container.read(mockGotStickerProvider);
+    final ApiResponseBase apiResponseState = container.read(mockGotStickerProvider);
+    apiResponseState as ApiResponse;
+    final currentGotStickerState = apiResponseState.data;
     currentGotStickerState as GotStickerModel;
 
     expect(find.byType(AlertDialog), findsOneWidget);

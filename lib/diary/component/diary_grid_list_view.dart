@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:greaticker/common/component/modal/only_close_modal.dart';
 import 'package:greaticker/common/component/text_style.dart';
-import 'package:greaticker/common/constants/fonts.dart';
 import 'package:greaticker/common/constants/language/button.dart';
 import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/language/stickers.dart';
-import 'package:greaticker/common/constants/widget_keys.dart';
-import 'package:greaticker/common/model/cursor_pagination_model.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/model/model_with_id.dart';
-import 'package:greaticker/common/provider/pagination_provider.dart';
-import 'package:greaticker/common/utils/pagination_utils.dart';
 import 'package:greaticker/common/utils/url_builder_utils.dart';
 import 'package:greaticker/diary/model/diary_model.dart';
+import 'package:greaticker/diary/model/request_dto/diary_model_request_dto.dart';
+import 'package:greaticker/diary/model/request_dto/hit_favorite_to_sticker_reqeust_dto.dart';
+import 'package:greaticker/diary/provider/diary_api_response_provider.dart';
 import 'package:greaticker/diary/provider/diary_provider.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
@@ -53,7 +53,6 @@ class _DiaryGridListViewState<T extends IModelWithId>
   Widget build(BuildContext context) {
     final state = ref.watch(widget.provider);
 
-    // 완전 처음 로딩일때
     if (state is DiaryModelLoading) {
       return Center(
         child: CircularProgressIndicator(),
@@ -105,23 +104,37 @@ class _DiaryGridListViewState<T extends IModelWithId>
                   key: Key("Sticker-${e}"),
                   UrlBuilderUtils.imageUrlBuilderByStickerId(e))))
               .toList(),
-          onReorder: (oldIndex, newIndex) {
+          onReorder: (oldIndex, newIndex) async {
             setState(() {
               final element = diaryState.stickerInventory.removeAt(oldIndex);
               diaryState.stickerInventory.insert(newIndex, element);
             });
+            DiaryModelRequestDto diaryModelRequestDto  = DiaryModelRequestDto(
+                id: "1", stickerInventory: diaryState.stickerInventory, hitFavoriteList: diaryState.hitFavoriteList);
+            final responseState = await ref
+                .read(diaryApiResponseProvider.notifier)
+                .updateDiaryModel(diaryModelRequestDto: diaryModelRequestDto, context: context);
+            if (responseState is ApiResponseError ||
+                responseState is ApiResponse && responseState.isError) {
+              showOnlyCloseDialog(
+                context: context,
+                comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+              );
+            } else if (responseState is ApiResponse && responseState.isSuccess)  {
+              print("Sticker Order Change Was Successed.");
+            };
           },
         ),
       ),
     );
   }
 
-  void showStickerPopUpModal(BuildContext context, String e, bool isFavorite, DiaryModel diaryState) {
+  void showStickerPopUpModal(BuildContext context, String stickerId, bool isFavorite, DiaryModel diaryState) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          String stickerName = STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![e]!["name"]!;
-          String stickerDescription = STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![e]!["description"]!;
+          String stickerName = STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![stickerId]!["name"]!;
+          String stickerDescription = STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![stickerId]!["description"]!;
 
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -136,9 +149,9 @@ class _DiaryGridListViewState<T extends IModelWithId>
                           width: 4), // 은색 테두리
                     ),
                     child: Image.asset(
-                      key: Key("StickerPopUpModal-${e}"),
+                      key: Key("StickerPopUpModal-${stickerId}"),
                       UrlBuilderUtils.imageUrlBuilderByStickerId(
-                          e),
+                          stickerId),
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -191,15 +204,12 @@ class _DiaryGridListViewState<T extends IModelWithId>
                                       : Icons.favorite_border_outlined,
                                   color: Colors.red,
                                 ),
-                                onPressed: () {
-                                  setState(() {
+                                onPressed: () async {
                                     if (isFavorite) {
-                                      diaryState.hitFavoriteList.remove(e);
-                                      isFavorite = !isFavorite;
+                                      isFavorite = await _actionToDoWhenFromFavoriteToNotFavorite(stickerId, context, diaryState, isFavorite);
                                     } else if (!isFavorite) {
                                       if (diaryState.hitFavoriteList.length < 3) {
-                                        diaryState.hitFavoriteList.add(e);
-                                        isFavorite = !isFavorite;
+                                        isFavorite = await _actionToDoWhenFromNotFavoriteToFavorite(stickerId, context, diaryState, isFavorite);
                                       } else if (diaryState.hitFavoriteList.length >= 3) {
                                         showDialog(context: context, builder: (BuildContext context) {
                                             return FavoriteStickerLimitOverAlertDialog();
@@ -208,7 +218,6 @@ class _DiaryGridListViewState<T extends IModelWithId>
                                       };
                                     }
                                     _controller.forward(from: 0.01);
-                                  });
                                 },
                               ),
                             );
@@ -228,6 +237,50 @@ class _DiaryGridListViewState<T extends IModelWithId>
     if (diaryModel.hitFavoriteList.contains(e)) {
       isFavorite = true;
     }
+    return isFavorite;
+  }
+
+  Future<bool> _actionToDoWhenFromFavoriteToNotFavorite(String stickerId, BuildContext context, DiaryModel diaryState, bool isFavorite) async {
+    HitFavoriteToStickerReqeustDto hitFavoriteToStickerReqeustDto = HitFavoriteToStickerReqeustDto(
+        stickerId: stickerId);
+    final responseState = await ref
+        .read(diaryApiResponseProvider.notifier)
+        .hitFavoriteToSticker(hitFavoriteToStickerReqeustDto: hitFavoriteToStickerReqeustDto, context: context);
+    if (responseState is ApiResponseError ||
+        responseState is ApiResponse && responseState.isError) {
+      showOnlyCloseDialog(
+        context: context,
+        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+      );
+    } else if (responseState is ApiResponse && responseState.isSuccess) {
+      diaryState.hitFavoriteList.remove(stickerId);
+      print(diaryState.hitFavoriteList);
+      setState(() {
+        isFavorite = !isFavorite;
+      });
+    };
+    return isFavorite;
+  }
+
+  Future<bool> _actionToDoWhenFromNotFavoriteToFavorite(String stickerId, BuildContext context, DiaryModel diaryState, bool isFavorite) async {
+    HitFavoriteToStickerReqeustDto hitFavoriteToStickerReqeustDto = HitFavoriteToStickerReqeustDto(
+        stickerId: stickerId);
+    final responseState = await ref
+        .read(diaryApiResponseProvider.notifier)
+        .hitFavoriteToSticker(hitFavoriteToStickerReqeustDto: hitFavoriteToStickerReqeustDto, context: context);
+    if (responseState is ApiResponseError ||
+        responseState is ApiResponse && responseState.isError) {
+      showOnlyCloseDialog(
+        context: context,
+        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+      );
+    } else if (responseState is ApiResponse && responseState.isSuccess)  {
+      diaryState.hitFavoriteList.add(stickerId);
+      print(diaryState.hitFavoriteList);
+      setState(() {
+        isFavorite = !isFavorite;
+      });
+    };
     return isFavorite;
   }
 }

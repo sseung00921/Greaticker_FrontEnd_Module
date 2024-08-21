@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/home/component/home_view.dart';
 import 'package:greaticker/home/model/got_sticker_model.dart';
 import 'package:greaticker/home/model/project_model.dart';
@@ -17,7 +18,7 @@ class HomeScreen extends StatelessWidget {
   final Key key;
   final StateNotifierProvider<ProjectStateNotifier, ProjectModelBase>
       projectProvider;
-  final StateNotifierProvider<GotStickerStateNotifier, GotStickerModelBase>
+  final StateNotifierProvider<GotStickerStateNotifier, ApiResponseBase>
       gotStickerProvider;
   final String? showPopUp;
 

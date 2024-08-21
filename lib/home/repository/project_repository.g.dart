@@ -72,14 +72,14 @@ class _ProjectRepository implements ProjectRepository {
   }
 
   @override
-  Future<GotStickerModel> getNewSticker() async {
+  Future<ApiResponse<GotStickerModel>> getNewSticker() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<GotStickerModel>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ApiResponse<GotStickerModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -91,7 +91,10 @@ class _ProjectRepository implements ProjectRepository {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GotStickerModel.fromJson(_result.data!);
+    final value = ApiResponse<GotStickerModel>.fromJson(
+      _result.data!,
+      (json) => GotStickerModel.fromJson(json as Map<String, dynamic>),
+    );
     return value;
   }
 

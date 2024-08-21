@@ -10,6 +10,7 @@ import 'package:greaticker/common/model/pagination_params.dart';
 import 'package:greaticker/common/repository/base_pagination_repository.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
 import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hit_good_to_project_request_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
 
@@ -36,6 +37,19 @@ class MockHallOfFameRepository implements IBasePaginationRepository<HallOfFameMo
         createdDateTime: DateTime(2024, 8, 12),
         updatedDateTime: DateTime(2024, 8, 12),
         isWrittenByMe: true,
+        isHitGoodByMe: false,
+      );
+    } else if (index == 2 || index == 5){
+      return HallOfFameModel(
+        id: (index + 1).toString(),
+        userNickName: '뾰롱이',
+        likeCount: 123,
+        accomplishedGoal: '간호조무사 시험 공부',
+        userAuthId: 'abc${index}',
+        createdDateTime: DateTime(2024, 8, 12),
+        updatedDateTime: DateTime(2024, 8, 12),
+        isWrittenByMe: false,
+        isHitGoodByMe: true,
       );
     } else {
       return HallOfFameModel(
@@ -47,6 +61,7 @@ class MockHallOfFameRepository implements IBasePaginationRepository<HallOfFameMo
         createdDateTime: DateTime(2024, 8, 12),
         updatedDateTime: DateTime(2024, 8, 12),
         isWrittenByMe: false,
+        isHitGoodByMe: false,
       );
     }
   });
@@ -85,8 +100,18 @@ class MockHallOfFameRepository implements IBasePaginationRepository<HallOfFameMo
     return ApiResponse(isSuccess: true, isError: false);
   }
 
-  Future<ApiResponse<String>> reviseHallOfFamePrivacyPolice({
+  Future<ApiResponse<String>> deleteHallOfFame({
     required HallOfFameRequestDto hallOfFameRequestDto,
+  }) async {
+    if (dotenv.get(ENVIRONMENT) == PROD) {
+      await Future.delayed(Duration(seconds: 1));
+    }
+
+    return ApiResponse(isSuccess: true, isError: false);
+  }
+
+  Future<ApiResponse<String>> hitGoodToHallOfFame({
+    required HitGoodToProjectRequestDto hitGoodToProjectRequestDto,
   }) async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));

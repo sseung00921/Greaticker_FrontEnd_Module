@@ -5,14 +5,14 @@ part 'hall_of_fame_request_dto.g.dart';
 @JsonSerializable()
 class HallOfFameRequestDto {
   final String projectId;
-  final bool showAuthId;
-  final bool showGoal;
+  final bool? showAuthId;
+  final bool? showGoal;
 
 
   HallOfFameRequestDto({
     required this.projectId,
-    required this.showAuthId,
-    required this.showGoal,
+    this.showAuthId,
+    this.showGoal,
   });
 
   Map<String, dynamic> toJson() => _$HallOfFameRequestDtoToJson(this);

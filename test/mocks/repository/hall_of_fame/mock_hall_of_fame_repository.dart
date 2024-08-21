@@ -31,6 +31,19 @@ class MockHallOfFameRepository implements IBasePaginationRepository<HallOfFameMo
         createdDateTime: DateTime(2024, 8, 12),
         updatedDateTime: DateTime(2024, 8, 12),
         isWrittenByMe: true,
+        isHitGoodByMe: false,
+      );
+    } else if (index == 2 || index == 5){
+      return HallOfFameModel(
+        id: (index + 1).toString(),
+        userNickName: '뾰롱이',
+        likeCount: 123,
+        accomplishedGoal: '간호조무사 시험 공부',
+        userAuthId: 'abc${index}',
+        createdDateTime: DateTime(2024, 8, 12),
+        updatedDateTime: DateTime(2024, 8, 12),
+        isWrittenByMe: false,
+        isHitGoodByMe: true,
       );
     } else {
       return HallOfFameModel(
@@ -42,6 +55,7 @@ class MockHallOfFameRepository implements IBasePaginationRepository<HallOfFameMo
         createdDateTime: DateTime(2024, 8, 12),
         updatedDateTime: DateTime(2024, 8, 12),
         isWrittenByMe: false,
+        isHitGoodByMe: false,
       );
     }
   });

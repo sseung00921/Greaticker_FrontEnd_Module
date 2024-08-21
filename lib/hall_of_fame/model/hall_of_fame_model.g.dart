@@ -14,6 +14,7 @@ HallOfFameModel _$HallOfFameModelFromJson(Map<String, dynamic> json) =>
       userAuthId: json['userAuthId'] as String?,
       likeCount: (json['likeCount'] as num).toInt(),
       isWrittenByMe: json['isWrittenByMe'] as bool,
+      isHitGoodByMe: json['isHitGoodByMe'] as bool,
       createdDateTime: DateTime.parse(json['createdDateTime'] as String),
       updatedDateTime: DateTime.parse(json['updatedDateTime'] as String),
     );
@@ -28,4 +29,5 @@ Map<String, dynamic> _$HallOfFameModelToJson(HallOfFameModel instance) =>
       'userAuthId': instance.userAuthId,
       'likeCount': instance.likeCount,
       'isWrittenByMe': instance.isWrittenByMe,
+      'isHitGoodByMe': instance.isHitGoodByMe,
     };

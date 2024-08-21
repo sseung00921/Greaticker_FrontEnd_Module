@@ -2,6 +2,7 @@
 import 'package:greaticker/common/model/base_model.dart';
 import 'package:greaticker/common/model/model_with_id.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:collection/collection.dart';
 
 part 'diary_model.g.dart';
 abstract class DiaryModelBase {}
@@ -30,4 +31,5 @@ class DiaryModel extends DiaryModelBase implements IModelWithId   {
 
   factory DiaryModel.fromJson(Map<String, dynamic> json) =>
       _$DiaryModelFromJson(json);
+
 }

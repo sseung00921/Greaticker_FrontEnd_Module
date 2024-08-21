@@ -51,7 +51,7 @@ const Map<String, Map<String, Map<String, String>>> STICKER_ID_STICKER_INFO_MAPP
     "19": {"name": "미라윈", "description": "리틀윈의 엄마에요. 뜨개질을 좋아해요."},
     "20": {"name": "플럼피", "description": "바우디를 키우는 어린 양이에요."},
     "21": {"name": "바우디", "description": "플럼피가 키우는 보더콜리에요."},
-    "22": {"name": "펄", "description": "리틀윈의 귀여운 장난꾸러기 남동생이에요."},
+    "22": {"name": "펄루", "description": "리틀윈의 귀여운 장난꾸러기 남동생이에요."},
     "23": {"name": "버블리", "description": "리틀윈의 귀여운 세살베기 막내 여동생이에요. 버블티를 좋아해요."},
     "24": {"name": "포동", "description": "사족 보행을 포기하고 굴러다니기를 선택한 고양이에요."},
   },

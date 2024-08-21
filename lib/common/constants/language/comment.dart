@@ -21,6 +21,12 @@ const COMMENT_DICT= {
     "log_out_complete" : "로그아웃이 완료되었습니다.",
     "delete_account_try" : "회원 탈퇴를 하시면 언제든지 재가입하실 수 있지만 지금까지 설정한 목표 정보와 모았던 스티커 정보가 삭제됩니다. 정말 회원 탈퇴를 하시겠습니까?",
     "delete_account_complete" : "회원 탈퇴가 완료되었습니다.",
+    "choice_below" : "아래 사항들을 선택해 주세요.",
+    "only_nickname" : "닉네임만 노출",
+    "both_nickname_and_auth_id" : "닉네임과 아이디 노출",
+    "register_hall_of_fame_complete" : "명예의 전당에 등록이 완료되었습니다.",
+    "delete_hall_of_fame_complete" : "삭제가 완료되었습니다.",
+    //"diary_sticker_order_update_try" : "변경된 스티커 순서를 저장하시겠습니까?",
   },
   "EN" : {
     "network_error": "Failed to communicate with the server.",
@@ -42,5 +48,11 @@ const COMMENT_DICT= {
     "log_out_complete": "Logout completed.",
     "delete_account_try": "If you delete your account, you can re-register at any time, but your goal settings and collected stickers will be deleted. Are you sure you want to delete your account?",
     "delete_account_complete": "Account deletion completed.",
+    "choice_below" : "Please select the following options.",
+    "only_nickname" : "Display only the nickname.",
+    "both_nickname_and_auth_id" : "Display both the nickname and the logged-in account.",
+    "register_hall_of_fame_complete" : "Registration in the Hall of Fame has been completed.",
+    "delete_hall_of_fame_complete" : "Deletion has been completed.",
+    //"diary_sticker_order_update_try" : "Would you like to save the updated sticker order?",
   }
 };

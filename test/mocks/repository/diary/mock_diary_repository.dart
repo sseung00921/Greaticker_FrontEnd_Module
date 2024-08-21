@@ -4,7 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/data.dart';
 import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/dio/dio.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/diary/model/diary_model.dart';
+import 'package:greaticker/diary/model/request_dto/diary_model_request_dto.dart';
+import 'package:greaticker/diary/model/request_dto/hit_favorite_to_sticker_reqeust_dto.dart';
 import 'package:greaticker/diary/repository/diary_repository.dart';
 
 final MockDiaryRepositoryProvider = Provider<MockDiaryRepository>(
@@ -55,6 +58,20 @@ class MockDiaryRepository extends DiaryRepositoryBase {
     }
     return mockData;
   }
-}
 
-class MockDiaryRepositoryBase {}
+  @override
+  Future<ApiResponse<String>> updateDiaryModel({required DiaryModelRequestDto diaryModelRequestDto}) async {
+    if (dotenv.get(ENVIRONMENT) == PROD) {
+      await Future.delayed(Duration(seconds: 1));
+    }
+    return ApiResponse(isSuccess: true, isError: false);
+  }
+
+  @override
+  Future<ApiResponse<String>> hitFavoriteToSticker({required HitFavoriteToStickerReqeustDto hitFavoriteToStickerReqeustDto}) async {
+    if (dotenv.get(ENVIRONMENT) == PROD) {
+      await Future.delayed(Duration(seconds: 1));
+    }
+    return ApiResponse(isSuccess: true, isError: false);
+  }
+}

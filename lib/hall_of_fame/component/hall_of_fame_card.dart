@@ -2,16 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:greaticker/common/component/modal/only_close_modal.dart';
 import 'package:greaticker/common/component/text_style.dart';
 import 'package:greaticker/common/constants/fonts.dart';
+import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/utils/date_time_utils.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_request_dto.dart';
+import 'package:greaticker/hall_of_fame/provider/hall_of_fame_api_response_provider.dart';
+import 'package:greaticker/hall_of_fame/view/hall_of_fame_screen.dart';
 
-class HallOfFameCard extends StatefulWidget {
+class HallOfFameCard extends ConsumerStatefulWidget {
   final Key key;
-
-
+  final String hallOfFameModelId;
   // 유저 닉네임
   final String userNickName;
 
@@ -26,14 +31,19 @@ class HallOfFameCard extends StatefulWidget {
 
   // 달성 일시
   final String accomplishedDate;
+  final bool isWrittenByMe;
+  final bool isHitGoodByMe;
 
   const HallOfFameCard({
     required this.key,
+    required this.hallOfFameModelId,
     required this.userNickName,
     this.accomplishedTopic,
     this.userAuthId,
     required this.accomplishedDate,
     required this.likeCount,
+    required this.isWrittenByMe,
+    required this.isHitGoodByMe,
   });
 
   @override
@@ -44,16 +54,20 @@ class HallOfFameCard extends StatefulWidget {
   }) {
     return HallOfFameCard(
       key: Key('HallOfFameCard-${model.id}'),
+      hallOfFameModelId: model.id,
       userNickName: model.userNickName,
       likeCount: model.likeCount,
       accomplishedTopic: model.accomplishedGoal,
       userAuthId: model.userAuthId,
-      accomplishedDate: DateTimeUtils.dateTimeToString(model.createdDateTime, 'yyyy-MM-dd'),
+      accomplishedDate:
+          DateTimeUtils.dateTimeToString(model.createdDateTime, 'yyyy-MM-dd'),
+      isWrittenByMe: model.isWrittenByMe,
+      isHitGoodByMe: model.isHitGoodByMe,
     );
   }
 }
 
-class _HallOfFameCardState extends State<HallOfFameCard>
+class _HallOfFameCardState extends ConsumerState<HallOfFameCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -90,20 +104,23 @@ class _HallOfFameCardState extends State<HallOfFameCard>
     _controller.repeat(reverse: true); // 아이콘 클릭 시 반복적으로 회전
     Future.delayed(Duration(milliseconds: 1000), () {
       _controller.stop();
-      _controller.reset();// 일정 시간이 지난 후 회전을 멈춤
+      _controller.reset(); // 일정 시간이 지난 후 회전을 멈춤
     });
 
-    setState(() {
-      _iconColor = _iconColor == Colors.red ? Colors.grey : Colors.red; // 클릭할 때 아이콘 색상을 파란색으로 변경
+    Future.delayed(Duration(seconds: 1), () {
+      final parentWidget = context.findAncestorStateOfType<
+          HallOfFameScreenState>();
+      parentWidget!.actionToDoWhenHallOfFameHitGoodIconWasPressed(widget.hallOfFameModelId);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     String dispalyedUserAuthId =
-    widget.userAuthId == null ? '' : '(${widget.userAuthId})';
+        widget.userAuthId == null ? '' : '(${widget.userAuthId})';
     String displayedAccomplishedTopic =
-    widget.accomplishedTopic == null ? '' : widget.accomplishedTopic!;
+        widget.accomplishedTopic == null ? '' : widget.accomplishedTopic!;
+    _iconColor = widget.isHitGoodByMe ? Colors.red : Colors.grey;
 
     Text _cardText = Text(
       _accomplishmentComment(dispalyedUserAuthId, displayedAccomplishedTopic),
@@ -165,25 +182,44 @@ class _HallOfFameCardState extends State<HallOfFameCard>
               height: 61,
               child: Padding(
                 padding: EdgeInsets.only(right: 8),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: _onIconTapped,
-                      child: AnimatedBuilder(
-                        animation: _animation,
-                        builder: (context, child) {
-                          return Transform.rotate(
-                            angle: _animation.value,
-                            child: child,
-                          );
-                        },
-                        child: Icon(Icons.favorite_border_outlined,
-                            color: _iconColor),
-                      ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        GestureDetector(
+                          onTap: _onIconTapped,
+                          child: AnimatedBuilder(
+                            animation: _animation,
+                            builder: (context, child) {
+                              return Transform.rotate(
+                                angle: _animation.value,
+                                child: child,
+                              );
+                            },
+                            child: Icon(Icons.favorite_border_outlined,
+                                color: _iconColor),
+                          ),
+                        ),
+                        SizedBox(width: 4),
+                        Expanded(child: Text(widget.likeCount.toString())),
+                      ],
                     ),
-                    SizedBox(width: 4),
-                    Expanded(child: Text(widget.likeCount.toString())),
+                    widget.isWrittenByMe
+                        ? Flexible(
+                            child: IconButton(
+                              icon: Icon(Icons.delete_forever_outlined),
+                              onPressed: () async {
+                                final parentWidget =
+                                    context.findAncestorStateOfType<
+                                        HallOfFameScreenState>();
+                                parentWidget!
+                                    .actionToDoWhenHallOfFameDeleteIconWasPressed(widget.hallOfFameModelId);
+                              },
+                            ),
+                          )
+                        : Container(),
                   ],
                 ),
               ),
@@ -194,13 +230,12 @@ class _HallOfFameCardState extends State<HallOfFameCard>
     );
   }
 
-  String _accomplishmentComment(String dispalyedUserAuthId, String displayedAccomplishedTopic) {
+  String _accomplishmentComment(
+      String dispalyedUserAuthId, String displayedAccomplishedTopic) {
     if (dotenv.get(LANGUAGE) == 'KO') {
-      return '${widget.userNickName}${dispalyedUserAuthId}님이 ${widget
-          .accomplishedDate}에 ${displayedAccomplishedTopic} 목표를 달성하셨습니다';
+      return '${widget.userNickName}${dispalyedUserAuthId}님이 ${widget.accomplishedDate}에 ${displayedAccomplishedTopic} 목표를 달성하셨습니다';
     } else if (dotenv.get(LANGUAGE) == 'EN') {
-      return '${widget.userNickName}${dispalyedUserAuthId} has achieved the ${displayedAccomplishedTopic} goal on ${widget
-          .accomplishedDate}';
+      return '${widget.userNickName}${dispalyedUserAuthId} has achieved the ${displayedAccomplishedTopic} goal on ${widget.accomplishedDate}';
     } else {
       throw Exception();
     }

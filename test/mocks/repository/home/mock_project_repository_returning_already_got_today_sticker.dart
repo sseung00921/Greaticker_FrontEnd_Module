@@ -11,24 +11,34 @@ import 'package:greaticker/home/model/project_model.dart';
 import 'package:greaticker/home/model/request_dto/project_request_dto.dart';
 import 'package:greaticker/home/repository/project_repository.dart';
 
-final MockProjectRepositoryReturningAlreadyGotTodayStickerProvider = Provider<MockProjectRepositoryReturningAlreadyGotTodaySticker>(
-      (ref) {
+final MockProjectRepositoryReturningAlreadyGotTodayStickerProvider =
+    Provider<MockProjectRepositoryReturningAlreadyGotTodaySticker>(
+  (ref) {
     final dio = ref.watch(dioProvider);
 
-    return MockProjectRepositoryReturningAlreadyGotTodaySticker(dio, baseUrl: 'http://$ip/home');
+    return MockProjectRepositoryReturningAlreadyGotTodaySticker(dio,
+        baseUrl: 'http://$ip/home');
   },
 );
 
-class MockProjectRepositoryReturningAlreadyGotTodaySticker extends ProjectRepositoryBase {
-  MockProjectRepositoryReturningAlreadyGotTodaySticker(Dio dio, {required String baseUrl});
+class MockProjectRepositoryReturningAlreadyGotTodaySticker
+    extends ProjectRepositoryBase {
+  MockProjectRepositoryReturningAlreadyGotTodaySticker(Dio dio,
+      {required String baseUrl});
 
   ProjectModel mockInProgressStateData = ProjectModel(
       projectName: "앱 만들기",
       projectStateKind: ProjectStateKind.IN_PROGRESS,
       startDay: DateTime.now().subtract(Duration(days: 29)),
       dayInARow: 28);
-  GotStickerModel mockGotStickerData = GotStickerModel(id: "1", isAlreadyGotTodaySticker: true);
-  ApiResponse<String> mockAipResponseData = ApiResponse<String>(isSuccess: true, isError: false);
+  ApiResponse<GotStickerModel> mockGotStickerData =
+      ApiResponse<GotStickerModel>(
+    isSuccess: true,
+    isError: false,
+    data: GotStickerModel(id: "1", isAlreadyGotTodaySticker: true),
+  );
+  ApiResponse<String> mockAipResponseData =
+      ApiResponse<String>(isSuccess: true, isError: false);
 
   @override
   Future<ProjectModel> getProjectModel() async {
@@ -39,7 +49,7 @@ class MockProjectRepositoryReturningAlreadyGotTodaySticker extends ProjectReposi
   }
 
   @override
-  Future<GotStickerModel> getNewSticker() async {
+  Future<ApiResponse<GotStickerModel>> getNewSticker() async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }

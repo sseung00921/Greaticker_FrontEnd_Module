@@ -27,7 +27,7 @@ class MockProjectRepository extends ProjectRepositoryBase {
       projectStateKind: ProjectStateKind.IN_PROGRESS,
       startDay: DateTime.now().subtract(Duration(days: 29)),
       dayInARow: 28);
-  GotStickerModel mockGotStickerData = GotStickerModel(id: "1", isAlreadyGotTodaySticker: false);
+  ApiResponse<GotStickerModel> mockGotStickerData = ApiResponse<GotStickerModel>(isSuccess: true, isError: false, data: GotStickerModel(id: "1", isAlreadyGotTodaySticker: false));
   ApiResponse<String> mockAipResponseData = ApiResponse<String>(isSuccess: true, isError: false);
 
   @override
@@ -39,7 +39,7 @@ class MockProjectRepository extends ProjectRepositoryBase {
   }
 
   @override
-  Future<GotStickerModel> getNewSticker() async {
+  Future<ApiResponse<GotStickerModel>> getNewSticker() async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }

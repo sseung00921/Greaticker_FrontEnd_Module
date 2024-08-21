@@ -18,6 +18,7 @@ class HallOfFameModel extends BaseModel implements IModelWithId   {
   final int likeCount;
   // 내가 작성한 명전 카드인지 여부
   final bool isWrittenByMe;
+  final bool isHitGoodByMe;
 
   HallOfFameModel({
     required this.id,
@@ -26,6 +27,7 @@ class HallOfFameModel extends BaseModel implements IModelWithId   {
     this.userAuthId,
     required this.likeCount,
     required this.isWrittenByMe,
+    required this.isHitGoodByMe,
     required super.createdDateTime,
     required super.updatedDateTime,
   });

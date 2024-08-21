@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:greaticker/common/component/modal/image_with_confetti_animation_modal.dart';
 import 'package:greaticker/common/component/modal/one_text_input_modal.dart';
 import 'package:greaticker/common/component/modal/only_close_modal.dart';
+import 'package:greaticker/common/component/modal/select_one_between_two_modal.dart';
 import 'package:greaticker/common/component/modal/yes_no_modal.dart';
 import 'package:greaticker/common/component/text_style.dart';
 import 'package:greaticker/common/constants/language/button.dart';
@@ -14,6 +15,8 @@ import 'package:greaticker/common/constants/language/stickers.dart';
 import 'package:greaticker/common/constants/params.dart';
 import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/utils/url_builder_utils.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_request_dto.dart';
+import 'package:greaticker/hall_of_fame/provider/hall_of_fame_api_response_provider.dart';
 import 'package:greaticker/home/constants/project.dart';
 import 'package:greaticker/home/model/enum/project_state_kind.dart';
 import 'package:greaticker/home/model/got_sticker_model.dart';
@@ -26,10 +29,10 @@ import 'package:greaticker/home/utils/got_sticker_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomeView<T> extends ConsumerStatefulWidget {
-  final StateNotifierProvider<ProjectStateNotifier,
-      ProjectModelBase> projectProvider;
-  final StateNotifierProvider<GotStickerStateNotifier,
-      GotStickerModelBase> gotStickerProvider;
+  final StateNotifierProvider<ProjectStateNotifier, ProjectModelBase>
+      projectProvider;
+  final StateNotifierProvider<GotStickerStateNotifier, ApiResponseBase>
+      gotStickerProvider;
   final String? showPopUp;
 
   const HomeView({
@@ -87,7 +90,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
         showOnlyCloseDialog(
             context: context,
             comment:
-            COMMENT_DICT[dotenv.get(LANGUAGE)]!['reset_project_notice']!);
+                COMMENT_DICT[dotenv.get(LANGUAGE)]!['reset_project_notice']!);
       });
     }
 
@@ -97,9 +100,9 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
         showOnlyCloseDialog(
           context: context,
           comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-          widget.showPopUp == LOG_OUT_COMPLETE
-              ? 'log_out_complete'
-              : 'delete_account_complete']!,
+              widget.showPopUp == LOG_OUT_COMPLETE
+                  ? 'log_out_complete'
+                  : 'delete_account_complete']!,
         );
         context.go("/home");
       });
@@ -132,7 +135,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
                       _isCalendarVisible
                           ? BUTTON_DICT[dotenv.get(LANGUAGE)]!['hide_calendar']!
                           : BUTTON_DICT[dotenv.get(LANGUAGE)]![
-                      'show_calendar']!,
+                              'show_calendar']!,
                       style: YeongdeokSeaTextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.w500),
                     ),
@@ -142,9 +145,9 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
               // 달력 위젯, 조건에 따라 보여주기/숨기기
               _isCalendarVisible
                   ? _TableClanderForHomeView(
-                startDay: projectState.startDay!,
-                dayInARow: projectState.dayInARow!,
-              )
+                      startDay: projectState.startDay!,
+                      dayInARow: projectState.dayInARow!,
+                    )
                   : Container(),
               Text(
                 projectState.projectName ??
@@ -170,8 +173,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
                     ),
                     SizedBox(width: 10),
                     Text(
-                      '${(projectState.dayInARow! / COMPLETE_DAY_CNT * 30)
-                          .round()}/${COMPLETE_DAY_CNT}',
+                      '${(projectState.dayInARow! / COMPLETE_DAY_CNT * 30).round()}/${COMPLETE_DAY_CNT}',
                       style: TextStyle(fontSize: 16),
                     ),
                   ],
@@ -240,30 +242,42 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
   ElevatedButton _buildGotStickerButton(ProjectModel projectState) {
     return ElevatedButton(
       onPressed: () async {
-        await ref.read(widget.gotStickerProvider.notifier).getGotStickerModel();
+        final responseState = await ref
+            .read(widget.gotStickerProvider.notifier)
+            .getGotStickerModel(context: context);
 
-        GotStickerModelBase gotStickerState = ref.read(
-            widget.gotStickerProvider);
-        gotStickerState as GotStickerModel;
-
-        if (gotStickerState.isAlreadyGotTodaySticker == false) {
-          await showImageWithConfettiAnimationDialog(
+        if (responseState is ApiResponseError ||
+            responseState is ApiResponse && responseState.isError) {
+          showOnlyCloseDialog(
             context: context,
-            comment: GotStickerUtils.gotStickerComment(projectState,
-                STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(
-                    LANGUAGE)]![gotStickerState.id]!['name']!),
-            imagePath: UrlBuilderUtils.imageUrlBuilderByStickerId(
-                gotStickerState.id),
+            comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
           );
-          plusOneDayInARow(projectState);
+        } else if (responseState is ApiResponse && responseState.isSuccess) {
+          GotStickerModelBase gotStickerState =
+              responseState.data;
+          gotStickerState as GotStickerModel;
 
-          if (projectState.dayInARow == COMPLETE_DAY_CNT - 1) {
-            updateProjectStateAsCompleted(projectState);
+          if (gotStickerState.isAlreadyGotTodaySticker == false) {
+            await showImageWithConfettiAnimationDialog(
+              context: context,
+              comment: GotStickerUtils.gotStickerComment(
+                  projectState,
+                  STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![
+                  gotStickerState.id]!['name']!),
+              imagePath:
+              UrlBuilderUtils.imageUrlBuilderByStickerId(gotStickerState.id),
+            );
+            plusOneDayInARow(projectState);
+
+            if (projectState.dayInARow == COMPLETE_DAY_CNT - 1) {
+              updateProjectStateAsCompleted(projectState);
+            }
+          } else {
+            await showOnlyCloseDialog(
+                context: context,
+                comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                'today_sticker_already_got']!);
           }
-        } else {
-          await showOnlyCloseDialog(context: context,
-              comment: COMMENT_DICT[dotenv.get(
-                  LANGUAGE)]!['today_sticker_already_got']!);
         }
       },
       child: Text(
@@ -281,22 +295,21 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
 
   void updateProjectStateAsCompleted(ProjectModel projectState) {
     ref.read(widget.projectProvider.notifier).updateProjectState(
-      projectState.copyWith(
-          projectStateKind: ProjectStateKind.COMPLETED,
-          dayInARow: 30),
-    );
+          projectState.copyWith(
+              projectStateKind: ProjectStateKind.COMPLETED, dayInARow: 30),
+        );
     showOnlyCloseDialog(
         context: context,
-        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-        'complete_project_notice']!);
+        comment:
+            COMMENT_DICT[dotenv.get(LANGUAGE)]!['complete_project_notice']!);
   }
 
   void plusOneDayInARow(ProjectModel projectState) {
     ref
         .read(widget.projectProvider.notifier)
         .updateProjectState(projectState.copyWith(
-      dayInARow: projectState.dayInARow! + 1,
-    ));
+          dayInARow: projectState.dayInARow! + 1,
+        ));
   }
 
   ElevatedButton _buildCreateProjectButton(ProjectModel projectState) {
@@ -306,7 +319,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
           showYesNoDialog(
             context: context,
             comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-            'create_project_sticker_loss_notice']!,
+                'create_project_sticker_loss_notice']!,
             onYes: () async {
               showCreateProjectTextInputDialog(projectState);
             },
@@ -330,75 +343,70 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
 
   Future<void> showCreateProjectTextInputDialog(ProjectModel projectState) {
     return showOneTextInputDialog(
-        context: context,
-        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['create_project_try']!,
-        onSubmitted: (s) async {
-          ProjectRequestDto projectRequestDto = ProjectRequestDto(
-              prevProjectState: ProjectStateKind.NO_EXIST,
-              nextProjectState: ProjectStateKind.IN_PROGRESS);
-          await ref
-              .read(projectApiResponseProvider.notifier)
-              .updateProjectState(projectRequestDto: projectRequestDto);
+      context: context,
+      comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['create_project_try']!,
+      onSubmitted: (s) async {
+        ProjectRequestDto projectRequestDto = ProjectRequestDto(
+            prevProjectState: ProjectStateKind.NO_EXIST,
+            nextProjectState: ProjectStateKind.IN_PROGRESS);
+        final responseState = await ref
+            .read(projectApiResponseProvider.notifier)
+            .updateProjectState(
+                projectRequestDto: projectRequestDto, context: context);
+        if (responseState is ApiResponseError ||
+            responseState is ApiResponse && responseState.isError) {
+          showOnlyCloseDialog(
+            context: context,
+            comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+          );
+        } else if (responseState is ApiResponse && responseState.isSuccess) {
           //아래는 임시적 프론트 엔드 테스트를 위한 코드일 뿐 백엔드까지 구현된 이후 아래 코드들은 반드시 삭제되야 한다. ToBeDeleted"
           ref.read(widget.projectProvider.notifier).updateProjectState(
-            projectState.copyWith(
-                projectStateKind: ProjectStateKind.IN_PROGRESS,
-                dayInARow: 28),
-          );
-        },
-        afterModal: () {
-          ApiResponseBase responseState = ref.read(projectApiResponseProvider);
-          if (responseState is ApiResponseError ||
-              responseState is ApiResponse && responseState.isError) {
-            showOnlyCloseDialog(
-              context: context,
-              comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
-            );
-          } else {
-            showOnlyCloseDialog(
-                context: context,
-                comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                'create_project_complete']!);
-          }
-        });
+                projectState.copyWith(
+                    projectStateKind: ProjectStateKind.IN_PROGRESS,
+                    dayInARow: 28),
+              );
+          showOnlyCloseDialog(context: context, comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['create_project_complete']!,);
+        }
+      },
+    );
   }
 
   ElevatedButton _buildDeleteProjectButton(ProjectModel projectState) {
     return ElevatedButton(
-      onPressed: () {
-        showYesNoDialog(
+      onPressed: () async {
+        ProjectRequestDto projectRequestDto = ProjectRequestDto(
+            prevProjectState: ProjectStateKind.IN_PROGRESS,
+            nextProjectState: ProjectStateKind.NO_EXIST);
+        final responseState = await ref
+            .read(projectApiResponseProvider.notifier)
+            .updateProjectState(
+                projectRequestDto: projectRequestDto, context: context);
+        if (responseState is ApiResponseError ||
+            responseState is ApiResponse && responseState.isError) {
+          showOnlyCloseDialog(
             context: context,
-            comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['delete_project_try']!,
-            onYes: () async {
-              ProjectRequestDto projectRequestDto = ProjectRequestDto(
-                  prevProjectState: ProjectStateKind.IN_PROGRESS,
-                  nextProjectState: ProjectStateKind.NO_EXIST);
-              await ref
-                  .read(projectApiResponseProvider.notifier)
-                  .updateProjectState(projectRequestDto: projectRequestDto);
-              //아래는 임시적 프론트 엔드 테스트를 위한 코드일 뿐 백엔드까지 구현된 이후 아래 코드들은 반드시 삭제되야 한다. ToBeDeleted"
-              ref.read(widget.projectProvider.notifier).updateProjectState(
-                projectState.copyWith(
-                    projectStateKind: ProjectStateKind.NO_EXIST),
-              );
-            },
-            afterModal: () {
-              ApiResponseBase responseState =
-              ref.read(projectApiResponseProvider);
-              if (responseState is ApiResponseError ||
-                  responseState is ApiResponse && responseState.isError) {
-                showOnlyCloseDialog(
-                  context: context,
-                  comment:
-                  COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
-                );
-              } else {
+            comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+          );
+        } else if (responseState is ApiResponse && responseState.isSuccess) {
+          showYesNoDialog(
+              context: context,
+              comment:
+                  COMMENT_DICT[dotenv.get(LANGUAGE)]!['delete_project_try']!,
+              onYes: () async {
+                //아래는 임시적 프론트 엔드 테스트를 위한 코드일 뿐 백엔드까지 구현된 이후 아래 코드들은 반드시 삭제되야 한다. ToBeDeleted"
+                ref.read(widget.projectProvider.notifier).updateProjectState(
+                      projectState.copyWith(
+                          projectStateKind: ProjectStateKind.NO_EXIST),
+                    );
+              },
+              afterModal: () {
                 showOnlyCloseDialog(
                     context: context,
                     comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                    'delete_project_complete']!);
-              }
-            });
+                        'delete_project_complete']!);
+              });
+        }
       },
       child: Text(
         BUTTON_DICT[dotenv.get(LANGUAGE)]!['delete_project']!,
@@ -413,36 +421,59 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
     );
   }
 
-  ElevatedButton _buildRegisterHallOfFameButton(ProjectModel projectState) {
-    return ElevatedButton(
-      onPressed: () {
-        if (projectState.projectStateKind == ProjectStateKind.COMPLETED) {
-          showYesNoDialog(
+  Widget _buildRegisterHallOfFameButton(ProjectModel projectState) {
+    return SizedBox(
+      width: 200,
+      child: ElevatedButton(
+        onPressed: () {
+          showSelectOneBetweenTwoModal(
             context: context,
-            comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-            'create_project_sticker_loss_notice']!,
-            onYes: () async {
-              showCreateProjectTextInputDialog(projectState);
+            option1: COMMENT_DICT[dotenv.get(LANGUAGE)]!['only_nickname']!,
+            option2: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                'both_nickname_and_auth_id']!,
+            onNext: () async {
+              HallOfFameRequestDto hallOfFameRequestDto =
+                  HallOfFameRequestDto(projectId: "1");
+              final responseState = await ref
+                  .read(hallOfFameApiResponseProvider.notifier)
+                  .registerHallOfFame(
+                      hallOfFameRequestDto: hallOfFameRequestDto,
+                      context: context);
+              if (responseState is ApiResponseError ||
+                  responseState is ApiResponse && responseState.isError) {
+                showOnlyCloseDialog(
+                  context: context,
+                  comment:
+                      COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+                );
+              } else if (responseState is ApiResponse &&
+                  responseState.isSuccess) {
+                showOnlyCloseDialog(
+                  context: context,
+                  comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                      'register_hall_of_fame_complete']!,
+                );
+                ref.read(widget.projectProvider.notifier).updateProjectState(
+                      projectState.copyWith(
+                          projectStateKind: ProjectStateKind.COMPLETED,
+                          dayInARow: 30),
+                    );
+              }
+              ;
             },
           );
-        } else if (projectState.projectStateKind == ProjectStateKind.NO_EXIST) {
-          showCreateProjectTextInputDialog(projectState);
-        }
-      },
-      child: Text(
-        BUTTON_DICT[dotenv.get(LANGUAGE)]!['register_hall_of_fame']!,
-        style: YeongdeokSeaTextStyle(
-          fontSize: 18.0,
-          fontWeight: FontWeight.w500,
+        },
+        child: Text(
+          textAlign: TextAlign.center,
+          BUTTON_DICT[dotenv.get(LANGUAGE)]!['register_hall_of_fame']!,
+          style: YeongdeokSeaTextStyle(
+            fontSize: 18.0,
+            fontWeight: FontWeight.w500,
+          ),
         ),
-      ),
-      style: ElevatedButton.styleFrom(
-        fixedSize: Size(240, 30), // 너비 200, 높이 60
       ),
     );
   }
-
-
 }
 
 class _TableClanderForHomeView extends StatelessWidget {

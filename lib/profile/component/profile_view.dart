@@ -111,7 +111,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                     controller: _nicknameController,
                     decoration: InputDecoration(
                       hintText: profileState.userNickname,
-                    ),// 텍스트 인풋 비활성화
+                    ), // 텍스트 인풋 비활성화
                   ),
                 ),
               ),
@@ -123,39 +123,38 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                   onPressed: () async {
                     String newNickname = _nicknameController.text;
 
-                    await ref
+                    final responseState = await ref
                         .read(profileApiResponseProvider.notifier)
                         .changeNickname(
-                          changeNicknameRequestDto:
-                              ChangeNicknameRequestDto(newNickname: newNickname),
+                          changeNicknameRequestDto: ChangeNicknameRequestDto(
+                              newNickname: newNickname),
+                          context: context,
                         );
 
-                    ApiResponseBase responseState =
-                    ref.read(profileApiResponseProvider);
                     if (responseState is ApiResponseError ||
                         responseState is ApiResponse && responseState.isError) {
                       showOnlyCloseDialog(
                         context: context,
-                        comment:
-                        COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+                        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                            'network_error']!,
                       );
-                    } else {
+                    } else if (responseState is ApiResponse &&
+                        responseState.isSuccess) {
                       responseState as ApiResponse<String>;
                       if (responseState.data != DUPLICATED_NICKNAME) {
                         showOnlyCloseDialog(
                           context: context,
                           comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                          'change_nickname_completed']!,
+                              'change_nickname_completed']!,
                         );
                       } else if (responseState.data == DUPLICATED_NICKNAME) {
                         showOnlyCloseDialog(
                           context: context,
                           comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                          'duplicated_nickname']!,
+                              'duplicated_nickname']!,
                         );
                       }
                     }
-
                   },
                   child: Text(
                     BUTTON_DICT[dotenv.get(LANGUAGE)]!['change_nickname']!,
@@ -172,9 +171,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             width: 200,
             child: ElevatedButton(
               onPressed: () async {
-                await ref.read(profileApiResponseProvider.notifier).logOut();
-                ApiResponseBase responseState =
-                    ref.read(profileApiResponseProvider);
+                final responseState = await ref.read(profileApiResponseProvider.notifier).logOut(context: context);
                 if (responseState is ApiResponseError ||
                     responseState is ApiResponse && responseState.isError) {
                   showOnlyCloseDialog(
@@ -182,7 +179,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                     comment:
                         COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
                   );
-                } else {
+                } else if (responseState is ApiResponse &&
+                    responseState.isSuccess) {
                   context.go("/home?${SHOW_POP_UP}=${LOG_OUT_COMPLETE}");
                 }
               },
@@ -204,20 +202,21 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                   comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
                       'delete_account_try']!,
                   onYes: () async {
-                    await ref
+                    final responseState = await ref
                         .read(profileApiResponseProvider.notifier)
-                        .deleteAccount();
-                    ApiResponseBase responseState = ref.read(profileApiResponseProvider);
+                        .deleteAccount(context: context);
                     if (responseState is ApiResponseError ||
                         responseState is ApiResponse && responseState.isError) {
                       showOnlyCloseDialog(
                         context: context,
-                        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+                        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                            'network_error']!,
                       );
-                    } else {
-                      context.go("/home?${SHOW_POP_UP}=${DELETE_ACCOUNT_COMPLETE}");
+                    } else if (responseState is ApiResponse &&
+                        responseState.isSuccess) {
+                      context.go(
+                          "/home?${SHOW_POP_UP}=${DELETE_ACCOUNT_COMPLETE}");
                     }
-
                   },
                 );
               },

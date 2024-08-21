@@ -4,7 +4,8 @@ import 'package:greaticker/common/constants/data.dart';
 import 'package:greaticker/common/dio/dio.dart';
 import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/diary/model/diary_model.dart';
-import 'package:greaticker/diary/model/request_dto/hit_favorite_to_sticker_request_dto.dart';
+import 'package:greaticker/diary/model/request_dto/diary_model_request_dto.dart';
+import 'package:greaticker/diary/model/request_dto/hit_favorite_to_sticker_reqeust_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'diary_repository.g.dart';
@@ -27,14 +28,21 @@ abstract class DiaryRepository extends DiaryRepositoryBase{
   @override
   Future<DiaryModel> getDiaryModel();
 
-  @POST('/hit-favorite-sticker')
+  @POST('/update')
   @Headers({'accessToken': 'true'})
   @override
-  Future<ApiResponse<String>> hitFavoriteSticker({required HitFavoriteToStickerRequestDto hitFavoriteToStickerRequestDto});
+  Future<ApiResponse<String>> updateDiaryModel({required DiaryModelRequestDto diaryModelRequestDto});
+
+  @POST('/hit-favorite')
+  @Headers({'accessToken': 'true'})
+  @override
+  Future<ApiResponse<String>> hitFavoriteToSticker({required HitFavoriteToStickerReqeustDto hitFavoriteToStickerReqeustDto});
+
 }
 
 abstract class DiaryRepositoryBase {
 
   Future<DiaryModel> getDiaryModel();
-  Future<ApiResponse<String>> hitFavoriteSticker({required HitFavoriteToStickerRequestDto hitFavoriteToStickerRequestDto});
+  Future<ApiResponse<String>> updateDiaryModel({required DiaryModelRequestDto diaryModelRequestDto});
+  Future<ApiResponse<String>> hitFavoriteToSticker({required HitFavoriteToStickerReqeustDto hitFavoriteToStickerReqeustDto});
 }
