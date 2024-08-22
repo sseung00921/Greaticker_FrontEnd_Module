@@ -12,8 +12,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:greaticker/common/constants/language/button.dart';
+import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
+import 'package:greaticker/hall_of_fame/component/hall_of_fame_card.dart';
+import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
 import 'package:greaticker/hall_of_fame/view/hall_of_fame_screen.dart';
 
 import '../../mocks/provider/hall_of_fame/mock_hall_of_fame_provider.dart';
@@ -197,5 +200,63 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(AlertDialog), findsOneWidget);
+  });
+
+  testWidgets('Show the delete button for items I created in the Hall of Fame', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(
+          home: HallOfFameScreen(
+            key: HALL_OF_FAME_SCREEN_KEY,
+            provider: mockHallOfFameProvider,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(Key("HallOfFameCardDeleteButton-3")), findsNothing);
+    expect(find.byKey(Key("HallOfFameCardDeleteButton-4")), findsOneWidget);
+  });
+
+  testWidgets('Show a red heart for items I hit good and a gray heart for items I did not hit good in the Hall of Fame', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(
+          home: HallOfFameScreen(
+            key: HALL_OF_FAME_SCREEN_KEY,
+            provider: mockHallOfFameProvider,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    Icon IconInCardHitGoodByMe = tester.widget(find.byKey(Key("HallOfFameCardHitGoodIcon-3")));
+    Icon IconInCardNotHitGoodByMe = tester.widget(find.byKey(Key("HallOfFameCardHitGoodIcon-4")));
+
+    expect(IconInCardHitGoodByMe.color, Colors.red);
+    expect(IconInCardNotHitGoodByMe.color, Colors.grey);
+  });
+
+  testWidgets('Display a delete confirmation modal when a Hall of Fame card is deleted', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(
+          home: HallOfFameScreen(
+            key: HALL_OF_FAME_SCREEN_KEY,
+            provider: mockHallOfFameProvider,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    IconButton deleteCardButton = tester.widget(find.byKey(Key("HallOfFameCardDeleteButton-4")));
+    await tester.tap(find.byWidget(deleteCardButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.text(COMMENT_DICT[dotenv.get(LANGUAGE)]!['delete_hall_of_fame_complete']!), findsOneWidget);
   });
 }

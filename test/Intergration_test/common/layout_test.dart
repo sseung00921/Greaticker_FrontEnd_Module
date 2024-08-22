@@ -6,13 +6,10 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:greaticker/common/layout/default_layout.dart';
-
 import 'package:greaticker/main.dart';
 
 void main() {

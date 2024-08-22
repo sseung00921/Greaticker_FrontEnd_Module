@@ -21,10 +21,13 @@ import 'package:greaticker/profile/provider/profile_provider.dart';
 class ProfileView extends ConsumerStatefulWidget {
   final StateNotifierProvider<ProfileStateNotifier, ProfileModelBase>
       profileProvider;
+  final StateNotifierProvider<ProfileApiResponseStateNotifier, ApiResponseBase>
+      profileApiResponseProvider;
 
   const ProfileView({
     Key? key,
     required this.profileProvider,
+    required this.profileApiResponseProvider,
   }) : super(key: key);
 
   @override
@@ -124,34 +127,34 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                     String newNickname = _nicknameController.text;
 
                     final responseState = await ref
-                        .read(profileApiResponseProvider.notifier)
+                        .read(widget.profileApiResponseProvider.notifier)
                         .changeNickname(
                           changeNicknameRequestDto: ChangeNicknameRequestDto(
                               newNickname: newNickname),
                           context: context,
                         );
-
                     if (responseState is ApiResponseError ||
                         responseState is ApiResponse && responseState.isError) {
-                      showOnlyCloseDialog(
-                        context: context,
-                        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                            'network_error']!,
-                      );
-                    } else if (responseState is ApiResponse &&
-                        responseState.isSuccess) {
-                      responseState as ApiResponse<String>;
-                      if (responseState.data != DUPLICATED_NICKNAME) {
+                      if (responseState is ApiResponse && responseState.data == DUPLICATED_NICKNAME) {
                         showOnlyCloseDialog(
                           context: context,
                           comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                              'change_nickname_completed']!,
+                          'duplicated_nickname']!,
                         );
-                      } else if (responseState.data == DUPLICATED_NICKNAME) {
+                      } else {
                         showOnlyCloseDialog(
                           context: context,
                           comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                              'duplicated_nickname']!,
+                          'network_error']!,
+                        );
+                      }
+                    } else if (responseState is ApiResponse && responseState.isSuccess) {
+                      responseState as ApiResponse<String>;
+                      if (responseState.isSuccess) {
+                        showOnlyCloseDialog(
+                          context: context,
+                          comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                          'change_nickname_completed']!,
                         );
                       }
                     }

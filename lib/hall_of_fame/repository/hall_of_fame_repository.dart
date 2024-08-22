@@ -14,7 +14,7 @@ import 'package:retrofit/retrofit.dart';
 part 'hall_of_fame_repository.g.dart';
 
 final HallOfFameRepositoryProvider = Provider<HallOfFameRepository>(
-      (ref) {
+  (ref) {
     final dio = ref.watch(dioProvider);
 
     return HallOfFameRepository(dio, baseUrl: 'http://$ip/hall-of-fame');
@@ -23,8 +23,10 @@ final HallOfFameRepositoryProvider = Provider<HallOfFameRepository>(
 
 // http://$ip/product
 @RestApi()
-abstract class HallOfFameRepository implements IBasePaginationRepository<HallOfFameModel> {
-  factory HallOfFameRepository(Dio dio, {String baseUrl}) = _HallOfFameRepository;
+abstract class HallOfFameRepository extends HallOfFameRepositoryBase
+    implements IBasePaginationRepository<HallOfFameModel> {
+  factory HallOfFameRepository(Dio dio, {String baseUrl}) =
+      _HallOfFameRepository;
 
   @GET('/')
   @Headers({'accessToken': 'true'})
@@ -51,3 +53,20 @@ abstract class HallOfFameRepository implements IBasePaginationRepository<HallOfF
   });
 }
 
+abstract class HallOfFameRepositoryBase {
+  Future<CursorPagination<HallOfFameModel>> paginate({
+    PaginationParams paginationParams,
+  });
+
+  Future<ApiResponse<String>> registerHallOfFame({
+    required HallOfFameRequestDto hallOfFameRequestDto,
+  });
+
+  Future<ApiResponse<String>> deleteHallOfFame({
+    required HallOfFameRequestDto hallOfFameRequestDto,
+  });
+
+  Future<ApiResponse<String>> hitGoodToHallOfFame({
+    required HitGoodToProjectRequestDto hitGoodToProjectRequestDto,
+  });
+}

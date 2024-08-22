@@ -40,18 +40,12 @@ class MockProjectRepositoryReturningError extends ProjectRepositoryBase {
 
   @override
   Future<ApiResponse<GotStickerModel>> getNewSticker() async {
-    if (dotenv.get(ENVIRONMENT) == PROD) {
-      await Future.delayed(Duration(seconds: 1));
-    }
-    return mockGotStickerData;
+    throw Exception();
   }
 
   @override
   Future<ApiResponse<String>> updateProjectState(
       {required ProjectRequestDto projectRequestDto}) async {
-    if (dotenv.get(ENVIRONMENT) == PROD) {
-      await Future.delayed(Duration(seconds: 1));
-    }
-    return mockAipResponseData;
+    throw Exception();
   }
 }

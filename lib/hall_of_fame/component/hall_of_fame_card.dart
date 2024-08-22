@@ -17,6 +17,7 @@ import 'package:greaticker/hall_of_fame/view/hall_of_fame_screen.dart';
 class HallOfFameCard extends ConsumerStatefulWidget {
   final Key key;
   final String hallOfFameModelId;
+
   // 유저 닉네임
   final String userNickName;
 
@@ -108,9 +109,10 @@ class _HallOfFameCardState extends ConsumerState<HallOfFameCard>
     });
 
     Future.delayed(Duration(seconds: 1), () {
-      final parentWidget = context.findAncestorStateOfType<
-          HallOfFameScreenState>();
-      parentWidget!.actionToDoWhenHallOfFameHitGoodIconWasPressed(widget.hallOfFameModelId);
+      final parentWidget =
+          context.findAncestorStateOfType<HallOfFameScreenState>();
+      parentWidget!.actionToDoWhenHallOfFameHitGoodIconWasPressed(
+          widget.hallOfFameModelId);
     });
   }
 
@@ -198,8 +200,11 @@ class _HallOfFameCardState extends ConsumerState<HallOfFameCard>
                                 child: child,
                               );
                             },
-                            child: Icon(Icons.favorite_border_outlined,
-                                color: _iconColor),
+                            child: Icon(
+                              key: Key("HallOfFameCardHitGoodIcon-${widget.hallOfFameModelId}"),
+                              Icons.favorite_border_outlined,
+                              color: _iconColor,
+                            ),
                           ),
                         ),
                         SizedBox(width: 4),
@@ -209,13 +214,16 @@ class _HallOfFameCardState extends ConsumerState<HallOfFameCard>
                     widget.isWrittenByMe
                         ? Flexible(
                             child: IconButton(
+                              key: Key(
+                                  "HallOfFameCardDeleteButton-${widget.hallOfFameModelId}"),
                               icon: Icon(Icons.delete_forever_outlined),
                               onPressed: () async {
                                 final parentWidget =
                                     context.findAncestorStateOfType<
                                         HallOfFameScreenState>();
                                 parentWidget!
-                                    .actionToDoWhenHallOfFameDeleteIconWasPressed(widget.hallOfFameModelId);
+                                    .actionToDoWhenHallOfFameDeleteIconWasPressed(
+                                        widget.hallOfFameModelId);
                               },
                             ),
                           )

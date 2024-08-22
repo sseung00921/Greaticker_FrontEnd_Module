@@ -3,15 +3,18 @@ import 'package:greaticker/common/constants/params.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
 import 'package:greaticker/diary/provider/diary_provider.dart';
 import 'package:greaticker/diary/view/diary_screen.dart';
+import 'package:greaticker/hall_of_fame/provider/hall_of_fame_api_response_provider.dart';
 import 'package:greaticker/hall_of_fame/provider/hall_of_fame_provider.dart';
 import 'package:greaticker/hall_of_fame/view/hall_of_fame_screen.dart';
 import 'package:greaticker/history/provider/history_provider.dart';
 import 'package:greaticker/history/view/history_screen.dart';
 import 'package:greaticker/home/provider/got_sticker_provider.dart';
+import 'package:greaticker/home/provider/project_api_response_provider.dart';
 import 'package:greaticker/home/provider/project_provider.dart';
 import 'package:greaticker/home/view/home_screen.dart';
 import 'package:greaticker/popular_chart/provider/popular_chart_provider.dart';
 import 'package:greaticker/popular_chart/view/popular_chart_screen.dart';
+import 'package:greaticker/profile/provider/profile_api_response_provider.dart';
 import 'package:greaticker/profile/provider/profile_provider.dart';
 import 'package:greaticker/profile/view/profile_screen.dart';
 
@@ -23,7 +26,9 @@ final router = GoRouter(initialLocation: '/home', routes: [
         child: HomeScreen(
           key: HOME_SCREEN_KEY,
           projectProvider: projectProvider,
+          projectApiResponseProvider: projectApiResponseProvider,
           gotStickerProvider: gotStickerProvider,
+          hallOfFameApiResponseProvider: hallOfFameApiResponseProvider,
           showPopUp: state.queryParameters[SHOW_POP_UP],
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -99,7 +104,8 @@ final router = GoRouter(initialLocation: '/home', routes: [
     pageBuilder: (_, state) => CustomTransitionPage(
         child: ProfileScreen(
           key: PROFILE_SCREEN_KEY,
-          provider: profileProvider,
+          profileProvider: profileProvider,
+          profileApiResponseProvider: profileApiResponseProvider,
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child; // 애니메이션 없이 바로 전환

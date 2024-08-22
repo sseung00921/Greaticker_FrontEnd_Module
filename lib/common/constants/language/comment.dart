@@ -27,6 +27,7 @@ const COMMENT_DICT= {
     "register_hall_of_fame_complete" : "명예의 전당에 등록이 완료되었습니다.",
     "delete_hall_of_fame_complete" : "삭제가 완료되었습니다.",
     //"diary_sticker_order_update_try" : "변경된 스티커 순서를 저장하시겠습니까?",
+    "duplicated_hall_of_fame" : "해당 목표를 이미 명예의 전당에 등록하셨습니다.",
   },
   "EN" : {
     "network_error": "Failed to communicate with the server.",
@@ -54,5 +55,6 @@ const COMMENT_DICT= {
     "register_hall_of_fame_complete" : "Registration in the Hall of Fame has been completed.",
     "delete_hall_of_fame_complete" : "Deletion has been completed.",
     //"diary_sticker_order_update_try" : "Would you like to save the updated sticker order?",
+    "duplicated_hall_of_fame" : "The goal has already been registered in the Hall of Fame.ㅂ",
   }
 };

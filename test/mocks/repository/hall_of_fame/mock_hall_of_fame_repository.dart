@@ -1,12 +1,17 @@
 import 'package:dio/dio.dart' hide Headers;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/data.dart';
+import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/dio/dio.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/model/pagination_params.dart';
 import 'package:greaticker/common/repository/base_pagination_repository.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
-
+import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hit_good_to_project_request_dto.dart';
+import 'package:greaticker/hall_of_fame/repository/hall_of_fame_repository.dart';
 
 
 final MockHallOfFameRepositoryProvider = Provider<MockHallOfFameRepository>(
@@ -17,8 +22,9 @@ final MockHallOfFameRepositoryProvider = Provider<MockHallOfFameRepository>(
   },
 );
 
-class MockHallOfFameRepository implements IBasePaginationRepository<HallOfFameModel> {
+class MockHallOfFameRepository extends HallOfFameRepositoryBase implements IBasePaginationRepository<HallOfFameModel> {
   MockHallOfFameRepository(Dio dio, {required String baseUrl});
+
 
   List<HallOfFameModel> mockData = List<HallOfFameModel>.generate(100, (index) {
     if (index == 3 || index == 6) {
@@ -62,6 +68,10 @@ class MockHallOfFameRepository implements IBasePaginationRepository<HallOfFameMo
 
 
   Future<CursorPagination<HallOfFameModel>> paginate ({PaginationParams? paginationParams = const PaginationParams()}) async {
+    if (dotenv.get(ENVIRONMENT) == PROD) {
+      await Future.delayed(Duration(seconds: 1));
+    }
+
     CursorPaginationMeta mockMeta;
     if (paginationParams!.after == null || int.parse(paginationParams.after!) < 90) {
       mockMeta = CursorPaginationMeta(count: 10, hasMore: true);
@@ -70,17 +80,45 @@ class MockHallOfFameRepository implements IBasePaginationRepository<HallOfFameMo
     }
 
     List<HallOfFameModel> slicedMockData;
-    if (paginationParams.after == null) {
+    if (paginationParams!.after == null) {
       slicedMockData = mockData.sublist(0, 10);
     } else {
       slicedMockData = mockData.sublist(
           int.parse(paginationParams.after!),
           int.parse(paginationParams.after!) + 10);
     }
-
     return CursorPagination(meta: mockMeta, data: slicedMockData);
   }
 
+  Future<ApiResponse<String>> registerHallOfFame({
+    required HallOfFameRequestDto hallOfFameRequestDto,
+  }) async {
+    if (dotenv.get(ENVIRONMENT) == PROD) {
+      await Future.delayed(Duration(seconds: 1));
+    }
+
+    return ApiResponse(isSuccess: true, isError: false);
+  }
+
+  Future<ApiResponse<String>> deleteHallOfFame({
+    required HallOfFameRequestDto hallOfFameRequestDto,
+  }) async {
+    if (dotenv.get(ENVIRONMENT) == PROD) {
+      await Future.delayed(Duration(seconds: 1));
+    }
+
+    return ApiResponse(isSuccess: true, isError: false);
+  }
+
+  Future<ApiResponse<String>> hitGoodToHallOfFame({
+    required HitGoodToProjectRequestDto hitGoodToProjectRequestDto,
+  }) async {
+    if (dotenv.get(ENVIRONMENT) == PROD) {
+      await Future.delayed(Duration(seconds: 1));
+    }
+
+    return ApiResponse(isSuccess: true, isError: false);
+  }
 }
 
 

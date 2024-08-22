@@ -8,6 +8,7 @@ import 'package:greaticker/common/component/modal/only_close_modal.dart';
 import 'package:greaticker/common/component/modal/select_one_between_two_modal.dart';
 import 'package:greaticker/common/component/modal/yes_no_modal.dart';
 import 'package:greaticker/common/component/text_style.dart';
+import 'package:greaticker/common/constants/error_message/error_message.dart';
 import 'package:greaticker/common/constants/language/button.dart';
 import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
@@ -31,14 +32,20 @@ import 'package:table_calendar/table_calendar.dart';
 class HomeView<T> extends ConsumerStatefulWidget {
   final StateNotifierProvider<ProjectStateNotifier, ProjectModelBase>
       projectProvider;
+  final StateNotifierProvider<ProjectApiResponseStateNotifier, ApiResponseBase>
+      projectApiResponseProvider;
   final StateNotifierProvider<GotStickerStateNotifier, ApiResponseBase>
       gotStickerProvider;
+  final StateNotifierProvider<HallOfFameApiResponseStateNotifier,
+      ApiResponseBase> hallOfFameApiResponseProvider;
   final String? showPopUp;
 
   const HomeView({
     Key? key,
     required this.projectProvider,
     required this.gotStickerProvider,
+    required this.projectApiResponseProvider,
+    required this.hallOfFameApiResponseProvider,
     this.showPopUp,
   }) : super(key: key);
 
@@ -253,8 +260,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
             comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
           );
         } else if (responseState is ApiResponse && responseState.isSuccess) {
-          GotStickerModelBase gotStickerState =
-              responseState.data;
+          GotStickerModelBase gotStickerState = responseState.data;
           gotStickerState as GotStickerModel;
 
           if (gotStickerState.isAlreadyGotTodaySticker == false) {
@@ -263,9 +269,9 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
               comment: GotStickerUtils.gotStickerComment(
                   projectState,
                   STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![
-                  gotStickerState.id]!['name']!),
-              imagePath:
-              UrlBuilderUtils.imageUrlBuilderByStickerId(gotStickerState.id),
+                      gotStickerState.id]!['name']!),
+              imagePath: UrlBuilderUtils.imageUrlBuilderByStickerId(
+                  gotStickerState.id),
             );
             plusOneDayInARow(projectState);
 
@@ -276,7 +282,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
             await showOnlyCloseDialog(
                 context: context,
                 comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                'today_sticker_already_got']!);
+                    'today_sticker_already_got']!);
           }
         }
       },
@@ -350,7 +356,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
             prevProjectState: ProjectStateKind.NO_EXIST,
             nextProjectState: ProjectStateKind.IN_PROGRESS);
         final responseState = await ref
-            .read(projectApiResponseProvider.notifier)
+            .read(widget.projectApiResponseProvider.notifier)
             .updateProjectState(
                 projectRequestDto: projectRequestDto, context: context);
         if (responseState is ApiResponseError ||
@@ -366,7 +372,11 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
                     projectStateKind: ProjectStateKind.IN_PROGRESS,
                     dayInARow: 28),
               );
-          showOnlyCloseDialog(context: context, comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['create_project_complete']!,);
+          showOnlyCloseDialog(
+            context: context,
+            comment:
+                COMMENT_DICT[dotenv.get(LANGUAGE)]!['create_project_complete']!,
+          );
         }
       },
     );
@@ -379,7 +389,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
             prevProjectState: ProjectStateKind.IN_PROGRESS,
             nextProjectState: ProjectStateKind.NO_EXIST);
         final responseState = await ref
-            .read(projectApiResponseProvider.notifier)
+            .read(widget.projectApiResponseProvider.notifier)
             .updateProjectState(
                 projectRequestDto: projectRequestDto, context: context);
         if (responseState is ApiResponseError ||
@@ -435,17 +445,25 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
               HallOfFameRequestDto hallOfFameRequestDto =
                   HallOfFameRequestDto(projectId: "1");
               final responseState = await ref
-                  .read(hallOfFameApiResponseProvider.notifier)
+                  .read(widget.hallOfFameApiResponseProvider.notifier)
                   .registerHallOfFame(
                       hallOfFameRequestDto: hallOfFameRequestDto,
                       context: context);
               if (responseState is ApiResponseError ||
                   responseState is ApiResponse && responseState.isError) {
-                showOnlyCloseDialog(
-                  context: context,
-                  comment:
-                      COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
-                );
+                if (responseState is ApiResponse &&
+                    responseState.data == DUPLICATED_HALL_OF_FAME) {
+                  showOnlyCloseDialog(
+                      context: context,
+                      comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                          'duplicated_hall_of_fame']!);
+                } else {
+                  showOnlyCloseDialog(
+                    context: context,
+                    comment:
+                        COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+                  );
+                }
               } else if (responseState is ApiResponse &&
                   responseState.isSuccess) {
                 showOnlyCloseDialog(

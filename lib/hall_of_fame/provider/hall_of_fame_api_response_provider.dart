@@ -25,7 +25,7 @@ final hallOfFameApiResponseProvider =
 
 class HallOfFameApiResponseStateNotifier
     extends StateNotifier<ApiResponseBase> {
-  final MockHallOfFameRepository repository;
+  final HallOfFameRepositoryBase repository;
   final ThrottleManager throttleManager;
 
   HallOfFameApiResponseStateNotifier(

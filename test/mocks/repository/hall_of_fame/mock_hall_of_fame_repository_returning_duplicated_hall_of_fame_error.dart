@@ -2,6 +2,7 @@ import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/data.dart';
+import 'package:greaticker/common/constants/error_message/error_message.dart';
 import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/dio/dio.dart';
 import 'package:greaticker/common/model/api_response.dart';
@@ -14,16 +15,16 @@ import 'package:greaticker/hall_of_fame/model/request_dto/hit_good_to_project_re
 import 'package:greaticker/hall_of_fame/repository/hall_of_fame_repository.dart';
 
 
-final MockHallOfFameRepositoryProvider = Provider<MockHallOfFameRepository>(
+final MockHallOfFameRepositoryReturningDuplicatedHallOfFameErrorProvider = Provider<MockHallOfFameRepositoryReturningDuplicatedHallOfFameError>(
       (ref) {
     final dio = ref.watch(dioProvider);
 
-    return MockHallOfFameRepository(dio, baseUrl: 'http://$ip/hall-of-fame');
+    return MockHallOfFameRepositoryReturningDuplicatedHallOfFameError(dio, baseUrl: 'http://$ip/hall-of-fame');
   },
 );
 
-class MockHallOfFameRepository extends HallOfFameRepositoryBase implements IBasePaginationRepository<HallOfFameModel> {
-  MockHallOfFameRepository(Dio dio, {required String baseUrl});
+class MockHallOfFameRepositoryReturningDuplicatedHallOfFameError extends HallOfFameRepositoryBase implements IBasePaginationRepository<HallOfFameModel> {
+  MockHallOfFameRepositoryReturningDuplicatedHallOfFameError(Dio dio, {required String baseUrl});
 
 
   List<HallOfFameModel> mockData = List<HallOfFameModel>.generate(100, (index) {
@@ -97,7 +98,7 @@ class MockHallOfFameRepository extends HallOfFameRepositoryBase implements IBase
       await Future.delayed(Duration(seconds: 1));
     }
 
-    return ApiResponse(isSuccess: true, isError: false);
+    return ApiResponse(isSuccess: false, isError: true, data: DUPLICATED_HALL_OF_FAME);
   }
 
   Future<ApiResponse<String>> deleteHallOfFame({

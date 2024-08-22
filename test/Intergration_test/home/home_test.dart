@@ -17,6 +17,9 @@ import 'package:greaticker/home/utils/got_sticker_utils.dart';
 import 'package:greaticker/home/view/home_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../mocks/provider/hall_of_fame/api_response/mock_hall_of_fame_api_response_provider.dart';
+import '../../mocks/provider/hall_of_fame/api_response/mock_hall_of_fame_api_response_provider_returning_duplicated_hall_of_fame_error.dart';
+import '../../mocks/provider/home/project/api_response/mock_project_api_response_provider.dart';
 import '../../mocks/provider/home/project/mock_project_provider_returning_already_got_today_sticker.dart';
 import '../../mocks/provider/home/project/mock_project_provider_returning_compelete.dart';
 import '../../mocks/provider/home/project/mock_project_provider_returning_error.dart';
@@ -41,7 +44,9 @@ void main() {
           home: HomeScreen(
             key: HOME_SCREEN_KEY,
             projectProvider: mockProjectProviderReturningInProgress,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
             gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -60,7 +65,9 @@ void main() {
           home: HomeScreen(
             key: HOME_SCREEN_KEY,
             projectProvider: mockProjectProviderReturningInProgress,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
             gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -81,7 +88,9 @@ void main() {
           home: HomeScreen(
             key: HOME_SCREEN_KEY,
             projectProvider: mockProjectProviderReturningNoExist,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
             gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -95,7 +104,7 @@ void main() {
   });
 
   testWidgets(
-      'Show the "Create Projects" button when the status is "Completed"',
+      'Show the "Create Projects" button and registering hall of fame button when the status is "Completed"',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       ProviderScope(
@@ -103,7 +112,9 @@ void main() {
           home: HomeScreen(
             key: HOME_SCREEN_KEY,
             projectProvider: mockProjectProviderReturningComplete,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
             gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -112,6 +123,9 @@ void main() {
 
     expect(find.text("앱 만들기"), findsOneWidget);
     expect(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['create_project']!),
+        findsOneWidget);
+    expect(
+        find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['register_hall_of_fame']!),
         findsOneWidget);
   });
 
@@ -124,7 +138,9 @@ void main() {
           home: HomeScreen(
             key: HOME_SCREEN_KEY,
             projectProvider: mockProjectProviderReturningReset,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
             gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -146,7 +162,9 @@ void main() {
           home: HomeScreen(
             key: HOME_SCREEN_KEY,
             projectProvider: mockProjectProviderReturningError,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
             gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -165,7 +183,9 @@ void main() {
           home: HomeScreen(
             key: HOME_SCREEN_KEY,
             projectProvider: mockProjectProviderReturningError,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
             gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -203,7 +223,9 @@ void main() {
           home: HomeScreen(
             key: HOME_SCREEN_KEY,
             projectProvider: mockProjectProviderReturningInProgress,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
             gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -234,7 +256,9 @@ void main() {
           home: HomeScreen(
             key: HOME_SCREEN_KEY,
             projectProvider: mockProjectProviderReturningNoExist,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
             gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -271,7 +295,9 @@ void main() {
           home: HomeScreen(
             key: HOME_SCREEN_KEY,
             projectProvider: mockProjectProviderReturningComplete,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
             gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -317,14 +343,17 @@ void main() {
           home: HomeScreen(
             key: HOME_SCREEN_KEY,
             projectProvider: mockProjectProviderReturningInProgress,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
             gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['delete_project']!));
+    await tester
+        .tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['delete_project']!));
     await tester.pumpAndSettle();
 
     expect(find.byType(AlertDialog), findsOneWidget);
@@ -345,33 +374,41 @@ void main() {
   testWidgets(
       'Show a sticker acquisition guidance modal when the "Get Sticker" button is clicked',
       (WidgetTester tester) async {
-        final container = ProviderContainer();
-        final mockProjectStateNotifier = container.read(mockProjectProviderReturningInProgress.notifier);
-        final mockGotStickerStateNotifier = container.read(mockGotStickerProvider.notifier);
+    final container = ProviderContainer();
+    final mockProjectStateNotifier =
+        container.read(mockProjectProviderReturningInProgress.notifier);
+    final mockGotStickerStateNotifier =
+        container.read(mockGotStickerProvider.notifier);
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
           // mockDiaryProvider의 상태를 container와 공유
-          mockProjectProviderReturningInProgress.overrideWithValue(mockProjectStateNotifier),
+          mockProjectProviderReturningInProgress
+              .overrideWithValue(mockProjectStateNotifier),
           mockGotStickerProvider.overrideWithValue(mockGotStickerStateNotifier),
         ],
         child: MaterialApp(
           home: HomeScreen(
             key: HOME_SCREEN_KEY,
             projectProvider: mockProjectProviderReturningInProgress,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
             gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!));
+    await tester
+        .tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!));
     await tester.pumpAndSettle();
 
-    final ProjectModelBase currentProjectState = container.read(mockProjectProviderReturningInProgress);
+    final ProjectModelBase currentProjectState =
+        container.read(mockProjectProviderReturningInProgress);
     currentProjectState as ProjectModel;
-    final ApiResponseBase apiResponseState = container.read(mockGotStickerProvider);
+    final ApiResponseBase apiResponseState =
+        container.read(mockGotStickerProvider);
     apiResponseState as ApiResponse;
     final currentGotStickerState = apiResponseState.data;
     currentGotStickerState as GotStickerModel;
@@ -379,176 +416,287 @@ void main() {
     expect(find.byType(AlertDialog), findsOneWidget);
 
     expect(
-        find.text(GotStickerUtils.gotStickerComment(currentProjectState, STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![currentGotStickerState.id]!['name']!)),
+        find.text(GotStickerUtils.gotStickerComment(
+            currentProjectState,
+            STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![
+                currentGotStickerState.id]!['name']!)),
         findsOneWidget);
   });
 
   testWidgets(
       'Show today sticker already got guidance modal when the "Get Sticker" button is clicked',
-          (WidgetTester tester) async {
-        final container = ProviderContainer();
-        final mockProjectStateNotifier = container.read(mockProjectProviderReturningInProgress.notifier);
-        final mockGotStickerStateNotifier = container.read(mockGotStickerProvider.notifier);
-        await tester.pumpWidget(
-          ProviderScope(
-            overrides: [
-              // mockDiaryProvider의 상태를 container와 공유
-              mockProjectProviderReturningInProgress.overrideWithValue(mockProjectStateNotifier),
-              mockGotStickerProvider.overrideWithValue(mockGotStickerStateNotifier),
-            ],
-            child: MaterialApp(
-              home: HomeScreen(
-                key: HOME_SCREEN_KEY,
-                projectProvider: mockProjectProviderReturningAlreadyGotTodaySticker,
-                gotStickerProvider: mockGotStickerProviderReturningAlreadyGotTodaySticker,
-              ),
-            ),
-          ),
-        );
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(AlertDialog), findsOneWidget);
-        expect(
-            find.text(COMMENT_DICT[dotenv.get(LANGUAGE)]!['today_sticker_already_got']!),
-            findsOneWidget);
-      });
-
-  testWidgets(
-      'Show a goal completion guidance modal when the "Get Sticker" button is clicked with one day remaining to meet the completion criteria.',
       (WidgetTester tester) async {
-        await tester.pumpWidget(
-          ProviderScope(
-            child: MaterialApp(
-              home: HomeScreen(
-                key: HOME_SCREEN_KEY,
-                projectProvider: mockProjectProviderReturningInProgress,
-                gotStickerProvider: mockGotStickerProvider,
-              ),
-            ),
-          ),
-        );
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!));
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['close']!));
-        await tester.pumpAndSettle();
-
-        /**mockProjectProviderReturningInProgress는 28일차까지 완료한 상태를 항상 리턴함
-         * 그래서 한번 스티커를 획득해서는 목표완료 팝업 모달이 뜨지 않음 **/
-        expect(find.byType(AlertDialog), findsNothing);
-
-        /**앞서 28일차에서 한번 스티커를 획득해서 29일차인 상태에서 다시 스티커 획득을 클릭.
-         * 실제 환경에서는 하루에 스티커를 1개만 획득가능하지만 테스트 목 환경에서는
-         * 원활한 테스트를 위해 이 제한이 없음**/
-        await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!));
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['close']!));
-        await tester.pumpAndSettle();
-
-
-        expect(find.byType(AlertDialog), findsOneWidget);
-        expect(find.text(COMMENT_DICT[dotenv.get(LANGUAGE)]!['complete_project_notice']!), findsOneWidget);
-  });
-
-  testWidgets('Show a circular progress indicator during loading',
-      (WidgetTester tester) async {
-        await tester.pumpWidget(
-          ProviderScope(
-            child: MaterialApp(
-              home: HomeScreen(
-                key: DIARY_SCREEN_KEY,
-                projectProvider: mockProjectProviderReturningInProgress,
-                gotStickerProvider: mockGotStickerProvider,
-              ),
-            ),
-          ),
-        );
-        expect(find.byType(CircularProgressIndicator), findsOneWidget);
-
-        //로딩 끝난 이후엔 로딩바 사라짐
-        await tester.pumpAndSettle();
-        expect(find.byType(CircularProgressIndicator), findsNothing);
-  });
-
-  testWidgets('Get sticker button increases progress value and text', (WidgetTester tester) async {
+    final container = ProviderContainer();
+    final mockProjectStateNotifier =
+        container.read(mockProjectProviderReturningInProgress.notifier);
+    final mockGotStickerStateNotifier =
+        container.read(mockGotStickerProvider.notifier);
     await tester.pumpWidget(
       ProviderScope(
+        overrides: [
+          // mockDiaryProvider의 상태를 container와 공유
+          mockProjectProviderReturningInProgress
+              .overrideWithValue(mockProjectStateNotifier),
+          mockGotStickerProvider.overrideWithValue(mockGotStickerStateNotifier),
+        ],
         child: MaterialApp(
           home: HomeScreen(
             key: HOME_SCREEN_KEY,
-            projectProvider: mockProjectProviderReturningInProgress,
-            gotStickerProvider: mockGotStickerProvider,
+            projectProvider: mockProjectProviderReturningAlreadyGotTodaySticker,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
+            gotStickerProvider:
+                mockGotStickerProviderReturningAlreadyGotTodaySticker,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
     );
     await tester.pumpAndSettle();
 
-    LinearProgressIndicator linearProgressIndicator = tester.widget(find.byType(LinearProgressIndicator));
-    expect(linearProgressIndicator.value, 28/30);
+    await tester
+        .tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(
+        find.text(
+            COMMENT_DICT[dotenv.get(LANGUAGE)]!['today_sticker_already_got']!),
+        findsOneWidget);
+  });
+
+  testWidgets(
+      'Show a goal completion guidance modal when the "Get Sticker" button is clicked with one day remaining to meet the completion criteria.',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(
+          home: HomeScreen(
+            key: HOME_SCREEN_KEY,
+            projectProvider: mockProjectProviderReturningInProgress,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
+            gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester
+        .tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['close']!));
+    await tester.pumpAndSettle();
+
+    /**mockProjectProviderReturningInProgress는 28일차까지 완료한 상태를 항상 리턴함
+         * 그래서 한번 스티커를 획득해서는 목표완료 팝업 모달이 뜨지 않음 **/
+    expect(find.byType(AlertDialog), findsNothing);
+
+    /**앞서 28일차에서 한번 스티커를 획득해서 29일차인 상태에서 다시 스티커 획득을 클릭.
+         * 실제 환경에서는 하루에 스티커를 1개만 획득가능하지만 테스트 목 환경에서는
+         * 원활한 테스트를 위해 이 제한이 없음**/
+    await tester
+        .tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['close']!));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(
+        find.text(
+            COMMENT_DICT[dotenv.get(LANGUAGE)]!['complete_project_notice']!),
+        findsOneWidget);
+  });
+
+  testWidgets('Show a circular progress indicator during loading',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(
+          home: HomeScreen(
+            key: DIARY_SCREEN_KEY,
+            projectProvider: mockProjectProviderReturningInProgress,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
+            gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
+          ),
+        ),
+      ),
+    );
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+    //로딩 끝난 이후엔 로딩바 사라짐
+    await tester.pumpAndSettle();
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+  });
+
+  testWidgets('Get sticker button increases progress value and text',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(
+          home: HomeScreen(
+            key: HOME_SCREEN_KEY,
+            projectProvider: mockProjectProviderReturningInProgress,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
+            gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    LinearProgressIndicator linearProgressIndicator =
+        tester.widget(find.byType(LinearProgressIndicator));
+    expect(linearProgressIndicator.value, 28 / 30);
     expect(find.text('28/30'), findsOneWidget);
 
-    await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!));
+    await tester
+        .tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!));
     await tester.pumpAndSettle();
     await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['close']!));
     await tester.pumpAndSettle();
 
-    linearProgressIndicator = tester.widget(find.byType(LinearProgressIndicator));
-    expect(linearProgressIndicator.value, 29/30);
+    linearProgressIndicator =
+        tester.widget(find.byType(LinearProgressIndicator));
+    expect(linearProgressIndicator.value, 29 / 30);
     expect(find.text('29/30'), findsOneWidget);
   });
 
   testWidgets(
       'Check marks are correctly displayed on the calendar based on the day in a row.',
       (WidgetTester tester) async {
-        final container = ProviderContainer();
-        final mockProjectStateNotifier = container.read(mockProjectProviderReturningInProgress.notifier);
+    final container = ProviderContainer();
+    final mockProjectStateNotifier =
+        container.read(mockProjectProviderReturningInProgress.notifier);
 
-        await tester.pumpWidget(
-          ProviderScope(
-            overrides: [
-              mockProjectProviderReturningInProgress.overrideWithValue(mockProjectStateNotifier),
-            ],
-            child: MaterialApp(
-              supportedLocales: [
-                const Locale('en', 'US'), // 영어
-                const Locale('ko', 'KR'), // 한국어
-                // 필요에 따라 다른 로케일 추가
-              ],
-              localizationsDelegates: [
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              home: HomeScreen(
-                key: HOME_SCREEN_KEY,
-                projectProvider: mockProjectProviderReturningInProgress,
-                gotStickerProvider: mockGotStickerProvider,
-              ),
-            ),
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          mockProjectProviderReturningInProgress
+              .overrideWithValue(mockProjectStateNotifier),
+        ],
+        child: MaterialApp(
+          supportedLocales: [
+            const Locale('en', 'US'), // 영어
+            const Locale('ko', 'KR'), // 한국어
+            // 필요에 따라 다른 로케일 추가
+          ],
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          home: HomeScreen(
+            key: HOME_SCREEN_KEY,
+            projectProvider: mockProjectProviderReturningInProgress,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
+            gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
-        );
-        await tester.pumpAndSettle();
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
 
-        final ProjectModelBase currentProjectState = container.read(mockProjectProviderReturningInProgress);
-        currentProjectState as ProjectModel;
+    final ProjectModelBase currentProjectState =
+        container.read(mockProjectProviderReturningInProgress);
+    currentProjectState as ProjectModel;
 
-        await tester
-            .tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['show_calendar']!));
-        await tester.pumpAndSettle();
+    await tester
+        .tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['show_calendar']!));
+    await tester.pumpAndSettle();
 
-        TableCalendar tableCalendar = tester.widget(find.byType(TableCalendar));
+    TableCalendar tableCalendar = tester.widget(find.byType(TableCalendar));
 
-        expect(tableCalendar.selectedDayPredicate!(currentProjectState.startDay!.subtract(Duration(days: 1))), false);
-        expect(tableCalendar.selectedDayPredicate!(currentProjectState.startDay!), true);
-        expect(tableCalendar.selectedDayPredicate!(currentProjectState.startDay!.add(Duration(days: currentProjectState.dayInARow! - 2))), true);
-        expect(tableCalendar.selectedDayPredicate!(currentProjectState.startDay!.add(Duration(days: currentProjectState.dayInARow! - 1))), false);
-        // expect(tableCalendar.selectedDayPredicate!(currentProjectState.startDay!), true);
-      });
+    expect(
+        tableCalendar.selectedDayPredicate!(
+            currentProjectState.startDay!.subtract(Duration(days: 1))),
+        false);
+    expect(tableCalendar.selectedDayPredicate!(currentProjectState.startDay!),
+        true);
+    expect(
+        tableCalendar.selectedDayPredicate!(currentProjectState.startDay!
+            .add(Duration(days: currentProjectState.dayInARow! - 2))),
+        true);
+    expect(
+        tableCalendar.selectedDayPredicate!(currentProjectState.startDay!
+            .add(Duration(days: currentProjectState.dayInARow! - 1))),
+        false);
+    // expect(tableCalendar.selectedDayPredicate!(currentProjectState.startDay!), true);
+  });
+
+  testWidgets('Modal flow when the registering Hall of Fame button is pressed',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(
+          home: HomeScreen(
+            key: HOME_SCREEN_KEY,
+            projectProvider: mockProjectProviderReturningComplete,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
+            gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find
+        .text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['register_hall_of_fame']!));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.text(COMMENT_DICT[dotenv.get(LANGUAGE)]!['only_nickname']!),
+        findsOneWidget);
+    expect(
+        find.text(
+            COMMENT_DICT[dotenv.get(LANGUAGE)]!['both_nickname_and_auth_id']!),
+        findsOneWidget);
+
+    await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['next']!));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(
+        find.text(COMMENT_DICT[dotenv.get(LANGUAGE)]![
+            'register_hall_of_fame_complete']!),
+        findsOneWidget);
+  });
+
+  testWidgets(
+      'Show notification flow when Hall of Fame registration is duplicated',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(
+          home: HomeScreen(
+            key: HOME_SCREEN_KEY,
+            projectProvider: mockProjectProviderReturningComplete,
+            projectApiResponseProvider: mockProjectApiResponseProvider,
+            gotStickerProvider: mockGotStickerProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProviderReturningDuplicatedHallOfFameError,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find
+        .text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['register_hall_of_fame']!));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['next']!));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(
+        find.text(COMMENT_DICT[dotenv.get(LANGUAGE)]![
+        'duplicated_hall_of_fame']!),
+        findsOneWidget);
+  });
 }
