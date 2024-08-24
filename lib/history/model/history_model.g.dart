@@ -10,8 +10,8 @@ HistoryModel _$HistoryModelFromJson(Map<String, dynamic> json) => HistoryModel(
       id: json['id'] as String,
       historyKind: $enumDecode(_$HistoryKindEnumMap, json['historyKind']),
       projectName: json['projectName'] as String,
-      stickerName: json['stickerName'] as String?,
-      dayInARow: (json['dayInARow'] as num).toInt(),
+      stickerId: json['stickerId'] as String?,
+      dayInARow: (json['dayInARow'] as num?)?.toInt(),
       createdDateTime: DateTime.parse(json['createdDateTime'] as String),
       updatedDateTime: DateTime.parse(json['updatedDateTime'] as String),
     );
@@ -23,7 +23,7 @@ Map<String, dynamic> _$HistoryModelToJson(HistoryModel instance) =>
       'id': instance.id,
       'historyKind': _$HistoryKindEnumMap[instance.historyKind]!,
       'projectName': instance.projectName,
-      'stickerName': instance.stickerName,
+      'stickerId': instance.stickerId,
       'dayInARow': instance.dayInARow,
     };
 

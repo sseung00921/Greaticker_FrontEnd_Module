@@ -6,6 +6,7 @@ import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/model/pagination_params.dart';
 import 'package:greaticker/common/repository/base_pagination_repository.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
+import 'package:greaticker/history/model/history_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'history_repository.g.dart';
@@ -20,12 +21,12 @@ final HistoryRepositoryProvider = Provider<HistoryRepository>(
 
 // http://$ip/product
 @RestApi()
-abstract class HistoryRepository implements IBasePaginationRepository<HallOfFameModel> {
+abstract class HistoryRepository implements IBasePaginationRepository<HistoryModel> {
   factory HistoryRepository(Dio dio, {String baseUrl}) = _HistoryRepository;
 
   @GET('/')
   @Headers({'accessToken': 'true'})
-  Future<CursorPagination<HallOfFameModel>> paginate({
+  Future<CursorPagination<HistoryModel>> paginate({
     @Queries() PaginationParams? paginationParams = const PaginationParams(),
   });
 }

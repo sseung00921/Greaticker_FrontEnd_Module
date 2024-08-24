@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:greaticker/common/constants/data.dart';
 import 'package:greaticker/common/secure_storage/secure_storage.dart';
 
 import 'dio_interceptor.dart';

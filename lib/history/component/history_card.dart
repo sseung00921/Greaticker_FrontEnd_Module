@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:greaticker/common/component/text_style.dart';
 import 'package:greaticker/common/constants/fonts.dart';
+import 'package:greaticker/common/constants/language/stickers.dart';
 import 'package:greaticker/common/utils/date_time_utils.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
 import 'package:greaticker/history/model/enum/history_kind.dart';
@@ -12,7 +13,7 @@ class HistoryCard extends StatelessWidget {
   final Key key;
   final HistoryKind historyKind;
   final String projectName;
-  final String? stickerName;
+  final String? stickerId;
   final int? dayInARow;
   final String dateTime;
 
@@ -20,7 +21,7 @@ class HistoryCard extends StatelessWidget {
     required this.key,
     required this.historyKind,
     required this.projectName,
-    this.stickerName,
+    this.stickerId,
     this.dayInARow,
     required this.dateTime,
   });
@@ -32,7 +33,7 @@ class HistoryCard extends StatelessWidget {
       key: Key('HistoryCard-${model.id}'),
       historyKind: model.historyKind,
       projectName: model.projectName,
-      stickerName: model.stickerName,
+      stickerId: model.stickerId,
       dayInARow: model.dayInARow,
       dateTime:
           DateTimeUtils.dateTimeToString(model.createdDateTime, 'yyyyMM-dd'),
@@ -45,7 +46,7 @@ class HistoryCard extends StatelessWidget {
       HistoryUtils.historyContentMaker(
           historyKind: historyKind,
           projectName: projectName,
-          stickerName: stickerName,
+          stickerName: STICKER_ID_NAME_MAPPER[stickerId],
           dayInARow: dayInARow),
       textAlign: TextAlign.justify,
       style: YeongdeokSeaTextStyle(
@@ -77,7 +78,7 @@ class HistoryCard extends StatelessWidget {
                       8.0,
                     ),
                     child: Image.asset(HistoryUtils.historyImageUrlSelector(
-                        historyKind: historyKind, stickerName: stickerName)),
+                        historyKind: historyKind, stickerName: STICKER_ID_NAME_MAPPER[stickerId])),
                   ),
                 ),
               ),

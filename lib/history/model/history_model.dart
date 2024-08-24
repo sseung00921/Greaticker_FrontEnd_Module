@@ -10,15 +10,15 @@ class HistoryModel extends BaseModel implements IModelWithId   {
   final String id;
   final HistoryKind historyKind;
   final String projectName;
-  final String? stickerName;
-  final int dayInARow;
+  final String? stickerId;
+  final int? dayInARow;
 
   HistoryModel({
     required this.id,
     required this.historyKind,
     required this.projectName,
-    this.stickerName,
-    required this.dayInARow,
+    this.stickerId,
+    this.dayInARow,
     required super.createdDateTime,
     required super.updatedDateTime,
   });
