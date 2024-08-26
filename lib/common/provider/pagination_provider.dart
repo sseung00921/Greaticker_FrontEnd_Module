@@ -56,7 +56,6 @@ U extends IBasePaginationRepository<T>>
     // true - CursorPaginationLoading()
     bool forceRefetch = false,
   }) async {
-
     if (dotenv.get(ENVIRONMENT) == PROD) {
       // 운영환경에서는 throttle을 적용한다.
       paginationThrottle.setValue(_PaginationInfo(
@@ -78,7 +77,6 @@ U extends IBasePaginationRepository<T>>
     final fetchCount = info.fetchCount;
     final fetchMore = info.fetchMore;
     final forceRefetch = info.forceRefetch;
-
     try {
       // 5가지 가능성
       // State의 상태
@@ -114,7 +112,6 @@ U extends IBasePaginationRepository<T>>
       PaginationParams paginationParams = PaginationParams(
         count: fetchCount,
       );
-
       // fetchMore
       // 데이터를 추가로 더 가져오는 상황
       if (fetchMore) {

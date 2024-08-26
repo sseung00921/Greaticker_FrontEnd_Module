@@ -434,7 +434,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
 
   Widget _buildRegisterHallOfFameButton(ProjectModel projectState) {
     return SizedBox(
-      width: 200,
+      width: 240,
       child: ElevatedButton(
         onPressed: () {
           showSelectOneBetweenTwoModal(

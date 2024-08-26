@@ -70,7 +70,6 @@ class MockHallOfFameRepository extends HallOfFameRepositoryBase implements IBase
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-
     CursorPaginationMeta mockMeta;
     if (paginationParams!.after == null || int.parse(paginationParams.after!) < 90) {
       mockMeta = CursorPaginationMeta(count: 10, hasMore: true);
