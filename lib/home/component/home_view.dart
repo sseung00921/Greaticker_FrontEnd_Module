@@ -261,7 +261,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
             comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
           );
         } else if (responseState is ApiResponse && responseState.isSuccess) {
-          GotStickerModelBase gotStickerState = responseState.data;
+          GotStickerModel gotStickerState = responseState.data;
           gotStickerState as GotStickerModel;
 
           if (gotStickerState.isAlreadyGotTodaySticker == false) {

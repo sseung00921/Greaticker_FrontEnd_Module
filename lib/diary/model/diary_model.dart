@@ -5,20 +5,9 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:collection/collection.dart';
 
 part 'diary_model.g.dart';
-abstract class DiaryModelBase {}
-
-class DiaryModelError extends DiaryModelBase {
-  final String message;
-
-  DiaryModelError({
-    required this.message,
-  });
-}
-
-class DiaryModelLoading extends DiaryModelBase {}
 
 @JsonSerializable()
-class DiaryModel extends DiaryModelBase implements IModelWithId   {
+class DiaryModel implements IModelWithId   {
   final String id;
   final List<String> stickerInventory;
   final Set<String> hitFavoriteList;

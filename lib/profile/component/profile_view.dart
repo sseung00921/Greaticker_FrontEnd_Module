@@ -137,6 +137,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                     if (responseState is ApiResponseError ||
                         responseState is ApiResponse && !responseState.isSuccess) {
                       if (responseState is ApiResponse && responseState.messeage == DUPLICATED_NICKNAME) {
+                        print("aaaaa");
                         showOnlyCloseDialog(
                           context: context,
                           comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![

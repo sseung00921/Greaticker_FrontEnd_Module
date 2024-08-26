@@ -47,12 +47,11 @@ class MockProfileRepository extends ProfileRepositoryBase {
     }
 
     if (changeNicknameRequestDto.newNickname == "뾰롱뾰롱이") {
-      mockChangeNicknameAipResponseData.data = DUPLICATED_NICKNAME;
+      return ApiResponse(isSuccess: false, messeage: DUPLICATED_NICKNAME);
     } else {
       mockChangeNicknameAipResponseData.data = "뉴뾰롱뾰롱이";
+      return mockChangeNicknameAipResponseData;
     }
-
-    return mockChangeNicknameAipResponseData;
   }
   
   @override

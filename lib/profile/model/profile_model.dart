@@ -2,20 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'profile_model.g.dart';
 
-abstract class ProfileModelBase {}
-
-class ProfileModelError extends ProfileModelBase {
-  final String message;
-
-  ProfileModelError({
-    required this.message,
-  });
-}
-
-class ProfileModelLoading extends ProfileModelBase {}
-
 @JsonSerializable()
-class ProfileModel extends ProfileModelBase {
+class ProfileModel {
   final String userNickname;
 
   ProfileModel({
