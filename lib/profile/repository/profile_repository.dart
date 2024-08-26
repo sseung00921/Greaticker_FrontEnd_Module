@@ -25,7 +25,7 @@ abstract class ProfileRepository extends ProfileRepositoryBase{
   @GET('/')
   @Headers({'accessToken': 'true'})
   @override
-  Future<ProfileModel> getProfileModel();
+  Future<ApiResponse<ProfileModel>> getProfileModel();
 
   @POST('/changeNickname')
   @Headers({'accessToken': 'true'})
@@ -47,7 +47,7 @@ abstract class ProfileRepository extends ProfileRepositoryBase{
 
 abstract class ProfileRepositoryBase {
 
-  Future<ProfileModel> getProfileModel();
+  Future<ApiResponse<ProfileModel>> getProfileModel();
   Future<ApiResponse<String>> changeNickname({
     required ChangeNicknameRequestDto changeNicknameRequestDto,
   });

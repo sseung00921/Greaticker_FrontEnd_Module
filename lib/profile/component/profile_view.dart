@@ -19,7 +19,7 @@ import 'package:greaticker/profile/provider/profile_provider.dart';
 
 // ProfileScreen 위젯
 class ProfileView extends ConsumerStatefulWidget {
-  final StateNotifierProvider<ProfileStateNotifier, ProfileModelBase>
+  final StateNotifierProvider<ProfileStateNotifier, ApiResponseBase>
       profileProvider;
   final StateNotifierProvider<ProfileApiResponseStateNotifier, ApiResponseBase>
       profileApiResponseProvider;
@@ -51,23 +51,23 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    final profileState = ref.watch(widget.profileProvider);
+    final state = ref.watch(widget.profileProvider);
 
     // 완전 처음 로딩일때
-    if (profileState is ProfileModelLoading) {
+    if (state is ApiResponseLoading) {
       return Center(
         child: CircularProgressIndicator(),
       );
     }
 
     // 에러
-    if (profileState is ProfileModelError) {
+    if (state is ApiResponseError) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            profileState.message,
+            state.message,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16.0),
@@ -81,7 +81,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
       );
     }
 
-    profileState as ProfileModel;
+    state as ApiResponse;
+    final profileState = state.data as ProfileModel;
 
     return Center(
       child: Column(
@@ -134,8 +135,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                           context: context,
                         );
                     if (responseState is ApiResponseError ||
-                        responseState is ApiResponse && responseState.isError) {
-                      if (responseState is ApiResponse && responseState.data == DUPLICATED_NICKNAME) {
+                        responseState is ApiResponse && !responseState.isSuccess) {
+                      if (responseState is ApiResponse && responseState.messeage == DUPLICATED_NICKNAME) {
                         showOnlyCloseDialog(
                           context: context,
                           comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
@@ -176,7 +177,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
               onPressed: () async {
                 final responseState = await ref.read(profileApiResponseProvider.notifier).logOut(context: context);
                 if (responseState is ApiResponseError ||
-                    responseState is ApiResponse && responseState.isError) {
+                    responseState is ApiResponse && !responseState.isSuccess) {
                   showOnlyCloseDialog(
                     context: context,
                     comment:
@@ -209,7 +210,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                         .read(profileApiResponseProvider.notifier)
                         .deleteAccount(context: context);
                     if (responseState is ApiResponseError ||
-                        responseState is ApiResponse && responseState.isError) {
+                        responseState is ApiResponse && !responseState.isSuccess) {
                       showOnlyCloseDialog(
                         context: context,
                         comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![

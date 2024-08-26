@@ -23,20 +23,20 @@ class MockProfileRepositoryReturningDuplicatedNicknameError extends ProfileRepos
 
   ProfileModel mockProfileData = ProfileModel(userNickname: "뾰롱뾰롱이");
   ApiResponse<String> mockAipResponseData =
-      ApiResponse<String>(isSuccess: true, isError: false);
+      ApiResponse<String>(isSuccess: true,);
 
   ApiResponse<String> mockChangeNicknameAipResponseData =
-      ApiResponse<String>(isSuccess: false, isError: true, data: DUPLICATED_NICKNAME);
+      ApiResponse<String>(isSuccess: false, messeage: DUPLICATED_NICKNAME);
 
 
 
   @override
-  Future<ProfileModel> getProfileModel() async {
+  Future<ApiResponse<ProfileModel>> getProfileModel() async {
     // TODO: implement getProfileModel
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return mockProfileData;
+    return ApiResponse(isSuccess: true, data: mockProfileData);
   }
 
   @override

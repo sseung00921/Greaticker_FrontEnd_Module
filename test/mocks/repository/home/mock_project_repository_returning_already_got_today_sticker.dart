@@ -34,18 +34,17 @@ class MockProjectRepositoryReturningAlreadyGotTodaySticker
   ApiResponse<GotStickerModel> mockGotStickerData =
       ApiResponse<GotStickerModel>(
     isSuccess: true,
-    isError: false,
     data: GotStickerModel(id: "1", isAlreadyGotTodaySticker: true),
   );
   ApiResponse<String> mockAipResponseData =
-      ApiResponse<String>(isSuccess: true, isError: false);
+      ApiResponse<String>(isSuccess: true,);
 
   @override
-  Future<ProjectModel> getProjectModel() async {
+  Future<ApiResponse<ProjectModel>> getProjectModel() async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return mockInProgressStateData;
+    return ApiResponse(isSuccess: true, data: mockInProgressStateData);
   }
 
   @override

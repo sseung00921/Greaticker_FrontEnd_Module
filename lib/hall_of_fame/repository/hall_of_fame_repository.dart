@@ -30,7 +30,7 @@ abstract class HallOfFameRepository extends HallOfFameRepositoryBase
 
   @GET('/')
   @Headers({'accessToken': 'true'})
-  Future<CursorPagination<HallOfFameModel>> paginate({
+  Future<ApiResponse<CursorPagination<HallOfFameModel>>> paginate({
     @Queries() PaginationParams? paginationParams = const PaginationParams(),
   });
 
@@ -54,7 +54,7 @@ abstract class HallOfFameRepository extends HallOfFameRepositoryBase
 }
 
 abstract class HallOfFameRepositoryBase {
-  Future<CursorPagination<HallOfFameModel>> paginate({
+  Future<ApiResponse<CursorPagination<HallOfFameModel>>> paginate({
     PaginationParams paginationParams,
   });
 

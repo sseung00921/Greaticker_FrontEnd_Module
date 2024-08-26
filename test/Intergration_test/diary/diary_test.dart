@@ -16,6 +16,7 @@ import 'package:greaticker/common/constants/language/button.dart';
 import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/diary/model/diary_model.dart';
 import 'package:greaticker/diary/view/diary_screen.dart';
 
@@ -50,8 +51,9 @@ void main() {
     await tester.pumpAndSettle();
 
     //initial State
-    final DiaryModelBase currentState = container.read(mockDiaryProvider);
-    currentState as DiaryModel;
+    final ApiResponseBase currentResponseState = container.read(mockDiaryProvider);
+    currentResponseState as ApiResponse;
+    DiaryModel currentState = currentResponseState.data as DiaryModel;
 
     List<String> initialExpectedList = [
       "1",
@@ -170,8 +172,10 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        final DiaryModelBase currentState = container.read(mockDiaryProvider);
-        currentState as DiaryModel;
+        final ApiResponseBase currentResponseState = container.read(mockDiaryProvider);
+        currentResponseState as ApiResponse;
+        DiaryModel currentState = currentResponseState.data as DiaryModel;
+
         //1번 스티커는 최애스티커 상태로 서버로부터 전달받음을 시뮬레이션
         expect(currentState.hitFavoriteList.contains("1"), true);
 
@@ -207,8 +211,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        final DiaryModelBase currentState = container.read(mockDiaryProvider);
-        currentState as DiaryModel;
+        final ApiResponseBase currentResponseState = container.read(mockDiaryProvider);
+        currentResponseState as ApiResponse;
+        DiaryModel currentState = currentResponseState.data as DiaryModel;
         //21번 스티커는 최애스티커 상태가 아닌 상태로 서버로부터 전달받음을 시뮬레이션
         expect(currentState.hitFavoriteList.contains("21"), false);
 
@@ -244,8 +249,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        final DiaryModelBase currentState = container.read(mockDiaryProvider);
-        currentState as DiaryModel;
+        final ApiResponseBase currentResponseState = container.read(mockDiaryProvider);
+        currentResponseState as ApiResponse;
+        DiaryModel currentState = currentResponseState.data as DiaryModel;
         //해당 유저는 최애 스티커 3개를 이미 보유한 상태로 서버에서 전달받음을 시뮬레이션
         expect(currentState.hitFavoriteList.length, 3);
 
@@ -281,8 +287,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        final DiaryModelBase currentState = container.read(mockDiaryProvider);
-        currentState as DiaryModel;
+        final ApiResponseBase currentResponseState = container.read(mockDiaryProvider);
+        currentResponseState as ApiResponse;
+        DiaryModel currentState = currentResponseState.data as DiaryModel;
         //해당 유저는 최애 스티커 3개를 이미 보유한 상태로 서버에서 전달받았고 1번은 최애스티커임을 시뮬레이션
         expect(currentState.hitFavoriteList.length, 3);
         expect(currentState.hitFavoriteList.contains("1"), true);

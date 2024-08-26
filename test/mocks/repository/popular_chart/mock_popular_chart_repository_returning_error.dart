@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/data.dart';
 import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/dio/dio.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/model/pagination_params.dart';
 import 'package:greaticker/common/repository/base_pagination_repository.dart';
@@ -24,7 +25,7 @@ class MockPopularChartRepositoryReturningError implements IBasePaginationReposit
   MockPopularChartRepositoryReturningError(Dio dio, {required String baseUrl});
 
 
-  Future<CursorPagination<PopularChartModel>> paginate ({PaginationParams? paginationParams = const PaginationParams()}) async {
+  Future<ApiResponse<CursorPagination<PopularChartModel>>> paginate ({PaginationParams? paginationParams = const PaginationParams()}) async {
     throw Exception();
   }
 }

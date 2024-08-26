@@ -25,7 +25,6 @@ final MockHallOfFameRepositoryProvider = Provider<MockHallOfFameRepository>(
 class MockHallOfFameRepository extends HallOfFameRepositoryBase implements IBasePaginationRepository<HallOfFameModel> {
   MockHallOfFameRepository(Dio dio, {required String baseUrl});
 
-
   List<HallOfFameModel> mockData = List<HallOfFameModel>.generate(100, (index) {
     if (index == 3 || index == 6) {
       return HallOfFameModel(
@@ -67,7 +66,7 @@ class MockHallOfFameRepository extends HallOfFameRepositoryBase implements IBase
   });
 
 
-  Future<CursorPagination<HallOfFameModel>> paginate ({PaginationParams? paginationParams = const PaginationParams()}) async {
+  Future<ApiResponse<CursorPagination<HallOfFameModel>>> paginate ({PaginationParams? paginationParams = const PaginationParams()}) async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
@@ -87,7 +86,7 @@ class MockHallOfFameRepository extends HallOfFameRepositoryBase implements IBase
           int.parse(paginationParams.after!),
           int.parse(paginationParams.after!) + 10);
     }
-    return CursorPagination(meta: mockMeta, data: slicedMockData);
+    return ApiResponse(isSuccess: true, data: CursorPagination(meta: mockMeta, data: slicedMockData));
   }
 
   Future<ApiResponse<String>> registerHallOfFame({
@@ -97,7 +96,7 @@ class MockHallOfFameRepository extends HallOfFameRepositoryBase implements IBase
       await Future.delayed(Duration(seconds: 1));
     }
 
-    return ApiResponse(isSuccess: true, isError: false);
+    return ApiResponse(isSuccess: true);
   }
 
   Future<ApiResponse<String>> deleteHallOfFame({
@@ -107,7 +106,7 @@ class MockHallOfFameRepository extends HallOfFameRepositoryBase implements IBase
       await Future.delayed(Duration(seconds: 1));
     }
 
-    return ApiResponse(isSuccess: true, isError: false);
+    return ApiResponse(isSuccess: true);
   }
 
   Future<ApiResponse<String>> hitGoodToHallOfFame({
@@ -117,7 +116,7 @@ class MockHallOfFameRepository extends HallOfFameRepositoryBase implements IBase
       await Future.delayed(Duration(seconds: 1));
     }
 
-    return ApiResponse(isSuccess: true, isError: false);
+    return ApiResponse(isSuccess: true);
   }
 }
 

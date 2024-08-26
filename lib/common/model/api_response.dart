@@ -19,12 +19,12 @@ class ApiResponseLoading extends ApiResponseBase {}
 )
 class ApiResponse<T> extends ApiResponseBase{
   final bool isSuccess;
-  final bool isError;
+  final String? messeage;
   T? data;
 
   ApiResponse({
     required this.isSuccess,
-    required this.isError,
+    this.messeage,
     this.data,
   });
 

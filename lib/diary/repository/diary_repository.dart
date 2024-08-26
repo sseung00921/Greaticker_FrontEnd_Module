@@ -26,7 +26,7 @@ abstract class DiaryRepository extends DiaryRepositoryBase{
   @GET('/')
   @Headers({'accessToken': 'true'})
   @override
-  Future<DiaryModel> getDiaryModel();
+  Future<ApiResponse<DiaryModel>> getDiaryModel();
 
   @POST('/update')
   @Headers({'accessToken': 'true'})
@@ -42,7 +42,7 @@ abstract class DiaryRepository extends DiaryRepositoryBase{
 
 abstract class DiaryRepositoryBase {
 
-  Future<DiaryModel> getDiaryModel();
+  Future<ApiResponse<DiaryModel>> getDiaryModel();
   Future<ApiResponse<String>> updateDiaryModel({required DiaryModelRequestDto diaryModelRequestDto});
   Future<ApiResponse<String>> hitFavoriteToSticker({required HitFavoriteToStickerReqeustDto hitFavoriteToStickerReqeustDto});
 }

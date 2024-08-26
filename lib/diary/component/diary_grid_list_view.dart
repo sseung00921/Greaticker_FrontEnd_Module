@@ -18,7 +18,7 @@ import 'package:greaticker/diary/provider/diary_provider.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
 class DiaryGridListView<T extends IModelWithId> extends ConsumerStatefulWidget {
-  final StateNotifierProvider<DiaryStateNotifier, DiaryModelBase> provider;
+  final StateNotifierProvider<DiaryStateNotifier, ApiResponseBase> provider;
 
   const DiaryGridListView({
     Key? key,
@@ -53,14 +53,14 @@ class _DiaryGridListViewState<T extends IModelWithId>
   Widget build(BuildContext context) {
     final state = ref.watch(widget.provider);
 
-    if (state is DiaryModelLoading) {
+    if (state is ApiResponseLoading) {
       return Center(
         child: CircularProgressIndicator(),
       );
     }
 
     // 에러
-    if (state is DiaryModelError) {
+    if (state is ApiResponseError) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -80,7 +80,8 @@ class _DiaryGridListViewState<T extends IModelWithId>
       );
     }
 
-    final diaryState = state as DiaryModel;
+    state as ApiResponse;
+    final diaryState = state.data as DiaryModel;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -115,7 +116,7 @@ class _DiaryGridListViewState<T extends IModelWithId>
                 .read(diaryApiResponseProvider.notifier)
                 .updateDiaryModel(diaryModelRequestDto: diaryModelRequestDto, context: context);
             if (responseState is ApiResponseError ||
-                responseState is ApiResponse && responseState.isError) {
+                responseState is ApiResponse && !responseState.isSuccess) {
               showOnlyCloseDialog(
                 context: context,
                 comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
@@ -247,7 +248,7 @@ class _DiaryGridListViewState<T extends IModelWithId>
         .read(diaryApiResponseProvider.notifier)
         .hitFavoriteToSticker(hitFavoriteToStickerReqeustDto: hitFavoriteToStickerReqeustDto, context: context);
     if (responseState is ApiResponseError ||
-        responseState is ApiResponse && responseState.isError) {
+        responseState is ApiResponse && !responseState.isSuccess) {
       showOnlyCloseDialog(
         context: context,
         comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
@@ -269,7 +270,7 @@ class _DiaryGridListViewState<T extends IModelWithId>
         .read(diaryApiResponseProvider.notifier)
         .hitFavoriteToSticker(hitFavoriteToStickerReqeustDto: hitFavoriteToStickerReqeustDto, context: context);
     if (responseState is ApiResponseError ||
-        responseState is ApiResponse && responseState.isError) {
+        responseState is ApiResponse && !responseState.isSuccess) {
       showOnlyCloseDialog(
         context: context,
         comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,

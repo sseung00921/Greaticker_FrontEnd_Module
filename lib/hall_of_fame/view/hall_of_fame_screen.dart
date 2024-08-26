@@ -56,7 +56,7 @@ class HallOfFameScreenState extends ConsumerState<HallOfFameScreen> {
         .read(hallOfFameApiResponseProvider.notifier)
         .deleteHallOfFame(hallOfFameRequestDto: hallOfFameRequestDto, context: context);
     if (responseState is ApiResponseError ||
-        responseState is ApiResponse && responseState.isError) {
+        responseState is ApiResponse && !responseState.isSuccess) {
       showOnlyCloseDialog(
         context: context,
         comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
@@ -78,7 +78,7 @@ class HallOfFameScreenState extends ConsumerState<HallOfFameScreen> {
         .read(hallOfFameApiResponseProvider.notifier)
         .hitGoodToHallOfFame(hitGoodToProjectRequestDto: hitGoodToProjectRequestDto, context: context);
     if (responseState is ApiResponseError ||
-        responseState is ApiResponse && responseState.isError) {
+        responseState is ApiResponse && !responseState.isSuccess) {
       showOnlyCloseDialog(
         context: context,
         comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,

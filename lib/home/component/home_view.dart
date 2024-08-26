@@ -30,7 +30,7 @@ import 'package:greaticker/home/utils/got_sticker_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomeView<T> extends ConsumerStatefulWidget {
-  final StateNotifierProvider<ProjectStateNotifier, ProjectModelBase>
+  final StateNotifierProvider<ProjectStateNotifier, ApiResponseBase>
       projectProvider;
   final StateNotifierProvider<ProjectApiResponseStateNotifier, ApiResponseBase>
       projectApiResponseProvider;
@@ -59,23 +59,23 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
 
   @override
   Widget build(BuildContext context) {
-    final projectState = ref.watch(widget.projectProvider);
+    final state = ref.watch(widget.projectProvider);
 
     // 완전 처음 로딩일때
-    if (projectState is ProjectModelLoading) {
+    if (state is ApiResponseLoading) {
       return Center(
         child: CircularProgressIndicator(),
       );
     }
 
     // 에러
-    if (projectState is ProjectModelError) {
+    if (state is ApiResponseError) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            projectState.message,
+            state.message,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16.0),
@@ -89,7 +89,8 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
       );
     }
 
-    projectState as ProjectModel;
+    state as ApiResponse;
+    final projectState = state.data as ProjectModel;
 
     //to be revised
     if (projectState.projectStateKind == ProjectStateKind.RESET) {
@@ -254,7 +255,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
             .getGotStickerModel(context: context);
 
         if (responseState is ApiResponseError ||
-            responseState is ApiResponse && responseState.isError) {
+            responseState is ApiResponse && !responseState.isSuccess) {
           showOnlyCloseDialog(
             context: context,
             comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
@@ -360,7 +361,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
             .updateProjectState(
                 projectRequestDto: projectRequestDto, context: context);
         if (responseState is ApiResponseError ||
-            responseState is ApiResponse && responseState.isError) {
+            responseState is ApiResponse && !responseState.isSuccess) {
           showOnlyCloseDialog(
             context: context,
             comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
@@ -393,7 +394,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
             .updateProjectState(
                 projectRequestDto: projectRequestDto, context: context);
         if (responseState is ApiResponseError ||
-            responseState is ApiResponse && responseState.isError) {
+            responseState is ApiResponse && !responseState.isSuccess) {
           showOnlyCloseDialog(
             context: context,
             comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
@@ -450,9 +451,9 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
                       hallOfFameRequestDto: hallOfFameRequestDto,
                       context: context);
               if (responseState is ApiResponseError ||
-                  responseState is ApiResponse && responseState.isError) {
+                  responseState is ApiResponse && !responseState.isSuccess) {
                 if (responseState is ApiResponse &&
-                    responseState.data == DUPLICATED_HALL_OF_FAME) {
+                    responseState.messeage == DUPLICATED_HALL_OF_FAME) {
                   showOnlyCloseDialog(
                       context: context,
                       comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![

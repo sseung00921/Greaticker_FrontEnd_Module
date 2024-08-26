@@ -19,7 +19,7 @@ class _PopularChartRepository implements PopularChartRepository {
   String? baseUrl;
 
   @override
-  Future<CursorPagination<PopularChartModel>> paginate(
+  Future<ApiResponse<CursorPagination<PopularChartModel>>> paginate(
       {paginationParams = const PaginationParams()}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -29,21 +29,25 @@ class _PopularChartRepository implements PopularChartRepository {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CursorPagination<PopularChartModel>>(Options(
+        _setStreamType<ApiResponse<CursorPagination<PopularChartModel>>>(
+            Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              '/',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = CursorPagination<PopularChartModel>.fromJson(
+                .compose(
+                  _dio.options,
+                  '/',
+                  queryParameters: queryParameters,
+                  data: _data,
+                )
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiResponse<CursorPagination<PopularChartModel>>.fromJson(
       _result.data!,
-      (json) => PopularChartModel.fromJson(json as Map<String, dynamic>),
+      (json) => CursorPagination<PopularChartModel>.fromJson(
+        json as Map<String, dynamic>,
+        (json) => PopularChartModel.fromJson(json as Map<String, dynamic>),
+      ),
     );
     return value;
   }

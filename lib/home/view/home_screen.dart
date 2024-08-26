@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
   static String get routeName => 'HomeScreen';
 
   final Key key;
-  final StateNotifierProvider<ProjectStateNotifier, ProjectModelBase>
+  final StateNotifierProvider<ProjectStateNotifier, ApiResponseBase>
       projectProvider;
   final StateNotifierProvider<ProjectApiResponseStateNotifier, ApiResponseBase>
       projectApiResponseProvider;

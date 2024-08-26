@@ -10,7 +10,7 @@ import 'package:greaticker/diary/repository/diary_repository.dart';
 import 'package:greaticker/diary/repository/mock_diary_repository.dart';
 
 final diaryProvider =
-StateNotifierProvider<DiaryStateNotifier, DiaryModelBase>((ref) {
+StateNotifierProvider<DiaryStateNotifier, ApiResponseBase>((ref) {
   final repo = ref.watch(MockDiaryRepositoryProvider);
   final throttleManager = ref.read(throttleManagerProvider);
 
@@ -29,11 +29,11 @@ StateNotifierProvider<DiaryStateNotifier, DiaryModelBase>((ref) {
   return notifier;
 });
 
-class DiaryStateNotifier extends StateNotifier<DiaryModelBase> {
+class DiaryStateNotifier extends StateNotifier<ApiResponseBase> {
 
   final DiaryRepositoryBase repository;
 
-  DiaryStateNotifier({required this.repository}) : super(DiaryModelLoading()) {
+  DiaryStateNotifier({required this.repository}) : super(ApiResponseLoading()) {
     getDiaryModel();
   }
 
@@ -44,15 +44,15 @@ class DiaryStateNotifier extends StateNotifier<DiaryModelBase> {
     } catch (e, stack) {
       print(e);
       print(stack);
-      state = DiaryModelError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+      state = ApiResponseError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
     }
   }
 
   void setLoadingState() {
-    state = DiaryModelLoading();
+    state = ApiResponseLoading();
   }
 
   void setErrorState() {
-    state = DiaryModelError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+    state = ApiResponseError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
   }
 }

@@ -19,14 +19,14 @@ class _ProjectRepository implements ProjectRepository {
   String? baseUrl;
 
   @override
-  Future<ProjectModel> getProjectModel() async {
+  Future<ApiResponse<ProjectModel>> getProjectModel() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<ProjectModel>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ApiResponse<ProjectModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -38,7 +38,10 @@ class _ProjectRepository implements ProjectRepository {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ProjectModel.fromJson(_result.data!);
+    final value = ApiResponse<ProjectModel>.fromJson(
+      _result.data!,
+      (json) => ProjectModel.fromJson(json as Map<String, dynamic>),
+    );
     return value;
   }
 

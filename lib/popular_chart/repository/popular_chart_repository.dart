@@ -2,6 +2,7 @@ import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/data.dart';
 import 'package:greaticker/common/dio/dio.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/model/pagination_params.dart';
 import 'package:greaticker/common/repository/base_pagination_repository.dart';
@@ -26,7 +27,7 @@ abstract class PopularChartRepository implements IBasePaginationRepository<Popul
 
   @GET('/')
   @Headers({'accessToken': 'true'})
-  Future<CursorPagination<PopularChartModel>> paginate({
+  Future<ApiResponse<CursorPagination<PopularChartModel>>> paginate({
     @Queries() PaginationParams? paginationParams = const PaginationParams(),
   });
 }

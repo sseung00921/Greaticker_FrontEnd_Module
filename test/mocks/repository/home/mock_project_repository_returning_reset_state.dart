@@ -28,17 +28,16 @@ class MockProjectRepositoryReturningReset extends ProjectRepositoryBase {
   ApiResponse<GotStickerModel> mockGotStickerData =
   ApiResponse<GotStickerModel>(
     isSuccess: true,
-    isError: false,
     data: GotStickerModel(id: "1", isAlreadyGotTodaySticker: false),
   );
-  ApiResponse<String> mockAipResponseData = ApiResponse<String>(isSuccess: true, isError: false);
+  ApiResponse<String> mockAipResponseData = ApiResponse<String>(isSuccess: true,);
 
   @override
-  Future<ProjectModel> getProjectModel() async {
+  Future<ApiResponse<ProjectModel>> getProjectModel() async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return mockResetStateData;
+    return ApiResponse(isSuccess: true, data:mockResetStateData);
   }
 
   @override

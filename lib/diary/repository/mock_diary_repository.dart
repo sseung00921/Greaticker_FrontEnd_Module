@@ -20,7 +20,7 @@ final MockDiaryRepositoryProvider = Provider<MockDiaryRepository>(
 
 class MockDiaryRepository extends DiaryRepositoryBase {
   MockDiaryRepository(Dio dio, {required String baseUrl});
-
+  
   DiaryModel mockData = DiaryModel(id: "1", stickerInventory: [
     "1",
     "12",
@@ -52,12 +52,13 @@ class MockDiaryRepository extends DiaryRepositoryBase {
     "20"
   });
 
+
   @override
-  Future<DiaryModel> getDiaryModel() async {
+  Future<ApiResponse<DiaryModel>> getDiaryModel() async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return mockData;
+    return ApiResponse(isSuccess: true, data: mockData);
   }
 
   @override
@@ -65,7 +66,7 @@ class MockDiaryRepository extends DiaryRepositoryBase {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return ApiResponse(isSuccess: true, isError: false);
+    return ApiResponse(isSuccess: true);
   }
 
   @override
@@ -73,7 +74,7 @@ class MockDiaryRepository extends DiaryRepositoryBase {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return ApiResponse(isSuccess: true, isError: false);
+    return ApiResponse(isSuccess: true);
   }
 
 }

@@ -52,11 +52,11 @@ class MockDiaryRepository extends DiaryRepositoryBase {
     "20"
   });
 
-  Future<DiaryModel> getDiaryModel() async {
+  Future<ApiResponse<DiaryModel>> getDiaryModel() async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return mockData;
+    return ApiResponse(isSuccess: true, data: mockData);
   }
 
   @override
@@ -64,7 +64,7 @@ class MockDiaryRepository extends DiaryRepositoryBase {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return ApiResponse(isSuccess: true, isError: false);
+    return ApiResponse(isSuccess: true,);
   }
 
   @override
@@ -72,6 +72,6 @@ class MockDiaryRepository extends DiaryRepositoryBase {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return ApiResponse(isSuccess: true, isError: false);
+    return ApiResponse(isSuccess: true,);
   }
 }

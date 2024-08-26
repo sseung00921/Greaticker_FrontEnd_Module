@@ -8,7 +8,7 @@ import '../../../repository/home/mock_project_repository_returning_already_got_t
 import '../sticker/mock_got_sticker_provider_returning_already_got_today_sticker.dart';
 
 final mockProjectProviderReturningAlreadyGotTodaySticker =
-StateNotifierProvider<ProjectStateNotifier, ProjectModelBase>((ref) {
+StateNotifierProvider<ProjectStateNotifier, ApiResponseBase>((ref) {
   final repo = ref.watch(MockProjectRepositoryReturningAlreadyGotTodayStickerProvider);
   final notifier = ProjectStateNotifier(repository: repo);
 

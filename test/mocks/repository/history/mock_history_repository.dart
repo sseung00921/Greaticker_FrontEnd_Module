@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/data.dart';
 import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/dio/dio.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/model/pagination_params.dart';
 import 'package:greaticker/common/repository/base_pagination_repository.dart';
@@ -83,7 +84,7 @@ class MockHistoryRepository implements IBasePaginationRepository<HistoryModel> {
   });
 
 
-  Future<CursorPagination<HistoryModel>> paginate ({PaginationParams? paginationParams = const PaginationParams()}) async {
+  Future<ApiResponse<CursorPagination<HistoryModel>>> paginate ({PaginationParams? paginationParams = const PaginationParams()}) async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
@@ -103,6 +104,6 @@ class MockHistoryRepository implements IBasePaginationRepository<HistoryModel> {
           int.parse(paginationParams.after!),
           int.parse(paginationParams.after!) + 10);
     }
-    return CursorPagination(meta: mockMeta, data: slicedMockData);
+    return ApiResponse(isSuccess: true, data: CursorPagination(meta: mockMeta, data: slicedMockData));
   }
 }

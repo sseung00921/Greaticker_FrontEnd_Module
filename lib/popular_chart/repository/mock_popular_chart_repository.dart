@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/data.dart';
 import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/dio/dio.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/model/pagination_params.dart';
 import 'package:greaticker/common/repository/base_pagination_repository.dart';
@@ -33,7 +34,7 @@ class MockPopularChartRepository implements IBasePaginationRepository<PopularCha
     });
 
 
-  Future<CursorPagination<PopularChartModel>> paginate ({PaginationParams? paginationParams = const PaginationParams()}) async {
+  Future<ApiResponse<CursorPagination<PopularChartModel>>> paginate ({PaginationParams? paginationParams = const PaginationParams()}) async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
@@ -42,7 +43,7 @@ class MockPopularChartRepository implements IBasePaginationRepository<PopularCha
 
     List<PopularChartModel> MockData = mockData;
 
-    return CursorPagination(meta: mockMeta, data: mockData);
+    return ApiResponse(isSuccess: true, data: CursorPagination(meta: mockMeta, data: mockData));
   }
 }
 

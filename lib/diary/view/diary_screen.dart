@@ -22,7 +22,7 @@ class DiaryScreen extends ConsumerStatefulWidget {
   static String get routeName => 'DiaryScreen';
 
   final Key key;
-  final StateNotifierProvider<DiaryStateNotifier, DiaryModelBase> provider;
+  final StateNotifierProvider<DiaryStateNotifier, ApiResponseBase> provider;
 
   const DiaryScreen({
     required this.key,

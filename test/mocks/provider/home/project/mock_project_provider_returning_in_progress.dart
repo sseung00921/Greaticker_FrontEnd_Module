@@ -8,7 +8,7 @@ import '../../../repository/home/mock_project_repository_returning_in_progress_s
 import '../sticker/mock_got_sticker_provider.dart';
 
 final mockProjectProviderReturningInProgress =
-StateNotifierProvider<ProjectStateNotifier, ProjectModelBase>((ref) {
+StateNotifierProvider<ProjectStateNotifier, ApiResponseBase>((ref) {
   final repo = ref.watch(MockProjectRepositoryReturningInProgressProvider);
   final notifier = ProjectStateNotifier(repository: repo);
 

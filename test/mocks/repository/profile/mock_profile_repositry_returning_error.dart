@@ -22,15 +22,15 @@ class MockProfileRepositoryReturningError extends ProfileRepositoryBase {
   MockProfileRepositoryReturningError(Dio dio, {required String baseUrl});
 
   ApiResponse<String> mockAipResponseData =
-      ApiResponse<String>(isSuccess: true, isError: false);
+      ApiResponse<String>(isSuccess: true,);
 
   ApiResponse<String> mockChangeNicknameAipResponseData =
-      ApiResponse<String>(isSuccess: true, isError: false, data: "뉴뾰롱뾰롱이");
+      ApiResponse<String>(isSuccess: true, data: "뉴뾰롱뾰롱이");
 
   
   
   @override
-  Future<ProfileModel> getProfileModel() async {
+  Future<ApiResponse<ProfileModel>> getProfileModel() async {
     // TODO: implement getProfileModel
     throw Exception();
   }

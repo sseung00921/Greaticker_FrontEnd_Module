@@ -21,7 +21,7 @@ final MockDiaryRepositoryReturningErrorProvider = Provider<MockDiaryRepositoryRe
 class MockDiaryRepositoryReturingError extends DiaryRepositoryBase{
   MockDiaryRepositoryReturingError(Dio dio, {required String baseUrl});
 
-  Future<DiaryModel> getDiaryModel() async {
+  Future<ApiResponse<DiaryModel>> getDiaryModel() async {
     throw Exception();
   }
 
@@ -30,7 +30,7 @@ class MockDiaryRepositoryReturingError extends DiaryRepositoryBase{
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return ApiResponse(isSuccess: true, isError: false);
+    return ApiResponse(isSuccess: true,);
   }
 
   @override
@@ -38,6 +38,6 @@ class MockDiaryRepositoryReturingError extends DiaryRepositoryBase{
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return ApiResponse(isSuccess: true, isError: false);
+    return ApiResponse(isSuccess: true,);
   }
 }

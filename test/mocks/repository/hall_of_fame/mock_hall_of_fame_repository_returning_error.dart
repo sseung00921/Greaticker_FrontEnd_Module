@@ -26,7 +26,7 @@ class MockHallOfFameRepositoryReturningError extends HallOfFameRepositoryBase im
   MockHallOfFameRepositoryReturningError(Dio dio, {required String baseUrl});
 
 
-  Future<CursorPagination<HallOfFameModel>> paginate ({PaginationParams? paginationParams = const PaginationParams()}) async {
+  Future<ApiResponse<CursorPagination<HallOfFameModel>>> paginate ({PaginationParams? paginationParams = const PaginationParams()}) async {
     throw Exception();
   }
 

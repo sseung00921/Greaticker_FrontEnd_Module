@@ -16,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
   static String get routeName => 'ProfileScreen';
   
   final Key key;
-  final StateNotifierProvider<ProfileStateNotifier, ProfileModelBase> profileProvider;
+  final StateNotifierProvider<ProfileStateNotifier, ApiResponseBase> profileProvider;
   final StateNotifierProvider<ProfileApiResponseStateNotifier, ApiResponseBase> profileApiResponseProvider;
 
   const ProfileScreen({

@@ -9,7 +9,7 @@ import 'package:greaticker/profile/repository/mock_profile_repositry.dart';
 import 'package:greaticker/profile/repository/profile_repository.dart';
 
 final profileProvider =
-StateNotifierProvider<ProfileStateNotifier, ProfileModelBase>((ref) {
+StateNotifierProvider<ProfileStateNotifier, ApiResponseBase>((ref) {
   final repo = ref.watch(MockProfileRepositoryProvider);
   final notifier = ProfileStateNotifier(repository: repo);
 
@@ -27,10 +27,10 @@ StateNotifierProvider<ProfileStateNotifier, ProfileModelBase>((ref) {
   return notifier;
 });
 
-class ProfileStateNotifier extends StateNotifier<ProfileModelBase> {
+class ProfileStateNotifier extends StateNotifier<ApiResponseBase> {
   final ProfileRepositoryBase repository;
 
-  ProfileStateNotifier({required this.repository}) : super(ProfileModelLoading()) {
+  ProfileStateNotifier({required this.repository}) : super(ApiResponseLoading()) {
     getProfileModel();
   }
 
@@ -41,15 +41,15 @@ class ProfileStateNotifier extends StateNotifier<ProfileModelBase> {
     } catch (e, stack) {
       print(e);
       print(stack);
-      state = ProfileModelError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+      state = ApiResponseError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
     }
   }
 
   void setLoadingState() {
-    state = ProfileModelLoading();
+    state = ApiResponseLoading();
   }
 
   void setErrorState() {
-    state = ProfileModelError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+    state = ApiResponseError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
   }
 }

@@ -23,20 +23,20 @@ class MockProfileRepository extends ProfileRepositoryBase {
   
   ProfileModel mockProfileData = ProfileModel(userNickname: "뾰롱뾰롱이");
   ApiResponse<String> mockAipResponseData =
-      ApiResponse<String>(isSuccess: true, isError: false);
+      ApiResponse<String>(isSuccess: true,);
 
   ApiResponse<String> mockChangeNicknameAipResponseData =
-      ApiResponse<String>(isSuccess: true, isError: false, data: "뉴뾰롱뾰롱이");
+      ApiResponse<String>(isSuccess: true, data: "뉴뾰롱뾰롱이");
 
   
   
   @override
-  Future<ProfileModel> getProfileModel() async {
+  Future<ApiResponse<ProfileModel>> getProfileModel() async {
     // TODO: implement getProfileModel
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return mockProfileData;
+    return ApiResponse(isSuccess: true, data: mockProfileData);
   }
 
   @override

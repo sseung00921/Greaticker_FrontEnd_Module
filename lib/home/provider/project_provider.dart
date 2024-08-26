@@ -12,7 +12,7 @@ import 'package:greaticker/home/repository/mock_project_repository.dart';
 import 'package:greaticker/home/repository/project_repository.dart';
 
 final projectProvider =
-StateNotifierProvider<ProjectStateNotifier, ProjectModelBase>((ref) {
+StateNotifierProvider<ProjectStateNotifier, ApiResponseBase>((ref) {
   final repo = ref.watch(MockProjectRepositoryProvider);
   final notifier = ProjectStateNotifier(repository: repo);
 
@@ -51,10 +51,10 @@ StateNotifierProvider<ProjectStateNotifier, ProjectModelBase>((ref) {
   return notifier;
 });
 
-class ProjectStateNotifier extends StateNotifier<ProjectModelBase> {
+class ProjectStateNotifier extends StateNotifier<ApiResponseBase> {
   final ProjectRepositoryBase repository;
 
-  ProjectStateNotifier({required this.repository}) : super(ProjectModelLoading()) {
+  ProjectStateNotifier({required this.repository}) : super(ApiResponseLoading()) {
     getProjectModel();
   }
 
@@ -65,19 +65,19 @@ class ProjectStateNotifier extends StateNotifier<ProjectModelBase> {
     } catch (e, stack) {
       print(e);
       print(stack);
-      state = ProjectModelError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+      state = ApiResponseError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
     }
   }
 
   void updateProjectState(ProjectModel updatedState) {
-    state = updatedState;
+    state = ApiResponse(isSuccess: true, data: updatedState);
   }
 
   void setLoadingState() {
-    state = ProjectModelLoading();
+    state = ApiResponseLoading();
   }
 
   void setErrorState() {
-    state = ProjectModelError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+    state = ApiResponseError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
   }
 }

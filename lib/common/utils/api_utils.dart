@@ -17,7 +17,7 @@ class ApiUtils {
   }) {
     ApiResponseBase responseState = ref.read(apiResponseProvider);
     if (responseState is ApiResponseError ||
-        responseState is ApiResponse && responseState.isError) {
+        responseState is ApiResponse && !responseState.isSuccess) {
       showOnlyCloseDialog(
         context: context,
         comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,

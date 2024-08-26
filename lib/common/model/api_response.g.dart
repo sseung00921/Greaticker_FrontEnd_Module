@@ -12,7 +12,7 @@ ApiResponse<T> _$ApiResponseFromJson<T>(
 ) =>
     ApiResponse<T>(
       isSuccess: json['isSuccess'] as bool,
-      isError: json['isError'] as bool,
+      messeage: json['messeage'] as String?,
       data: _$nullableGenericFromJson(json['data'], fromJsonT),
     );
 
@@ -22,7 +22,7 @@ Map<String, dynamic> _$ApiResponseToJson<T>(
 ) =>
     <String, dynamic>{
       'isSuccess': instance.isSuccess,
-      'isError': instance.isError,
+      'messeage': instance.messeage,
       'data': _$nullableGenericToJson(instance.data, toJsonT),
     };
 

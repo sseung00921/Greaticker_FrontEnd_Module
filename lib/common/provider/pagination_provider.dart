@@ -5,6 +5,7 @@ import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/pagenation.dart';
 import 'package:greaticker/common/constants/runtime.dart';
+import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/model/model_with_id.dart';
 import 'package:greaticker/common/model/pagination_params.dart';
@@ -149,6 +150,8 @@ U extends IBasePaginationRepository<T>>
       final resp = await repository.paginate(
         paginationParams: paginationParams,
       );
+      resp as ApiResponse;
+      CursorPagination<T> fetchedData = resp.data as CursorPagination<T>;
 
       if (state is CursorPaginationFetchingMore) {
         final pState = state as CursorPaginationFetchingMore<T>;
@@ -156,14 +159,14 @@ U extends IBasePaginationRepository<T>>
         // 기존 데이터에
         // 새로운 데이터 추가
 
-        state = resp.copyWith(
+        state = fetchedData.copyWith(
           data: [
             ...pState.data,
-            ...resp.data,
+            ...fetchedData.data,
           ]
         );
       } else {
-        state = resp;
+        state = fetchedData;
       }
     } catch (e, stack) {
       print(e);

@@ -404,9 +404,11 @@ void main() {
         .tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!));
     await tester.pumpAndSettle();
 
-    final ProjectModelBase currentProjectState =
+    final ApiResponseBase currentResponseState =
         container.read(mockProjectProviderReturningInProgress);
-    currentProjectState as ProjectModel;
+    currentResponseState as ApiResponse;
+    ProjectModel currentProjectState = currentResponseState.data as ProjectModel;
+
     final ApiResponseBase apiResponseState =
         container.read(mockGotStickerProvider);
     apiResponseState as ApiResponse;
@@ -602,9 +604,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    final ProjectModelBase currentProjectState =
-        container.read(mockProjectProviderReturningInProgress);
-    currentProjectState as ProjectModel;
+    final ApiResponseBase currentResponseState =
+    container.read(mockProjectProviderReturningInProgress);
+    currentResponseState as ApiResponse;
+    ProjectModel currentProjectState = currentResponseState.data as ProjectModel;
 
     await tester
         .tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['show_calendar']!));

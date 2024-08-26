@@ -19,7 +19,7 @@ class _HallOfFameRepository implements HallOfFameRepository {
   String? baseUrl;
 
   @override
-  Future<CursorPagination<HallOfFameModel>> paginate(
+  Future<ApiResponse<CursorPagination<HallOfFameModel>>> paginate(
       {paginationParams = const PaginationParams()}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -29,7 +29,7 @@ class _HallOfFameRepository implements HallOfFameRepository {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CursorPagination<HallOfFameModel>>(Options(
+        _setStreamType<ApiResponse<CursorPagination<HallOfFameModel>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -41,9 +41,12 @@ class _HallOfFameRepository implements HallOfFameRepository {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = CursorPagination<HallOfFameModel>.fromJson(
+    final value = ApiResponse<CursorPagination<HallOfFameModel>>.fromJson(
       _result.data!,
-      (json) => HallOfFameModel.fromJson(json as Map<String, dynamic>),
+      (json) => CursorPagination<HallOfFameModel>.fromJson(
+        json as Map<String, dynamic>,
+        (json) => HallOfFameModel.fromJson(json as Map<String, dynamic>),
+      ),
     );
     return value;
   }

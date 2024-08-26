@@ -19,14 +19,14 @@ class _DiaryRepository implements DiaryRepository {
   String? baseUrl;
 
   @override
-  Future<DiaryModel> getDiaryModel() async {
+  Future<ApiResponse<DiaryModel>> getDiaryModel() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<DiaryModel>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ApiResponse<DiaryModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -38,7 +38,10 @@ class _DiaryRepository implements DiaryRepository {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = DiaryModel.fromJson(_result.data!);
+    final value = ApiResponse<DiaryModel>.fromJson(
+      _result.data!,
+      (json) => DiaryModel.fromJson(json as Map<String, dynamic>),
+    );
     return value;
   }
 
