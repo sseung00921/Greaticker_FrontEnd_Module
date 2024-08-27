@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/data.dart';
 import 'package:greaticker/common/dio/dio.dart';
 import 'package:greaticker/common/model/api_response.dart';
-import 'package:greaticker/home/model/got_sticker_model.dart';
 import 'package:greaticker/home/model/project_model.dart';
 import 'package:greaticker/home/model/request_dto/project_request_dto.dart';
 import 'package:retrofit/retrofit.dart';
@@ -23,22 +22,22 @@ final ProjectRepositoryProvider = Provider<ProjectRepository>(
 abstract class ProjectRepository extends ProjectRepositoryBase{
   factory ProjectRepository(Dio dio, {String baseUrl}) = _ProjectRepository;
 
-  @GET('/')
+  @GET('/project')
   @Headers({'accessToken': 'true'})
   @override
   Future<ApiResponse<ProjectModel>> getProjectModel();
 
-  @POST('/projectState')
+  @POST('/project')
   @Headers({'accessToken': 'true'})
   @override
   Future<ApiResponse<String>> updateProjectState({
     @Body() required ProjectRequestDto projectRequestDto,
   });
 
-  @GET('/')
+  @GET('/get-sticker')
   @Headers({'accessToken': 'true'})
   @override
-  Future<ApiResponse<GotStickerModel>> getNewSticker();
+  Future<ApiResponse<String>> getNewSticker();
 }
 
 abstract class ProjectRepositoryBase {
@@ -47,6 +46,6 @@ abstract class ProjectRepositoryBase {
   Future<ApiResponse<String>> updateProjectState({
     required ProjectRequestDto projectRequestDto,
   });
-  Future<ApiResponse<GotStickerModel>> getNewSticker();
+  Future<ApiResponse<String>> getNewSticker();
 
 }

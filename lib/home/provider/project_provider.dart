@@ -14,7 +14,7 @@ import 'package:greaticker/home/repository/project_repository.dart';
 
 final projectProvider =
 StateNotifierProvider<ProjectStateNotifier, ApiResponseBase>((ref) {
-  final repo = ref.watch(MockProjectRepositoryProvider);
+  final repo = ref.watch(ProjectRepositoryProvider);
   final notifier = ProjectStateNotifier(repository: repo);
   final historyNotifier = ref.read(historyProvider.notifier);
 
@@ -24,7 +24,6 @@ StateNotifierProvider<ProjectStateNotifier, ApiResponseBase>((ref) {
     } else if (next is ApiResponseError) {
       notifier.setErrorState();
     } else {
-      //이 코드는 백엔드 개발까지 구현된 직후 다시 주석을 해제해야함 ToBeOpened
       notifier.getProjectModel();
       historyNotifier.paginate(forceRefetch: true);
     };
@@ -36,8 +35,7 @@ StateNotifierProvider<ProjectStateNotifier, ApiResponseBase>((ref) {
     } else if (next is ApiResponseError) {
       notifier.setErrorState();
     } else {
-      //이 코드는 백엔드 개발까지 구현된 직후 다시 주석을 해제해야함 ToBeOpened
-      //notifier.getProjectModel();
+      notifier.getProjectModel();
       historyNotifier.paginate(forceRefetch: true);
     };
   });

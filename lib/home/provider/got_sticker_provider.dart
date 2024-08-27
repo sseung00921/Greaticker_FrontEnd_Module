@@ -4,14 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/model/api_response.dart';
-import 'package:greaticker/home/model/got_sticker_model.dart';
 import 'package:greaticker/home/repository/mock_project_repository.dart';
 import 'package:greaticker/home/repository/project_repository.dart';
 import 'package:greaticker/common/throttle_manager/throttle_manager.dart';
 
 final gotStickerProvider =
 StateNotifierProvider<GotStickerStateNotifier, ApiResponseBase>((ref) {
-  final repo = ref.watch(MockProjectRepositoryProvider);
+  final repo = ref.watch(ProjectRepositoryProvider);
   final throttleManager = ref.read(throttleManagerProvider); // ThrottleManager 추가
 
   return GotStickerStateNotifier(repository: repo, throttleManager: throttleManager);

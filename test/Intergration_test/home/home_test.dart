@@ -11,7 +11,6 @@ import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/language/stickers.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
 import 'package:greaticker/common/model/api_response.dart';
-import 'package:greaticker/home/model/got_sticker_model.dart';
 import 'package:greaticker/home/model/project_model.dart';
 import 'package:greaticker/home/utils/got_sticker_utils.dart';
 import 'package:greaticker/home/view/home_screen.dart';
@@ -412,8 +411,7 @@ void main() {
     final ApiResponseBase apiResponseState =
         container.read(mockGotStickerProvider);
     apiResponseState as ApiResponse;
-    final currentGotStickerState = apiResponseState.data;
-    currentGotStickerState as GotStickerModel;
+    final String currentGotStickerId = apiResponseState.data;
 
     expect(find.byType(AlertDialog), findsOneWidget);
 
@@ -421,7 +419,7 @@ void main() {
         find.text(GotStickerUtils.gotStickerComment(
             currentProjectState,
             STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![
-                currentGotStickerState.id]!['name']!)),
+            currentGotStickerId]!['name']!)),
         findsOneWidget);
   });
 
@@ -617,16 +615,16 @@ void main() {
 
     expect(
         tableCalendar.selectedDayPredicate!(
-            currentProjectState.startDay!.subtract(Duration(days: 1))),
+            currentProjectState.startDate!.subtract(Duration(days: 1))),
         false);
-    expect(tableCalendar.selectedDayPredicate!(currentProjectState.startDay!),
+    expect(tableCalendar.selectedDayPredicate!(currentProjectState.startDate!),
         true);
     expect(
-        tableCalendar.selectedDayPredicate!(currentProjectState.startDay!
+        tableCalendar.selectedDayPredicate!(currentProjectState.startDate!
             .add(Duration(days: currentProjectState.dayInARow! - 2))),
         true);
     expect(
-        tableCalendar.selectedDayPredicate!(currentProjectState.startDay!
+        tableCalendar.selectedDayPredicate!(currentProjectState.startDate!
             .add(Duration(days: currentProjectState.dayInARow! - 1))),
         false);
     // expect(tableCalendar.selectedDayPredicate!(currentProjectState.startDay!), true);

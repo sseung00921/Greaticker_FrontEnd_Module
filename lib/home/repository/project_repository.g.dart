@@ -33,7 +33,7 @@ class _ProjectRepository implements ProjectRepository {
     )
             .compose(
               _dio.options,
-              '/',
+              '/project',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -62,7 +62,7 @@ class _ProjectRepository implements ProjectRepository {
     )
             .compose(
               _dio.options,
-              '/projectState',
+              '/project',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -75,28 +75,28 @@ class _ProjectRepository implements ProjectRepository {
   }
 
   @override
-  Future<ApiResponse<GotStickerModel>> getNewSticker() async {
+  Future<ApiResponse<String>> getNewSticker() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse<GotStickerModel>>(Options(
+        _setStreamType<ApiResponse<String>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/',
+              '/get-sticker',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse<GotStickerModel>.fromJson(
+    final value = ApiResponse<String>.fromJson(
       _result.data!,
-      (json) => GotStickerModel.fromJson(json as Map<String, dynamic>),
+      (json) => json as String,
     );
     return value;
   }

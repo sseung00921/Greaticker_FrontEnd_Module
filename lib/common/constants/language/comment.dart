@@ -17,7 +17,8 @@ const COMMENT_DICT= {
     "today_sticker_already_got" : "오늘의 스티커를 이미 획득하셨습니다.",
     "change_nickname_try" : "바꿀 닉네임을 입력해 주세요.",
     "change_nickname_completed" : "닉네임이 변경되었습니다.",
-    "over_nickname_length" : "닉네임은 26Byte(한글 2Byte, 영문자, 공백 1Byte)를 넘을 수 없습니다.",
+    "over_nickname_length" : "닉네임은 26Byte(한글 2Byte, 영대문자 1.5Byte, 공백과 영소문자 1Byte)를 넘을 수 없습니다.",
+    "under_nickname_length" : "닉네임은 12Byte(한글 2Byte, 영대문자 1.5Byte, 공백과 영소문자 1Byte)이상이어야 합니다.",
     "log_out_complete" : "로그아웃이 완료되었습니다.",
     "delete_account_try" : "회원 탈퇴를 하시면 언제든지 재가입하실 수 있지만 지금까지 설정한 목표 정보와 모았던 스티커 정보가 삭제됩니다. 정말 회원 탈퇴를 하시겠습니까?",
     "delete_account_complete" : "회원 탈퇴가 완료되었습니다.",
@@ -28,6 +29,9 @@ const COMMENT_DICT= {
     "delete_hall_of_fame_complete" : "삭제가 완료되었습니다.",
     //"diary_sticker_order_update_try" : "변경된 스티커 순서를 저장하시겠습니까?",
     "duplicated_hall_of_fame" : "해당 목표를 이미 명예의 전당에 등록하셨습니다.",
+    "not_allowed_character" : "특수문자는 허용되지 않습니다.",
+    "over_project_name_length" : "프로젝트 이름은 26Byte(한글 2Byte, 영대문자 1.5Byte, 공백과 영소문자 1Byte)를 넘을 수 없습니다.",
+    "under_project_name_length" : "프로젝트 이름은 6Byte(한글 2Byte, 영대문자 1.5Byte, 공백과 영소문자 1Byte)이상이어야 합니다.",
   },
   "EN" : {
     "network_error": "Failed to communicate with the server.",
@@ -45,7 +49,8 @@ const COMMENT_DICT= {
     "today_sticker_already_got": "You have already received today's sticker.",
     "change_nickname_try": "Please enter the new nickname.",
     "change_nickname_completed": "The nickname has been changed.",
-    "over_nickname_length": "The nickname cannot exceed 26 bytes (Korean characters are 2 bytes, English letters and spaces are 1 byte).",
+    "over_nickname_length": "The nickname cannot exceed 26 bytes (English UpperCase letters are 1.5 bytes and English LowerCase letters and spaces are 1 byte).",
+    "under_nickname_length" : "The nickname must be at least 12 bytes (Korean characters are 2 bytes, uppercase English letters are 1.5 bytes, spaces and lowercase English letters are 1 byte).",
     "log_out_complete": "Logout completed.",
     "delete_account_try": "If you delete your account, you can re-register at any time, but your goal settings and collected stickers will be deleted. Are you sure you want to delete your account?",
     "delete_account_complete": "Account deletion completed.",
@@ -56,5 +61,8 @@ const COMMENT_DICT= {
     "delete_hall_of_fame_complete" : "Deletion has been completed.",
     //"diary_sticker_order_update_try" : "Would you like to save the updated sticker order?",
     "duplicated_hall_of_fame" : "The goal has already been registered in the Hall of Fame.ㅂ",
+    "not_allowed_character" : "The use of special characters is not allowed.",
+    "over_project_name_length" : "The project name cannot exceed 26 bytes (English UpperCase letters are 1.5 bytes and English LowerCase letters and spaces are 1 byte).",
+    "under_project_name_length" : "The project name must be at least 6 bytes (Korean characters are 2 bytes, uppercase English letters are 1.5 bytes, spaces and lowercase English letters are 1 byte).",
   }
 };

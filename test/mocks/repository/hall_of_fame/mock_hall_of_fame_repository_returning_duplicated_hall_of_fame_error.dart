@@ -98,7 +98,7 @@ class MockHallOfFameRepositoryReturningDuplicatedHallOfFameError extends HallOfF
       await Future.delayed(Duration(seconds: 1));
     }
 
-    return ApiResponse(isSuccess: false, messeage: DUPLICATED_HALL_OF_FAME);
+    return ApiResponse(isSuccess: false, message: DUPLICATED_HALL_OF_FAME);
   }
 
   Future<ApiResponse<String>> deleteHallOfFame({

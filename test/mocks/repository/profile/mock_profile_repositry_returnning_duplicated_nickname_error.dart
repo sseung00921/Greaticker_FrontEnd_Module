@@ -26,7 +26,7 @@ class MockProfileRepositoryReturningDuplicatedNicknameError extends ProfileRepos
       ApiResponse<String>(isSuccess: true,);
 
   ApiResponse<String> mockChangeNicknameAipResponseData =
-      ApiResponse<String>(isSuccess: false, messeage: DUPLICATED_NICKNAME);
+      ApiResponse<String>(isSuccess: false, message: DUPLICATED_NICKNAME);
 
 
 

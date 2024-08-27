@@ -11,7 +11,7 @@ import 'package:greaticker/common/throttle_manager/throttle_manager.dart';
 
 final projectApiResponseProvider =
 StateNotifierProvider<ProjectApiResponseStateNotifier, ApiResponseBase>((ref) {
-  final repo = ref.watch(MockProjectRepositoryProvider);
+  final repo = ref.watch(ProjectRepositoryProvider);
   final throttleManager = ref.read(throttleManagerProvider); // ThrottleManager 추가
 
   return ProjectApiResponseStateNotifier(repository: repo, throttleManager: throttleManager);
@@ -36,6 +36,8 @@ class ProjectApiResponseStateNotifier extends StateNotifier<ApiResponseBase> {
         final resp = await repository.updateProjectState(
             projectRequestDto: projectRequestDto);
         state = resp;
+        print(resp.isSuccess);
+        print(resp.message);
         return state;
       } catch (e, stack) {
         print(e);

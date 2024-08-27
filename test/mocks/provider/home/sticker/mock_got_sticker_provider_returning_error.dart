@@ -4,7 +4,6 @@ import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/throttle_manager/throttle_manager.dart';
-import 'package:greaticker/home/model/got_sticker_model.dart';
 import 'package:greaticker/home/provider/got_sticker_provider.dart';
 import 'package:greaticker/home/repository/project_repository.dart';
 

@@ -10,9 +10,9 @@ ProjectModel _$ProjectModelFromJson(Map<String, dynamic> json) => ProjectModel(
       projectStateKind:
           $enumDecode(_$ProjectStateKindEnumMap, json['projectStateKind']),
       projectName: json['projectName'] as String?,
-      startDay: json['startDay'] == null
+      startDate: json['startDate'] == null
           ? null
-          : DateTime.parse(json['startDay'] as String),
+          : DateTime.parse(json['startDate'] as String),
       dayInARow: (json['dayInARow'] as num?)?.toInt() ?? 0,
     );
 
@@ -20,7 +20,7 @@ Map<String, dynamic> _$ProjectModelToJson(ProjectModel instance) =>
     <String, dynamic>{
       'projectStateKind': _$ProjectStateKindEnumMap[instance.projectStateKind]!,
       'projectName': instance.projectName,
-      'startDay': instance.startDay?.toIso8601String(),
+      'startDate': instance.startDate?.toIso8601String(),
       'dayInARow': instance.dayInARow,
     };
 

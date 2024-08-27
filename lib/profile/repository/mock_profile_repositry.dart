@@ -47,7 +47,7 @@ class MockProfileRepository extends ProfileRepositoryBase {
     }
 
     if (changeNicknameRequestDto.newNickname == "뾰롱뾰롱이") {
-      return ApiResponse(isSuccess: false, messeage: DUPLICATED_NICKNAME);
+      return ApiResponse(isSuccess: false, message: DUPLICATED_NICKNAME);
     } else {
       mockChangeNicknameAipResponseData.data = "뉴뾰롱뾰롱이";
       return mockChangeNicknameAipResponseData;

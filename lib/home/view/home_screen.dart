@@ -6,8 +6,6 @@ import 'package:greaticker/common/constants/widget_keys.dart';
 import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/hall_of_fame/provider/hall_of_fame_api_response_provider.dart';
 import 'package:greaticker/home/component/home_view.dart';
-import 'package:greaticker/home/model/got_sticker_model.dart';
-import 'package:greaticker/home/model/project_model.dart';
 import 'package:greaticker/home/provider/got_sticker_provider.dart';
 import 'package:greaticker/home/provider/project_api_response_provider.dart';
 import 'package:greaticker/home/provider/project_provider.dart';

@@ -6,7 +6,6 @@ import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/dio/dio.dart';
 import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/home/model/enum/project_state_kind.dart';
-import 'package:greaticker/home/model/got_sticker_model.dart';
 import 'package:greaticker/home/model/project_model.dart';
 import 'package:greaticker/home/model/request_dto/project_request_dto.dart';
 import 'package:greaticker/home/repository/project_repository.dart';
@@ -24,13 +23,13 @@ class MockProjectRepositoryReturningNoExist extends ProjectRepositoryBase {
 
   ProjectModel mockCompletedStateData = ProjectModel(
       projectStateKind: ProjectStateKind.NO_EXIST,
-      startDay: DateTime.now(),
+      startDate: DateTime.now(),
       dayInARow: 0
   );
-  ApiResponse<GotStickerModel> mockGotStickerData =
-  ApiResponse<GotStickerModel>(
+  ApiResponse<String> mockGotStickerData =
+  ApiResponse<String>(
     isSuccess: true,
-    data: GotStickerModel(id: "1", isAlreadyGotTodaySticker: false),
+    data: "1",
   );
   ApiResponse<String> mockAipResponseData = ApiResponse<String>(isSuccess: true,);
 
@@ -43,7 +42,7 @@ class MockProjectRepositoryReturningNoExist extends ProjectRepositoryBase {
   }
 
   @override
-  Future<ApiResponse<GotStickerModel>> getNewSticker() async {
+  Future<ApiResponse<String>> getNewSticker() async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }

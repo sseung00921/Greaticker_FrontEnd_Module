@@ -6,7 +6,6 @@ import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/dio/dio.dart';
 import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/home/model/enum/project_state_kind.dart';
-import 'package:greaticker/home/model/got_sticker_model.dart';
 import 'package:greaticker/home/model/project_model.dart';
 import 'package:greaticker/home/model/request_dto/project_request_dto.dart';
 import 'package:greaticker/home/repository/project_repository.dart';
@@ -25,10 +24,10 @@ class MockProjectRepositoryReturningError extends ProjectRepositoryBase {
   ProjectModel mockErrorData = ProjectModel(
     projectStateKind: ProjectStateKind.NO_EXIST,
   );
-  ApiResponse<GotStickerModel> mockGotStickerData =
-  ApiResponse<GotStickerModel>(
+  ApiResponse<String> mockGotStickerData =
+  ApiResponse<String>(
     isSuccess: true,
-    data: GotStickerModel(id: "1", isAlreadyGotTodaySticker: false),
+    data: "1",
   );
   ApiResponse<String> mockAipResponseData = ApiResponse<String>(isSuccess: true,);
 
@@ -38,7 +37,7 @@ class MockProjectRepositoryReturningError extends ProjectRepositoryBase {
   }
 
   @override
-  Future<ApiResponse<GotStickerModel>> getNewSticker() async {
+  Future<ApiResponse<String>> getNewSticker() async {
     throw Exception();
   }
 

@@ -8,13 +8,13 @@ part 'project_model.g.dart';
 class ProjectModel {
   final ProjectStateKind projectStateKind;
   final String? projectName;
-  final DateTime? startDay;
+  final DateTime? startDate;
   final int? dayInARow;
 
   ProjectModel({
     required this.projectStateKind,
     this.projectName,
-    this.startDay,
+    this.startDate,
     this.dayInARow = 0,
   });
 
@@ -27,7 +27,7 @@ class ProjectModel {
     return ProjectModel(
       projectStateKind: projectStateKind ?? this.projectStateKind,
       projectName: projectName ?? this.projectName,
-      startDay: startDay ?? this.startDay,
+      startDate: startDay ?? this.startDate,
       dayInARow: dayInARow ?? this.dayInARow,
     );
   }
