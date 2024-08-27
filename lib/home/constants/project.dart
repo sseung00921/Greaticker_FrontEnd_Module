@@ -1,1 +1,1 @@
-final int COMPLETE_DAY_CNT = 30;
+final int COMPLETE_DAY_CNT = 24;

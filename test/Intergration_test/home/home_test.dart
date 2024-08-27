@@ -417,7 +417,7 @@ void main() {
 
     expect(
         find.text(GotStickerUtils.gotStickerComment(
-            currentProjectState,
+            currentProjectState.copyWith(dayInARow: currentProjectState.dayInARow),
             STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![
             currentGotStickerId]!['name']!)),
         findsOneWidget);

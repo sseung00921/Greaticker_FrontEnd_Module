@@ -180,7 +180,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
                     ),
                     SizedBox(width: 10),
                     Text(
-                      '${(projectState.dayInARow! / COMPLETE_DAY_CNT * 30).round()}/${COMPLETE_DAY_CNT}',
+                      '${projectState.dayInARow!}/${COMPLETE_DAY_CNT}',
                       style: TextStyle(fontSize: 16),
                     ),
                   ],
@@ -283,9 +283,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
               imagePath:
                   UrlBuilderUtils.imageUrlBuilderByStickerId(gotStickerId),
             );
-
-            plusDayInARow(projectState);
-
+            projectState = plusDayInARow(projectState);
             if (projectState.dayInARow == COMPLETE_DAY_CNT) {
               await _processToCompleteState(projectState);
             }
@@ -327,23 +325,18 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
     }
   }
 
-  void updateProjectStateAsCompleted(ProjectModel projectState) {
-    ref.read(widget.projectProvider.notifier).updateProjectState(
-          projectState.copyWith(
-              projectStateKind: ProjectStateKind.COMPLETED, dayInARow: 30),
-        );
-    showOnlyCloseDialog(
-        context: context,
-        comment:
-            COMMENT_DICT[dotenv.get(LANGUAGE)]!['complete_project_notice']!);
-  }
-
-  void plusDayInARow(ProjectModel projectState) {
+  ProjectModel plusDayInARow(ProjectModel projectState) {
     ref
         .read(widget.projectProvider.notifier)
         .updateProjectState(projectState.copyWith(
           dayInARow: projectState.dayInARow! + 1,
         ));
+
+    final state = ref.read(widget.projectProvider);
+    state as ApiResponse;
+    projectState = state.data;
+
+    return projectState;
   }
 
   ElevatedButton _buildCreateProjectButton(ProjectModel projectState) {
@@ -433,7 +426,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
             onYes: () async {
               ProjectRequestDto projectRequestDto = ProjectRequestDto(
                   prevProjectState: projectState.projectStateKind,
-                  nextProjectState: ProjectStateKind.COMPLETED);
+                  nextProjectState: ProjectStateKind.NO_EXIST);
               final responseState = await ref
                   .read(widget.projectApiResponseProvider.notifier)
                   .updateProjectState(

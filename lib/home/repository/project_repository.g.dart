@@ -83,7 +83,7 @@ class _ProjectRepository implements ProjectRepository {
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<ApiResponse<String>>(Options(
-      method: 'GET',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )

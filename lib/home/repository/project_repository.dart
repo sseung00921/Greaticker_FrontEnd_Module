@@ -34,7 +34,7 @@ abstract class ProjectRepository extends ProjectRepositoryBase{
     @Body() required ProjectRequestDto projectRequestDto,
   });
 
-  @GET('/get-sticker')
+  @POST('/get-sticker')
   @Headers({'accessToken': 'true'})
   @override
   Future<ApiResponse<String>> getNewSticker();
