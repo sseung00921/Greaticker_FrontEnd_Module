@@ -7,14 +7,12 @@ import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/throttle_manager/throttle_manager.dart';
 import 'package:greaticker/diary/model/request_dto/diary_model_request_dto.dart';
 import 'package:greaticker/diary/model/request_dto/hit_favorite_to_sticker_reqeust_dto.dart';
-import 'package:greaticker/diary/repository/mock_diary_repository.dart';
-import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_request_dto.dart';
-import 'package:greaticker/hall_of_fame/model/request_dto/hit_good_to_project_request_dto.dart';
+import 'package:greaticker/diary/repository/diary_repository.dart';
 
 final diaryApiResponseProvider =
     StateNotifierProvider<DiaryApiResponseStateNotifier, ApiResponseBase>(
         (ref) {
-  final repo = ref.watch(MockDiaryRepositoryProvider);
+  final repo = ref.watch(DiaryRepositoryProvider);
   final throttleManager = ref.read(throttleManagerProvider);
 
   return DiaryApiResponseStateNotifier(
@@ -22,7 +20,7 @@ final diaryApiResponseProvider =
 });
 
 class DiaryApiResponseStateNotifier extends StateNotifier<ApiResponseBase> {
-  final MockDiaryRepository repository;
+  final DiaryRepositoryBase repository;
   final ThrottleManager throttleManager;
 
   DiaryApiResponseStateNotifier(

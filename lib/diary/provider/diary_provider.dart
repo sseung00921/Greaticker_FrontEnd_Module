@@ -4,14 +4,13 @@ import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/throttle_manager/throttle_manager.dart';
-import 'package:greaticker/diary/model/diary_model.dart';
 import 'package:greaticker/diary/provider/diary_api_response_provider.dart';
 import 'package:greaticker/diary/repository/diary_repository.dart';
 import 'package:greaticker/diary/repository/mock_diary_repository.dart';
 
 final diaryProvider =
 StateNotifierProvider<DiaryStateNotifier, ApiResponseBase>((ref) {
-  final repo = ref.watch(MockDiaryRepositoryProvider);
+  final repo = ref.watch(DiaryRepositoryProvider);
   final throttleManager = ref.read(throttleManagerProvider);
 
   final notifier = DiaryStateNotifier(repository: repo);

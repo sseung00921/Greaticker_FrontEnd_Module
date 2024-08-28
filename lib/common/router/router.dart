@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:greaticker/common/constants/params.dart';
 import 'package:greaticker/common/constants/widget_keys.dart';
+import 'package:greaticker/diary/provider/diary_api_response_provider.dart';
 import 'package:greaticker/diary/provider/diary_provider.dart';
 import 'package:greaticker/diary/view/diary_screen.dart';
 import 'package:greaticker/hall_of_fame/provider/hall_of_fame_api_response_provider.dart';
@@ -44,7 +45,8 @@ final router = GoRouter(initialLocation: '/home', routes: [
     pageBuilder: (_, state) => CustomTransitionPage(
         child: DiaryScreen(
           key: DIARY_SCREEN_KEY,
-          provider: diaryProvider,
+          diaryProvider: diaryProvider,
+          diaryApiResponseProvider: diaryApiResponseProvider,
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child; // 애니메이션 없이 바로 전환

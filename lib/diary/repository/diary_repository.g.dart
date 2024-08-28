@@ -53,6 +53,7 @@ class _DiaryRepository implements DiaryRepository {
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
+    _data.addAll(diaryModelRequestDto.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<ApiResponse<String>>(Options(
       method: 'POST',
@@ -61,7 +62,7 @@ class _DiaryRepository implements DiaryRepository {
     )
             .compose(
               _dio.options,
-              '/update',
+              '/re-order',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -81,6 +82,7 @@ class _DiaryRepository implements DiaryRepository {
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
+    _data.addAll(hitFavoriteToStickerReqeustDto.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<ApiResponse<String>>(Options(
       method: 'POST',

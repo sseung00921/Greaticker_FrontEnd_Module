@@ -7,7 +7,6 @@ part of 'diary_model.dart';
 // **************************************************************************
 
 DiaryModel _$DiaryModelFromJson(Map<String, dynamic> json) => DiaryModel(
-      id: json['id'] as String,
       stickerInventory: (json['stickerInventory'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
@@ -18,7 +17,6 @@ DiaryModel _$DiaryModelFromJson(Map<String, dynamic> json) => DiaryModel(
 
 Map<String, dynamic> _$DiaryModelToJson(DiaryModel instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'stickerInventory': instance.stickerInventory,
       'hitFavoriteList': instance.hitFavoriteList.toList(),
     };

@@ -20,6 +20,7 @@ import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/diary/model/diary_model.dart';
 import 'package:greaticker/diary/view/diary_screen.dart';
 
+import '../../mocks/provider/diary/api_response/mock_dary_api_response_provider.dart';
 import '../../mocks/provider/diary/mock_diary_provider.dart';
 import '../../mocks/provider/diary/mock_diary_provider_returning_error.dart';
 
@@ -43,7 +44,8 @@ void main() {
         child: MaterialApp(
           home: DiaryScreen(
             key: DIARY_SCREEN_KEY,
-            provider: mockDiaryProvider,
+            diaryProvider: mockDiaryProvider,
+            diaryApiResponseProvider: mockDiaryApiResponseProvider,
           ),
         ),
       ),
@@ -89,7 +91,7 @@ void main() {
         tester.widget(find.byKey(Key("Sticker-12")));
     final gesture = await tester
         .startGesture(tester.getCenter(find.byWidget(widgetDraggedForReOrder)));
-    await tester.pump(Duration(seconds: 2));
+    await tester.pump(Duration(seconds: 10));
 
     await gesture.moveBy(const Offset(-300, 0));
     await gesture.up();
@@ -134,7 +136,8 @@ void main() {
             child: MaterialApp(
               home: DiaryScreen(
                 key: DIARY_SCREEN_KEY,
-                provider: mockDiaryProvider,
+                diaryProvider: mockDiaryProvider,
+                diaryApiResponseProvider: mockDiaryApiResponseProvider,
               ),
             ),
           ),
@@ -165,7 +168,8 @@ void main() {
             child: MaterialApp(
               home: DiaryScreen(
                 key: DIARY_SCREEN_KEY,
-                provider: mockDiaryProvider,
+                diaryProvider: mockDiaryProvider,
+                diaryApiResponseProvider: mockDiaryApiResponseProvider,
               ),
             ),
           ),
@@ -204,7 +208,8 @@ void main() {
             child: MaterialApp(
               home: DiaryScreen(
                 key: DIARY_SCREEN_KEY,
-                provider: mockDiaryProvider,
+                diaryProvider: mockDiaryProvider,
+                diaryApiResponseProvider: mockDiaryApiResponseProvider,
               ),
             ),
           ),
@@ -242,7 +247,8 @@ void main() {
             child: MaterialApp(
               home: DiaryScreen(
                 key: DIARY_SCREEN_KEY,
-                provider: mockDiaryProvider,
+                diaryProvider: mockDiaryProvider,
+                diaryApiResponseProvider: mockDiaryApiResponseProvider,
               ),
             ),
           ),
@@ -280,7 +286,8 @@ void main() {
             child: MaterialApp(
               home: DiaryScreen(
                 key: DIARY_SCREEN_KEY,
-                provider: mockDiaryProvider,
+                diaryProvider: mockDiaryProvider,
+                diaryApiResponseProvider: mockDiaryApiResponseProvider,
               ),
             ),
           ),
@@ -328,7 +335,8 @@ void main() {
         child: MaterialApp(
           home: DiaryScreen(
             key: DIARY_SCREEN_KEY,
-            provider: mockDiaryProvider,
+            diaryProvider: mockDiaryProvider,
+            diaryApiResponseProvider: mockDiaryApiResponseProvider,
           ),
         ),
       ),
@@ -346,7 +354,8 @@ void main() {
         child: MaterialApp(
           home: DiaryScreen(
             key: DIARY_SCREEN_KEY,
-            provider: mockDiaryProvider,
+            diaryProvider: mockDiaryProvider,
+            diaryApiResponseProvider: mockDiaryApiResponseProvider,
           ),
         ),
       ),
@@ -372,7 +381,8 @@ void main() {
         child: MaterialApp(
           home: DiaryScreen(
             key: DIARY_SCREEN_KEY,
-            provider: mockDiaryProviderReturningError,
+            diaryProvider: mockDiaryProviderReturningError,
+            diaryApiResponseProvider: mockDiaryApiResponseProvider,
           ),
         ),
       ),
@@ -389,7 +399,8 @@ void main() {
         child: MaterialApp(
           home: DiaryScreen(
             key: DIARY_SCREEN_KEY,
-            provider: mockDiaryProviderReturningError,
+            diaryProvider: mockDiaryProviderReturningError,
+            diaryApiResponseProvider: mockDiaryApiResponseProvider,
           ),
         ),
       ),
@@ -413,7 +424,8 @@ void main() {
         child: MaterialApp(
           home: DiaryScreen(
             key: DIARY_SCREEN_KEY,
-            provider: mockDiaryProvider,
+            diaryProvider: mockDiaryProvider,
+            diaryApiResponseProvider: mockDiaryApiResponseProvider,
           ),
         ),
       ),

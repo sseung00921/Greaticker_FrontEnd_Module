@@ -21,7 +21,7 @@ final MockDiaryRepositoryProvider = Provider<MockDiaryRepository>(
 class MockDiaryRepository extends DiaryRepositoryBase {
   MockDiaryRepository(Dio dio, {required String baseUrl});
   
-  DiaryModel mockData = DiaryModel(id: "1", stickerInventory: [
+  DiaryModel mockData = DiaryModel(stickerInventory: [
     "1",
     "12",
     "21",

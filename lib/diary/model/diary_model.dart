@@ -7,13 +7,11 @@ import 'package:collection/collection.dart';
 part 'diary_model.g.dart';
 
 @JsonSerializable()
-class DiaryModel implements IModelWithId   {
-  final String id;
+class DiaryModel {
   final List<String> stickerInventory;
   final Set<String> hitFavoriteList;
 
   DiaryModel({
-    required this.id,
     required this.stickerInventory,
     required this.hitFavoriteList,
   });

@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/component/modal/only_close_modal.dart';
 import 'package:greaticker/common/component/text_style.dart';
+import 'package:greaticker/common/constants/error_message/error_message.dart';
 import 'package:greaticker/common/constants/language/button.dart';
 import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
@@ -18,11 +19,13 @@ import 'package:greaticker/diary/provider/diary_provider.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
 class DiaryGridListView<T extends IModelWithId> extends ConsumerStatefulWidget {
-  final StateNotifierProvider<DiaryStateNotifier, ApiResponseBase> provider;
+  final StateNotifierProvider<DiaryStateNotifier, ApiResponseBase> diaryProvider;
+  final StateNotifierProvider<DiaryApiResponseStateNotifier, ApiResponseBase> diaryApiResponseProvider;
 
   const DiaryGridListView({
     Key? key,
-    required this.provider,
+    required this.diaryProvider,
+    required this.diaryApiResponseProvider,
   }) : super(key: key);
 
   @override
@@ -51,7 +54,7 @@ class _DiaryGridListViewState<T extends IModelWithId>
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(widget.provider);
+    final state = ref.watch(widget.diaryProvider);
 
     if (state is ApiResponseLoading) {
       return Center(
@@ -72,7 +75,7 @@ class _DiaryGridListViewState<T extends IModelWithId>
           const SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: () {
-              ref.read(widget.provider.notifier).getDiaryModel();
+              ref.read(widget.diaryProvider.notifier).getDiaryModel();
             },
             child: Text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['retry']!),
           ),
@@ -87,7 +90,7 @@ class _DiaryGridListViewState<T extends IModelWithId>
       padding: const EdgeInsets.all(8.0),
       child: RefreshIndicator(
         onRefresh: () async {
-          ref.read(widget.provider.notifier).getDiaryModel();
+          ref.read(widget.diaryProvider.notifier).getDiaryModel();
         },
         child: ReorderableGridView.count(
           crossAxisSpacing: 10,
@@ -111,9 +114,9 @@ class _DiaryGridListViewState<T extends IModelWithId>
               diaryState.stickerInventory.insert(newIndex, element);
             });
             DiaryModelRequestDto diaryModelRequestDto  = DiaryModelRequestDto(
-                id: "1", stickerInventory: diaryState.stickerInventory, hitFavoriteList: diaryState.hitFavoriteList);
+               stickerInventory: diaryState.stickerInventory,);
             final responseState = await ref
-                .read(diaryApiResponseProvider.notifier)
+                .read(widget.diaryApiResponseProvider.notifier)
                 .updateDiaryModel(diaryModelRequestDto: diaryModelRequestDto, context: context);
             if (responseState is ApiResponseError ||
                 responseState is ApiResponse && !responseState.isSuccess) {
@@ -208,15 +211,8 @@ class _DiaryGridListViewState<T extends IModelWithId>
                                 onPressed: () async {
                                     if (isFavorite) {
                                       isFavorite = await _actionToDoWhenFromFavoriteToNotFavorite(stickerId, context, diaryState, isFavorite);
-                                    } else if (!isFavorite) {
-                                      if (diaryState.hitFavoriteList.length < 3) {
-                                        isFavorite = await _actionToDoWhenFromNotFavoriteToFavorite(stickerId, context, diaryState, isFavorite);
-                                      } else if (diaryState.hitFavoriteList.length >= 3) {
-                                        showDialog(context: context, builder: (BuildContext context) {
-                                            return FavoriteStickerLimitOverAlertDialog();
-                                          }
-                                        );
-                                      };
+                                    } else {
+                                      isFavorite = await _actionToDoWhenFromNotFavoriteToFavorite(stickerId, context, diaryState, isFavorite);
                                     }
                                     _controller.forward(from: 0.01);
                                 },
@@ -245,7 +241,7 @@ class _DiaryGridListViewState<T extends IModelWithId>
     HitFavoriteToStickerReqeustDto hitFavoriteToStickerReqeustDto = HitFavoriteToStickerReqeustDto(
         stickerId: stickerId);
     final responseState = await ref
-        .read(diaryApiResponseProvider.notifier)
+        .read(widget.diaryApiResponseProvider.notifier)
         .hitFavoriteToSticker(hitFavoriteToStickerReqeustDto: hitFavoriteToStickerReqeustDto, context: context);
     if (responseState is ApiResponseError ||
         responseState is ApiResponse && !responseState.isSuccess) {
@@ -255,7 +251,6 @@ class _DiaryGridListViewState<T extends IModelWithId>
       );
     } else if (responseState is ApiResponse && responseState.isSuccess) {
       diaryState.hitFavoriteList.remove(stickerId);
-      print(diaryState.hitFavoriteList);
       setState(() {
         isFavorite = !isFavorite;
       });
@@ -267,17 +262,30 @@ class _DiaryGridListViewState<T extends IModelWithId>
     HitFavoriteToStickerReqeustDto hitFavoriteToStickerReqeustDto = HitFavoriteToStickerReqeustDto(
         stickerId: stickerId);
     final responseState = await ref
-        .read(diaryApiResponseProvider.notifier)
+        .read(widget.diaryApiResponseProvider.notifier)
         .hitFavoriteToSticker(hitFavoriteToStickerReqeustDto: hitFavoriteToStickerReqeustDto, context: context);
     if (responseState is ApiResponseError ||
         responseState is ApiResponse && !responseState.isSuccess) {
-      showOnlyCloseDialog(
-        context: context,
-        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
-      );
+      if (responseState is ApiResponse && !responseState.isSuccess) {
+          if (responseState.message == CAN_NOT_HIT_FAVORITE_BEFORE_GOT_ALL_STICKER) {
+            showOnlyCloseDialog(
+              context: context,
+              comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['can_hit_favorite_to_sticker_after_got_all_sticker']!,
+            );
+          } else if (responseState.message == OVER_HIT_FAVORITE_LIMIT) {
+            showOnlyCloseDialog(
+              context: context,
+              comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['can_not_register_favorite_sticker_more_than_3']!,
+            );
+          }
+      } else {
+        showOnlyCloseDialog(
+          context: context,
+          comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+        );
+      }
     } else if (responseState is ApiResponse && responseState.isSuccess)  {
       diaryState.hitFavoriteList.add(stickerId);
-      print(diaryState.hitFavoriteList);
       setState(() {
         isFavorite = !isFavorite;
       });
@@ -286,24 +294,3 @@ class _DiaryGridListViewState<T extends IModelWithId>
   }
 }
 
-class FavoriteStickerLimitOverAlertDialog extends StatelessWidget {
-  const FavoriteStickerLimitOverAlertDialog({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      content: Text(COMMENT_DICT[dotenv.get(LANGUAGE)]!['can_not_register_favorite_sticker_more_than_3']!,
-        style: YeongdeokSeaTextStyle(fontSize: 22.0, fontWeight: FontWeight.w500),),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text('Close'),
-        ),
-      ],
-    );
-  }
-}

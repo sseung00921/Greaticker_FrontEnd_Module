@@ -8,6 +8,7 @@ class UrlBuilderUtils {
 
   static String imageUrlBuilderByStickerId(String stickerId) {
     if (!STICKER_ID_NAME_MAPPER.containsKey(stickerId)) {
+      print(stickerId);
       throw UnListedStickerNumberException("unListed sticker number");
     }
     String stickerName = STICKER_ID_NAME_MAPPER[stickerId]!;

@@ -28,15 +28,15 @@ abstract class DiaryRepository extends DiaryRepositoryBase{
   @override
   Future<ApiResponse<DiaryModel>> getDiaryModel();
 
-  @POST('/update')
+  @POST('/re-order')
   @Headers({'accessToken': 'true'})
   @override
-  Future<ApiResponse<String>> updateDiaryModel({required DiaryModelRequestDto diaryModelRequestDto});
+  Future<ApiResponse<String>> updateDiaryModel({@Body() required DiaryModelRequestDto diaryModelRequestDto});
 
   @POST('/hit-favorite')
   @Headers({'accessToken': 'true'})
   @override
-  Future<ApiResponse<String>> hitFavoriteToSticker({required HitFavoriteToStickerReqeustDto hitFavoriteToStickerReqeustDto});
+  Future<ApiResponse<String>> hitFavoriteToSticker({@Body() required HitFavoriteToStickerReqeustDto hitFavoriteToStickerReqeustDto});
 
 }
 
