@@ -75,7 +75,7 @@ class _DiaryRepository implements DiaryRepository {
   }
 
   @override
-  Future<ApiResponse<String>> hitFavoriteToSticker(
+  Future<ApiResponse<HitFavoriteStickerModel>> hitFavoriteToSticker(
       {required hitFavoriteToStickerReqeustDto}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -84,7 +84,7 @@ class _DiaryRepository implements DiaryRepository {
     final _data = <String, dynamic>{};
     _data.addAll(hitFavoriteToStickerReqeustDto.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse<String>>(Options(
+        _setStreamType<ApiResponse<HitFavoriteStickerModel>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -96,9 +96,9 @@ class _DiaryRepository implements DiaryRepository {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse<String>.fromJson(
+    final value = ApiResponse<HitFavoriteStickerModel>.fromJson(
       _result.data!,
-      (json) => json as String,
+      (json) => HitFavoriteStickerModel.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }

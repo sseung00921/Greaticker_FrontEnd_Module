@@ -28,8 +28,6 @@ class MockPopularChartRepository implements IBasePaginationRepository<PopularCha
         id: (index + 1).toString(),
         rank: index + 1,
         hitCnt: 123,
-        createdDateTime: DateTime(2024, 8, 14),
-        updatedDateTime: DateTime(2024, 8, 14),
       );
     });
 

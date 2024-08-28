@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'popular_chart_model.g.dart';
 
 @JsonSerializable()
-class PopularChartModel extends BaseModel implements IModelWithId   {
+class PopularChartModel implements IModelWithId   {
   final String id;
   final int rank;
   final int hitCnt;
@@ -16,8 +16,6 @@ class PopularChartModel extends BaseModel implements IModelWithId   {
     required this.id,
     required this.rank,
     required this.hitCnt,
-    required super.createdDateTime,
-    required super.updatedDateTime,
   });
 
   factory PopularChartModel.fromJson(Map<String, dynamic> json) =>

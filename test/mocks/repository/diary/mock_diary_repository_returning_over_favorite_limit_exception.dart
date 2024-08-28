@@ -2,6 +2,7 @@ import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/data.dart';
+import 'package:greaticker/common/constants/error_message/error_message.dart';
 import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/dio/dio.dart';
 import 'package:greaticker/common/model/api_response.dart';
@@ -11,17 +12,17 @@ import 'package:greaticker/diary/model/request_dto/hit_favorite_to_sticker_reqeu
 import 'package:greaticker/diary/repository/diary_repository.dart';
 import 'package:greaticker/diary/model/hit_favorite_sticker_model.dart';
 
-final MockDiaryRepositoryProvider = Provider<MockDiaryRepository>(
+final MockDiaryRepositoryReturingOverFavoriteLimitExceptionProvider = Provider<MockDiaryRepositoryReturingOverFavoriteLimitException>(
   (ref) {
     final dio = ref.watch(dioProvider);
 
-    return MockDiaryRepository(dio, baseUrl: 'http://$ip/diary');
+    return MockDiaryRepositoryReturingOverFavoriteLimitException(dio, baseUrl: 'http://$ip/diary');
   },
 );
 
-class MockDiaryRepository extends DiaryRepositoryBase {
-  MockDiaryRepository(Dio dio, {required String baseUrl});
-  
+class MockDiaryRepositoryReturingOverFavoriteLimitException extends DiaryRepositoryBase {
+  MockDiaryRepositoryReturingOverFavoriteLimitException(Dio dio, {required String baseUrl});
+
   DiaryModel mockData = DiaryModel(stickerInventory: [
     "1",
     "12",
@@ -53,8 +54,6 @@ class MockDiaryRepository extends DiaryRepositoryBase {
     "20"
   });
 
-
-  @override
   Future<ApiResponse<DiaryModel>> getDiaryModel() async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
@@ -67,7 +66,7 @@ class MockDiaryRepository extends DiaryRepositoryBase {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return ApiResponse(isSuccess: true);
+    return ApiResponse(isSuccess: true,);
   }
 
   @override
@@ -75,7 +74,6 @@ class MockDiaryRepository extends DiaryRepositoryBase {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }
-    return ApiResponse(isSuccess: true);
+    return ApiResponse(isSuccess: false, message: OVER_HIT_FAVORITE_LIMIT);
   }
-
 }

@@ -9,6 +9,7 @@ import 'package:greaticker/diary/model/diary_model.dart';
 import 'package:greaticker/diary/model/request_dto/diary_model_request_dto.dart';
 import 'package:greaticker/diary/model/request_dto/hit_favorite_to_sticker_reqeust_dto.dart';
 import 'package:greaticker/diary/repository/diary_repository.dart';
+import 'package:greaticker/diary/model/hit_favorite_sticker_model.dart';
 
 final MockDiaryRepositoryProvider = Provider<MockDiaryRepository>(
   (ref) {
@@ -68,7 +69,7 @@ class MockDiaryRepository extends DiaryRepositoryBase {
   }
 
   @override
-  Future<ApiResponse<String>> hitFavoriteToSticker({required HitFavoriteToStickerReqeustDto hitFavoriteToStickerReqeustDto}) async {
+  Future<ApiResponse<HitFavoriteStickerModel>> hitFavoriteToSticker({required HitFavoriteToStickerReqeustDto hitFavoriteToStickerReqeustDto}) async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
     }

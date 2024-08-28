@@ -21,6 +21,7 @@ import 'package:greaticker/diary/model/diary_model.dart';
 import 'package:greaticker/diary/view/diary_screen.dart';
 
 import '../../mocks/provider/diary/api_response/mock_dary_api_response_provider.dart';
+import '../../mocks/provider/diary/api_response/mock_dary_api_response_provider_returning_over_favorite_limit_exception.dart';
 import '../../mocks/provider/diary/mock_diary_provider.dart';
 import '../../mocks/provider/diary/mock_diary_provider_returning_error.dart';
 
@@ -248,7 +249,7 @@ void main() {
               home: DiaryScreen(
                 key: DIARY_SCREEN_KEY,
                 diaryProvider: mockDiaryProvider,
-                diaryApiResponseProvider: mockDiaryApiResponseProvider,
+                diaryApiResponseProvider: mockDiaryApiResponseProviderReturningOverFavoriteLimitException,
               ),
             ),
           ),
