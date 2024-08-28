@@ -9,8 +9,10 @@ import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/model/pagination_params.dart';
 import 'package:greaticker/common/repository/base_pagination_repository.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
-import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_request_dto.dart';
-import 'package:greaticker/hall_of_fame/model/request_dto/hit_good_to_project_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/hall_of_fame_post_api_response_model.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_delete_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_register_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hit_good_to_hall_of_fame_request_dto.dart';
 import 'package:greaticker/hall_of_fame/repository/hall_of_fame_repository.dart';
 
 
@@ -90,8 +92,8 @@ class MockHallOfFameRepository extends HallOfFameRepositoryBase implements IBase
     return ApiResponse(isSuccess: true, data: CursorPagination(meta: mockMeta, data: slicedMockData));
   }
 
-  Future<ApiResponse<String>> registerHallOfFame({
-    required HallOfFameRequestDto hallOfFameRequestDto,
+  Future<ApiResponse<HallOfFamePostApiResponseModel>> registerHallOfFame({
+    required HallOfFameRegisterRequestDto hallOfFameRequestDto,
   }) async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
@@ -100,8 +102,8 @@ class MockHallOfFameRepository extends HallOfFameRepositoryBase implements IBase
     return ApiResponse(isSuccess: true,);
   }
 
-  Future<ApiResponse<String>> deleteHallOfFame({
-    required HallOfFameRequestDto hallOfFameRequestDto,
+  Future<ApiResponse<HallOfFamePostApiResponseModel>> deleteHallOfFame({
+    required HallOfFameDeleteRequestDto hallOfFameRequestDto,
   }) async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
@@ -110,8 +112,8 @@ class MockHallOfFameRepository extends HallOfFameRepositoryBase implements IBase
     return ApiResponse(isSuccess: true,);
   }
 
-  Future<ApiResponse<String>> hitGoodToHallOfFame({
-    required HitGoodToProjectRequestDto hitGoodToProjectRequestDto,
+  Future<ApiResponse<HallOfFamePostApiResponseModel>> hitGoodToHallOfFame({
+    required HitGoodToHallOfFametRequestDto hitGoodToProjectRequestDto,
   }) async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));

@@ -5,8 +5,9 @@ import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/throttle_manager/throttle_manager.dart';
-import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_request_dto.dart';
-import 'package:greaticker/hall_of_fame/model/request_dto/hit_good_to_project_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_delete_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_register_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hit_good_to_hall_of_fame_request_dto.dart';
 import 'package:greaticker/hall_of_fame/repository/hall_of_fame_repository.dart';
 import 'package:greaticker/hall_of_fame/repository/mock_hall_of_fame_repository.dart';
 import 'package:greaticker/profile/model/request_dto/change_nickname_request_dto.dart';
@@ -16,7 +17,7 @@ import 'package:greaticker/profile/repository/profile_repository.dart';
 final hallOfFameApiResponseProvider =
     StateNotifierProvider<HallOfFameApiResponseStateNotifier, ApiResponseBase>(
         (ref) {
-  final repo = ref.watch(MockHallOfFameRepositoryProvider);
+  final repo = ref.watch(HallOfFameRepositoryProvider);
   final throttleManager = ref.read(throttleManagerProvider);
 
   return HallOfFameApiResponseStateNotifier(
@@ -33,7 +34,7 @@ class HallOfFameApiResponseStateNotifier
       : super(ApiResponseLoading());
 
   Future<ApiResponseBase?> registerHallOfFame({
-    required HallOfFameRequestDto hallOfFameRequestDto,
+    required HallOfFameRegisterRequestDto hallOfFameRequestDto,
     required BuildContext context,
   }) async {
     return await throttleManager.executeWithModal("registerHallOfFame", context,
@@ -55,7 +56,7 @@ class HallOfFameApiResponseStateNotifier
   }
 
   Future<ApiResponseBase?> deleteHallOfFame({
-    required HallOfFameRequestDto hallOfFameRequestDto,
+    required HallOfFameDeleteRequestDto hallOfFameRequestDto,
     required BuildContext context,
   }) async {
     return await throttleManager.executeWithModal("deleteHallOfFame", context,
@@ -77,7 +78,7 @@ class HallOfFameApiResponseStateNotifier
   }
 
   Future<ApiResponseBase?> hitGoodToHallOfFame({
-    required HitGoodToProjectRequestDto hitGoodToProjectRequestDto,
+    required HitGoodToHallOfFametRequestDto hitGoodToProjectRequestDto,
     required BuildContext context,
   }) async {
     return await throttleManager

@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:greaticker/common/component/modal/only_close_modal.dart';
 import 'package:greaticker/common/component/text_style.dart';
-import 'package:greaticker/common/constants/fonts.dart';
-import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
-import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/utils/date_time_utils.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
-import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_request_dto.dart';
-import 'package:greaticker/hall_of_fame/provider/hall_of_fame_api_response_provider.dart';
 import 'package:greaticker/hall_of_fame/view/hall_of_fame_screen.dart';
 
 class HallOfFameCard extends ConsumerStatefulWidget {
@@ -126,13 +119,14 @@ class _HallOfFameCardState extends ConsumerState<HallOfFameCard>
 
     Text _cardText = Text(
       _accomplishmentComment(dispalyedUserAuthId, displayedAccomplishedTopic),
-      textAlign: TextAlign.justify,
+      textAlign: TextAlign.start,
       style: YeongdeokSeaTextStyle(
         fontSize: 14.0,
         fontWeight: FontWeight.w500,
       ),
-      maxLines: 3,
+      softWrap: true,
       overflow: TextOverflow.ellipsis,
+      maxLines: 3,
     );
 
     return Padding(
@@ -207,7 +201,10 @@ class _HallOfFameCardState extends ConsumerState<HallOfFameCard>
                             ),
                           ),
                         ),
-                        SizedBox(width: 4),
+                        SizedBox(
+                          // 자릿수에 따라 width 조정
+                          width: _calculateSpacing(widget.likeCount),
+                        ),
                         Expanded(child: Text(widget.likeCount.toString())),
                       ],
                     ),
@@ -248,4 +245,19 @@ class _HallOfFameCardState extends ConsumerState<HallOfFameCard>
       throw Exception();
     }
   }
+
+  double _calculateSpacing(int likeCount) {
+    int digitCount = likeCount.toString().length;
+
+    switch (digitCount) {
+      case 1:
+        return 16.0; // 1자리일 때
+      case 2:
+        return 8.0;  // 2자리일 때
+      case 3:
+      default:
+        return 4.0;  // 3자리 이상일 때
+    }
+  }
+
 }

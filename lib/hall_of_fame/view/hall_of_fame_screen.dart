@@ -12,19 +12,22 @@ import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/provider/pagination_provider.dart';
 import 'package:greaticker/hall_of_fame/component/hall_of_fame_card.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
-import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_request_dto.dart';
-import 'package:greaticker/hall_of_fame/model/request_dto/hit_good_to_project_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_delete_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_register_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hit_good_to_hall_of_fame_request_dto.dart';
 import 'package:greaticker/hall_of_fame/provider/hall_of_fame_api_response_provider.dart';
 
 class HallOfFameScreen extends ConsumerStatefulWidget {
   static String get routeName => 'HallOfFameScreen';
 
   final Key key;
-  final StateNotifierProvider<PaginationProvider, CursorPaginationBase> provider;
+  final StateNotifierProvider<PaginationProvider, CursorPaginationBase> hallOfFameProvider;
+  final StateNotifierProvider<HallOfFameApiResponseStateNotifier, ApiResponseBase> hallOfFameApiResponseProvider;
 
   const HallOfFameScreen({
     required this.key,
-    required this.provider,
+    required this.hallOfFameProvider,
+    required this.hallOfFameApiResponseProvider,
   }) : super(key: key);
 
   @override
@@ -38,7 +41,7 @@ class HallOfFameScreenState extends ConsumerState<HallOfFameScreen> {
       key: DEFAULT_LAYOUT_KEY,
       title_key: "hall_of_fame",
       child: PaginationListView<HallOfFameModel>(
-        provider: widget.provider,
+        provider: widget.hallOfFameProvider,
         itemBuilder: <HallOfFameModel>(_, index, model) {
           return HallOfFameCard.fromHallOfFameModel(
             model: model,
@@ -50,10 +53,10 @@ class HallOfFameScreenState extends ConsumerState<HallOfFameScreen> {
   }
 
   void actionToDoWhenHallOfFameDeleteIconWasPressed(String hallOfFameModelId) async {
-    HallOfFameRequestDto hallOfFameRequestDto = HallOfFameRequestDto(
-        projectId: hallOfFameModelId);
+    HallOfFameDeleteRequestDto hallOfFameRequestDto = HallOfFameDeleteRequestDto(
+        hallOfFameId : hallOfFameModelId);
     final responseState = await ref
-        .read(hallOfFameApiResponseProvider.notifier)
+        .read(widget.hallOfFameApiResponseProvider.notifier)
         .deleteHallOfFame(hallOfFameRequestDto: hallOfFameRequestDto, context: context);
     if (responseState is ApiResponseError ||
         responseState is ApiResponse && !responseState.isSuccess) {
@@ -72,10 +75,10 @@ class HallOfFameScreenState extends ConsumerState<HallOfFameScreen> {
   }
 
   void actionToDoWhenHallOfFameHitGoodIconWasPressed(String hallOfFameModelId) async {
-    HitGoodToProjectRequestDto hitGoodToProjectRequestDto = HitGoodToProjectRequestDto(
-        projectId: hallOfFameModelId);
+    HitGoodToHallOfFametRequestDto hitGoodToProjectRequestDto = HitGoodToHallOfFametRequestDto(
+        hallOfFameId: hallOfFameModelId);
     final responseState = await ref
-        .read(hallOfFameApiResponseProvider.notifier)
+        .read(widget.hallOfFameApiResponseProvider.notifier)
         .hitGoodToHallOfFame(hitGoodToProjectRequestDto: hitGoodToProjectRequestDto, context: context);
     if (responseState is ApiResponseError ||
         responseState is ApiResponse && !responseState.isSuccess) {

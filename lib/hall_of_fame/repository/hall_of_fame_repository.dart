@@ -7,8 +7,10 @@ import 'package:greaticker/common/model/cursor_pagination_model.dart';
 import 'package:greaticker/common/model/pagination_params.dart';
 import 'package:greaticker/common/repository/base_pagination_repository.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
-import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_request_dto.dart';
-import 'package:greaticker/hall_of_fame/model/request_dto/hit_good_to_project_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/hall_of_fame_post_api_response_model.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_delete_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_register_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hit_good_to_hall_of_fame_request_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'hall_of_fame_repository.g.dart';
@@ -36,20 +38,20 @@ abstract class HallOfFameRepository extends HallOfFameRepositoryBase
 
   @POST('/register')
   @Headers({'accessToken': 'true'})
-  Future<ApiResponse<String>> registerHallOfFame({
-    @Body() required HallOfFameRequestDto hallOfFameRequestDto,
+  Future<ApiResponse<HallOfFamePostApiResponseModel>> registerHallOfFame({
+    @Body() required HallOfFameRegisterRequestDto hallOfFameRequestDto,
   });
 
   @POST('/delete')
   @Headers({'accessToken': 'true'})
-  Future<ApiResponse<String>> deleteHallOfFame({
-    @Body() required HallOfFameRequestDto hallOfFameRequestDto,
+  Future<ApiResponse<HallOfFamePostApiResponseModel>> deleteHallOfFame({
+    @Body() required HallOfFameDeleteRequestDto hallOfFameRequestDto,
   });
 
   @POST('/hit-good')
   @Headers({'accessToken': 'true'})
-  Future<ApiResponse<String>> hitGoodToHallOfFame({
-    @Body() required HitGoodToProjectRequestDto hitGoodToProjectRequestDto,
+  Future<ApiResponse<HallOfFamePostApiResponseModel>> hitGoodToHallOfFame({
+    @Body() required HitGoodToHallOfFametRequestDto hitGoodToProjectRequestDto,
   });
 }
 
@@ -58,15 +60,15 @@ abstract class HallOfFameRepositoryBase {
     PaginationParams paginationParams,
   });
 
-  Future<ApiResponse<String>> registerHallOfFame({
-    required HallOfFameRequestDto hallOfFameRequestDto,
+  Future<ApiResponse<HallOfFamePostApiResponseModel>> registerHallOfFame({
+    required HallOfFameRegisterRequestDto hallOfFameRequestDto,
   });
 
-  Future<ApiResponse<String>> deleteHallOfFame({
-    required HallOfFameRequestDto hallOfFameRequestDto,
+  Future<ApiResponse<HallOfFamePostApiResponseModel>> deleteHallOfFame({
+    required HallOfFameDeleteRequestDto hallOfFameRequestDto,
   });
 
-  Future<ApiResponse<String>> hitGoodToHallOfFame({
-    required HitGoodToProjectRequestDto hitGoodToProjectRequestDto,
+  Future<ApiResponse<HallOfFamePostApiResponseModel>> hitGoodToHallOfFame({
+    required HitGoodToHallOfFametRequestDto hitGoodToProjectRequestDto,
   });
 }

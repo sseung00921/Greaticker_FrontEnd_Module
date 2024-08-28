@@ -48,12 +48,13 @@ class HistoryCard extends StatelessWidget {
           projectName: projectName,
           stickerName: STICKER_ID_NAME_MAPPER[stickerId],
           dayInARow: dayInARow),
-      textAlign: TextAlign.justify,
+      textAlign: TextAlign.start,
       style: YeongdeokSeaTextStyle(
         fontSize: 14.0,
         fontWeight: FontWeight.w500,
       ),
       maxLines: 3,
+      softWrap: true,
       overflow: TextOverflow.ellipsis,
     );
     return Padding(

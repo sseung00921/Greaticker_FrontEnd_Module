@@ -61,7 +61,8 @@ final router = GoRouter(initialLocation: '/home', routes: [
     pageBuilder: (_, state) => CustomTransitionPage(
         child: HallOfFameScreen(
           key: HALL_OF_FAME_SCREEN_KEY,
-          provider: hallOfFameProvider,
+          hallOfFameProvider: hallOfFameProvider,
+          hallOfFameApiResponseProvider: hallOfFameApiResponseProvider,
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child; // 애니메이션 없이 바로 전환

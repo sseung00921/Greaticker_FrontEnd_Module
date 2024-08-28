@@ -8,7 +8,7 @@ Future<void> showSelectOneBetweenTwoModal({
   required BuildContext context,
   required String option1,
   required String option2,
-  required Future<void> Function() onNext,
+  required Future<void> Function(int selectedOption) onNext,
   VoidCallback? afterModal,
 }) {
   int selectedOption = 0; // 기본적으로 첫 번째 옵션이 선택된 상태
@@ -63,7 +63,7 @@ Future<void> showSelectOneBetweenTwoModal({
               TextButton(
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  await onNext(); // Yes action
+                  await onNext(selectedOption); // Yes action
                   if (afterModal != null) {
                     afterModal();
                   }

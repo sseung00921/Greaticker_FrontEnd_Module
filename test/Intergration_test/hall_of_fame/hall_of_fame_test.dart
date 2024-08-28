@@ -19,6 +19,7 @@ import 'package:greaticker/hall_of_fame/component/hall_of_fame_card.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
 import 'package:greaticker/hall_of_fame/view/hall_of_fame_screen.dart';
 
+import '../../mocks/provider/hall_of_fame/api_response/mock_hall_of_fame_api_response_provider.dart';
 import '../../mocks/provider/hall_of_fame/mock_hall_of_fame_provider.dart';
 import '../../mocks/provider/hall_of_fame/mock_hall_of_fame_provider_returning_error.dart';
 
@@ -36,7 +37,8 @@ void main() {
         child: MaterialApp(
           home: HallOfFameScreen(
             key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProvider,
+            hallOfFameProvider: mockHallOfFameProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -54,7 +56,8 @@ void main() {
         child: MaterialApp(
           home: HallOfFameScreen(
             key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProvider,
+            hallOfFameProvider: mockHallOfFameProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -80,7 +83,8 @@ void main() {
         child: MaterialApp(
           home: HallOfFameScreen(
             key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProvider,
+            hallOfFameProvider: mockHallOfFameProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -97,7 +101,8 @@ void main() {
         child: MaterialApp(
           home: HallOfFameScreen(
             key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProviderReturningError,
+            hallOfFameProvider: mockHallOfFameProviderReturningError,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -114,7 +119,8 @@ void main() {
         child: MaterialApp(
           home: HallOfFameScreen(
             key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProviderReturningError,
+            hallOfFameProvider: mockHallOfFameProviderReturningError,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -140,7 +146,8 @@ void main() {
         child: MaterialApp(
           home: HallOfFameScreen(
             key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProvider,
+            hallOfFameProvider: mockHallOfFameProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -158,7 +165,8 @@ void main() {
         child: MaterialApp(
           home: HallOfFameScreen(
             key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProvider,
+            hallOfFameProvider: mockHallOfFameProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -186,7 +194,8 @@ void main() {
         child: MaterialApp(
           home: HallOfFameScreen(
             key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProvider,
+            hallOfFameProvider: mockHallOfFameProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -208,7 +217,8 @@ void main() {
         child: MaterialApp(
           home: HallOfFameScreen(
             key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProvider,
+            hallOfFameProvider: mockHallOfFameProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -225,7 +235,8 @@ void main() {
         child: MaterialApp(
           home: HallOfFameScreen(
             key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProvider,
+            hallOfFameProvider: mockHallOfFameProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),
@@ -245,7 +256,8 @@ void main() {
         child: MaterialApp(
           home: HallOfFameScreen(
             key: HALL_OF_FAME_SCREEN_KEY,
-            provider: mockHallOfFameProvider,
+            hallOfFameProvider: mockHallOfFameProvider,
+            hallOfFameApiResponseProvider: mockHallOfFameApiResponseProvider,
           ),
         ),
       ),

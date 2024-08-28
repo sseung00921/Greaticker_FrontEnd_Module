@@ -16,7 +16,7 @@ import 'package:greaticker/common/constants/language/stickers.dart';
 import 'package:greaticker/common/constants/params.dart';
 import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/utils/url_builder_utils.dart';
-import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_request_dto.dart';
+import 'package:greaticker/hall_of_fame/model/request_dto/hall_of_fame_register_request_dto.dart';
 import 'package:greaticker/hall_of_fame/provider/hall_of_fame_api_response_provider.dart';
 import 'package:greaticker/home/constants/project.dart';
 import 'package:greaticker/home/model/enum/project_state_kind.dart';
@@ -374,9 +374,10 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
       comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['create_project_try']!,
       onSubmitted: (s) async {
         ProjectRequestDto projectRequestDto = ProjectRequestDto(
-            projectName: s,
-            prevProjectState: projectState.projectStateKind,
-            nextProjectState: ProjectStateKind.IN_PROGRESS,);
+          projectName: s,
+          prevProjectState: projectState.projectStateKind,
+          nextProjectState: ProjectStateKind.IN_PROGRESS,
+        );
         final responseState = await ref
             .read(widget.projectApiResponseProvider.notifier)
             .updateProjectState(
@@ -470,9 +471,11 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
             option1: COMMENT_DICT[dotenv.get(LANGUAGE)]!['only_nickname']!,
             option2: COMMENT_DICT[dotenv.get(LANGUAGE)]![
                 'both_nickname_and_auth_id']!,
-            onNext: () async {
-              HallOfFameRequestDto hallOfFameRequestDto =
-                  HallOfFameRequestDto(projectId: "1");
+            onNext: (selectedOption) async {
+              bool showAuthId = selectedOption == 0 ? false : true;
+              HallOfFameRegisterRequestDto hallOfFameRequestDto =
+                  HallOfFameRegisterRequestDto(
+                      projectId: "1", showAuthId: showAuthId);
               final responseState = await ref
                   .read(widget.hallOfFameApiResponseProvider.notifier)
                   .registerHallOfFame(
@@ -480,12 +483,13 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
                       context: context);
               if (responseState is ApiResponseError ||
                   responseState is ApiResponse && !responseState.isSuccess) {
-                if (responseState is ApiResponse &&
-                    responseState.message == DUPLICATED_HALL_OF_FAME) {
-                  showOnlyCloseDialog(
-                      context: context,
-                      comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                          'duplicated_hall_of_fame']!);
+                if (responseState is ApiResponse && !responseState.isSuccess) {
+                  if (responseState.message == DUPLICATED_HALL_OF_FAME) {
+                    showOnlyCloseDialog(
+                        context: context,
+                        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                            'duplicated_hall_of_fame']!);
+                  }
                 } else {
                   showOnlyCloseDialog(
                     context: context,
@@ -500,11 +504,6 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
                   comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
                       'register_hall_of_fame_complete']!,
                 );
-                ref.read(widget.projectProvider.notifier).updateProjectState(
-                      projectState.copyWith(
-                          projectStateKind: ProjectStateKind.COMPLETED,
-                          dayInARow: 30),
-                    );
               }
               ;
             },

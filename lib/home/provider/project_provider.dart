@@ -46,7 +46,7 @@ StateNotifierProvider<ProjectStateNotifier, ApiResponseBase>((ref) {
     } else if (next is ApiResponseError) {
       notifier.setErrorState();
     } else {
-      //notifier.getProjectModel();
+      notifier.getProjectModel();
     };
   });
 

@@ -52,7 +52,7 @@ class _HallOfFameRepository implements HallOfFameRepository {
   }
 
   @override
-  Future<ApiResponse<String>> registerHallOfFame(
+  Future<ApiResponse<HallOfFamePostApiResponseModel>> registerHallOfFame(
       {required hallOfFameRequestDto}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -61,7 +61,7 @@ class _HallOfFameRepository implements HallOfFameRepository {
     final _data = <String, dynamic>{};
     _data.addAll(hallOfFameRequestDto.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse<String>>(Options(
+        _setStreamType<ApiResponse<HallOfFamePostApiResponseModel>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -73,15 +73,16 @@ class _HallOfFameRepository implements HallOfFameRepository {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse<String>.fromJson(
+    final value = ApiResponse<HallOfFamePostApiResponseModel>.fromJson(
       _result.data!,
-      (json) => json as String,
+      (json) =>
+          HallOfFamePostApiResponseModel.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }
 
   @override
-  Future<ApiResponse<String>> deleteHallOfFame(
+  Future<ApiResponse<HallOfFamePostApiResponseModel>> deleteHallOfFame(
       {required hallOfFameRequestDto}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -90,7 +91,7 @@ class _HallOfFameRepository implements HallOfFameRepository {
     final _data = <String, dynamic>{};
     _data.addAll(hallOfFameRequestDto.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse<String>>(Options(
+        _setStreamType<ApiResponse<HallOfFamePostApiResponseModel>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -102,15 +103,16 @@ class _HallOfFameRepository implements HallOfFameRepository {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse<String>.fromJson(
+    final value = ApiResponse<HallOfFamePostApiResponseModel>.fromJson(
       _result.data!,
-      (json) => json as String,
+      (json) =>
+          HallOfFamePostApiResponseModel.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }
 
   @override
-  Future<ApiResponse<String>> hitGoodToHallOfFame(
+  Future<ApiResponse<HallOfFamePostApiResponseModel>> hitGoodToHallOfFame(
       {required hitGoodToProjectRequestDto}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -119,7 +121,7 @@ class _HallOfFameRepository implements HallOfFameRepository {
     final _data = <String, dynamic>{};
     _data.addAll(hitGoodToProjectRequestDto.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponse<String>>(Options(
+        _setStreamType<ApiResponse<HallOfFamePostApiResponseModel>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -131,9 +133,10 @@ class _HallOfFameRepository implements HallOfFameRepository {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponse<String>.fromJson(
+    final value = ApiResponse<HallOfFamePostApiResponseModel>.fromJson(
       _result.data!,
-      (json) => json as String,
+      (json) =>
+          HallOfFamePostApiResponseModel.fromJson(json as Map<String, dynamic>),
     );
     return value;
   }
