@@ -4,14 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/model/api_response.dart';
-import 'package:greaticker/profile/model/request_dto/change_nickname_request_dto.dart';
-import 'package:greaticker/profile/repository/mock_profile_repositry.dart';
-import 'package:greaticker/profile/repository/profile_repository.dart';
 import 'package:greaticker/common/throttle_manager/throttle_manager.dart';
+import 'package:greaticker/profile/model/request_dto/change_nickname_request_dto.dart';
+import 'package:greaticker/profile/repository/profile_repository.dart';
 
 final profileApiResponseProvider =
 StateNotifierProvider<ProfileApiResponseStateNotifier, ApiResponseBase>((ref) {
-  final repo = ref.watch(MockProfileRepositoryProvider);
+  final repo = ref.watch(ProfileRepositoryProvider);
   final throttleManager = ref.read(throttleManagerProvider); // ThrottleManager 추가
 
   return ProfileApiResponseStateNotifier(repository: repo, throttleManager: throttleManager);

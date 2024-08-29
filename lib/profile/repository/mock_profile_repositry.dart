@@ -6,6 +6,7 @@ import 'package:greaticker/common/constants/error_message/error_message.dart';
 import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/dio/dio.dart';
 import 'package:greaticker/common/model/api_response.dart';
+import 'package:greaticker/profile/model/change_nickname_result_model.dart';
 import 'package:greaticker/profile/model/profile_model.dart';
 import 'package:greaticker/profile/model/request_dto/change_nickname_request_dto.dart';
 import 'package:greaticker/profile/repository/profile_repository.dart';
@@ -25,8 +26,8 @@ class MockProfileRepository extends ProfileRepositoryBase {
   ApiResponse<String> mockAipResponseData =
       ApiResponse<String>(isSuccess: true,);
 
-  ApiResponse<String> mockChangeNicknameAipResponseData =
-      ApiResponse<String>(isSuccess: true, data: "뉴뾰롱뾰롱이");
+  ApiResponse<ChangeNicknameResultModel> mockChangeNicknameAipResponseData =
+      ApiResponse<ChangeNicknameResultModel>(isSuccess: true, data: ChangeNicknameResultModel(newUserNickname: "뉴뾰롱뾰롱이"));
 
   
   
@@ -40,7 +41,7 @@ class MockProfileRepository extends ProfileRepositoryBase {
   }
 
   @override
-  Future<ApiResponse<String>> changeNickname(
+  Future<ApiResponse<ChangeNicknameResultModel>> changeNickname(
       {required ChangeNicknameRequestDto changeNicknameRequestDto}) async {
     if (dotenv.get(ENVIRONMENT) == PROD) {
       await Future.delayed(Duration(seconds: 1));
@@ -49,7 +50,6 @@ class MockProfileRepository extends ProfileRepositoryBase {
     if (changeNicknameRequestDto.newNickname == "뾰롱뾰롱이") {
       return ApiResponse(isSuccess: false, message: DUPLICATED_NICKNAME);
     } else {
-      mockChangeNicknameAipResponseData.data = "뉴뾰롱뾰롱이";
       return mockChangeNicknameAipResponseData;
     }
   }

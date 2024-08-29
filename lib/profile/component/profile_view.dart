@@ -11,7 +11,7 @@ import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/params.dart';
 import 'package:greaticker/common/model/api_response.dart';
-import 'package:greaticker/common/utils/api_utils.dart';
+import 'package:greaticker/profile/model/change_nickname_result_model.dart';
 import 'package:greaticker/profile/model/profile_model.dart';
 import 'package:greaticker/profile/model/request_dto/change_nickname_request_dto.dart';
 import 'package:greaticker/profile/provider/profile_api_response_provider.dart';
@@ -136,13 +136,32 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                         );
                     if (responseState is ApiResponseError ||
                         responseState is ApiResponse && !responseState.isSuccess) {
-                      if (responseState is ApiResponse && responseState.message == DUPLICATED_NICKNAME) {
-                        print("aaaaa");
-                        showOnlyCloseDialog(
-                          context: context,
-                          comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                          'duplicated_nickname']!,
-                        );
+                      if (responseState is ApiResponse && !responseState.isSuccess) {
+                        if (responseState.message == DUPLICATED_NICKNAME) {
+                          showOnlyCloseDialog(
+                            context: context,
+                            comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                            'duplicated_nickname']!,
+                          );
+                        } else if(responseState.message == NOT_ALLOWED_CHARACTER) {
+                          showOnlyCloseDialog(
+                            context: context,
+                            comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                            'not_allowed_character']!,
+                          );
+                        } else if(responseState.message == TOO_SHORT_NICKNAME) {
+                          showOnlyCloseDialog(
+                            context: context,
+                            comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                            'under_nickname_length']!,
+                          );
+                        } else if(responseState.message == TOO_LONG_NICKNAME) {
+                          showOnlyCloseDialog(
+                            context: context,
+                            comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                            'over_nickname_length']!,
+                          );
+                        }
                       } else {
                         showOnlyCloseDialog(
                           context: context,
@@ -151,7 +170,6 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                         );
                       }
                     } else if (responseState is ApiResponse && responseState.isSuccess) {
-                      responseState as ApiResponse<String>;
                       if (responseState.isSuccess) {
                         showOnlyCloseDialog(
                           context: context,

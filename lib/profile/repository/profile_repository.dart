@@ -3,13 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/constants/data.dart';
 import 'package:greaticker/common/dio/dio.dart';
 import 'package:greaticker/common/model/api_response.dart';
+import 'package:greaticker/profile/model/change_nickname_result_model.dart';
 import 'package:greaticker/profile/model/profile_model.dart';
 import 'package:greaticker/profile/model/request_dto/change_nickname_request_dto.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'profile_repository.g.dart';
 
-final ProfieRepositoryProvider = Provider<ProfileRepository>(
+final ProfileRepositoryProvider = Provider<ProfileRepository>(
       (ref) {
     final dio = ref.watch(dioProvider);
 
@@ -27,19 +28,19 @@ abstract class ProfileRepository extends ProfileRepositoryBase{
   @override
   Future<ApiResponse<ProfileModel>> getProfileModel();
 
-  @POST('/changeNickname')
+  @POST('/change-nickname')
   @Headers({'accessToken': 'true'})
   @override
-  Future<ApiResponse<String>> changeNickname({
+  Future<ApiResponse<ChangeNicknameResultModel>> changeNickname({
     @Body() required ChangeNicknameRequestDto changeNicknameRequestDto,
   });
 
-  @POST('/logOut')
+  @POST('/log-out')
   @Headers({'accessToken': 'true'})
   @override
   Future<ApiResponse<String>> logOut();
 
-  @POST('/deleteAccount')
+  @POST('/delete-account')
   @Headers({'accessToken': 'true'})
   @override
   Future<ApiResponse<String>> deleteAccount();
@@ -48,7 +49,7 @@ abstract class ProfileRepository extends ProfileRepositoryBase{
 abstract class ProfileRepositoryBase {
 
   Future<ApiResponse<ProfileModel>> getProfileModel();
-  Future<ApiResponse<String>> changeNickname({
+  Future<ApiResponse<ChangeNicknameResultModel>> changeNickname({
     required ChangeNicknameRequestDto changeNicknameRequestDto,
   });
   Future<ApiResponse<String>> logOut();
