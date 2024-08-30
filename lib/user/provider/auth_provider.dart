@@ -37,10 +37,8 @@ class AuthProvider extends ChangeNotifier {
 
     final loginIn = state.location == '/login';
 
-    if (user is ApiResponseLoading) {
+    if (user is! ApiResponse) {
       return loginIn ? null : '/login';
-    } else if (user is ApiResponseError) {
-      return !loginIn ? '/login' : null;
     } else {
       //정상적으로 로그인된 유저 정보를 가져온 경우
       return loginIn || state.location == '/splash' ? '/home/project' : null;

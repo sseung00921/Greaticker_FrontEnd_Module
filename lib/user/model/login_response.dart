@@ -4,12 +4,10 @@ part 'login_response.g.dart';
 
 @JsonSerializable()
 class LoginResponse {
-  final String refreshToken;
-  final String accessToken;
+  final String jwtToken;
 
   LoginResponse({
-    required this.refreshToken,
-    required this.accessToken,
+    required this.jwtToken,
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>
