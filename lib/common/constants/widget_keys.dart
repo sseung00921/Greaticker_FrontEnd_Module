@@ -10,3 +10,5 @@ const Key HALL_OF_FAME_SCREEN_KEY = Key("HallOfFameScreen");
 const Key POPULAR_CHART_SCREEN_KEY = Key("PopularChartScreen");
 const Key HISTORY_SCREEN_KEY = Key("HistoryScreen");
 const Key PROFILE_SCREEN_KEY = Key("ProfileScreen");
+const Key SPLASH_SCREEN_KEY = Key("splashScreen");
+const Key LOGIN_SCREEN_KEY = Key("loginScreen");

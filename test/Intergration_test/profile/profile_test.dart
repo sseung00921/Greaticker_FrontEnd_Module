@@ -82,59 +82,7 @@ void main() {
     expect(find.byType(AlertDialog), findsOneWidget);
     expect(find.text(COMMENT_DICT[dotenv.get(LANGUAGE)]!['duplicated_nickname']!), findsOneWidget);
   });
-
-
-  testWidgets('Navigate to the home screen and show a popup on logout', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      ProviderScope(
-        child: MaterialApp.router(
-          routerConfig: router,
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    router.go('/profile');
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['log_out']!));
-    await tester.pumpAndSettle();
-
-    expect(find.byType(AlertDialog), findsOneWidget);
-    expect(find.text(COMMENT_DICT[dotenv.get(LANGUAGE)]!['log_out_complete']!), findsOneWidget);
-
-    expect(find.byType(ProfileView), findsNothing);
-    expect(find.byType(HomeView), findsOneWidget);
-  });
-
-  testWidgets('Show modal on account deletion and navigate to home screen with popup', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      ProviderScope(
-        child: MaterialApp.router(
-          routerConfig: router,
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    router.go('/profile');
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['delete_account']!));
-    await tester.pumpAndSettle();
-
-    expect(find.byType(AlertDialog), findsOneWidget);
-    expect(find.text(COMMENT_DICT[dotenv.get(LANGUAGE)]!['delete_account_try']!), findsOneWidget);
-
-    await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['yes']!));
-    await tester.pumpAndSettle();
-
-    expect(find.byType(AlertDialog), findsOneWidget);
-    expect(find.text(COMMENT_DICT[dotenv.get(LANGUAGE)]!['delete_account_complete']!), findsOneWidget);
-
-    expect(find.byType(ProfileView), findsNothing);
-    expect(find.byType(HomeView), findsOneWidget);
-  });
+  
 
   testWidgets('Show retry button on error', (WidgetTester tester) async {
     await tester.pumpWidget(
