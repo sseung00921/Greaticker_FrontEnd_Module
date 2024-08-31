@@ -27,7 +27,7 @@ abstract class UserMeRepository extends ProfileRepositoryBase {
   @override
   Future<ApiResponse<UserModel>> getMe();
 
-  @GET('/google')
+  @POST('/google')
   @Headers({'Content-Type': 'application/json'})
   @override
   Future<ApiResponse<LoginResponse>> loginWithGoogle({

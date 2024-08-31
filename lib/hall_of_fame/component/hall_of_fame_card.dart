@@ -18,7 +18,7 @@ class HallOfFameCard extends ConsumerStatefulWidget {
   final String? accomplishedTopic;
 
   // 유저 auth ID
-  final String? userAuthId;
+  final String? userAuthEmail;
 
   // 좋아요 횟수
   final int likeCount;
@@ -33,7 +33,7 @@ class HallOfFameCard extends ConsumerStatefulWidget {
     required this.hallOfFameModelId,
     required this.userNickName,
     this.accomplishedTopic,
-    this.userAuthId,
+    this.userAuthEmail,
     required this.accomplishedDate,
     required this.likeCount,
     required this.isWrittenByMe,
@@ -52,7 +52,7 @@ class HallOfFameCard extends ConsumerStatefulWidget {
       userNickName: model.userNickName,
       likeCount: model.likeCount,
       accomplishedTopic: model.accomplishedGoal,
-      userAuthId: model.userAuthId,
+      userAuthEmail: model.userAuthEmail,
       accomplishedDate:
           DateTimeUtils.dateTimeToString(model.createdDateTime, 'yyyy-MM-dd'),
       isWrittenByMe: model.isWrittenByMe,
@@ -111,14 +111,14 @@ class _HallOfFameCardState extends ConsumerState<HallOfFameCard>
 
   @override
   Widget build(BuildContext context) {
-    String dispalyedUserAuthId =
-        widget.userAuthId == null ? '' : '(${widget.userAuthId})';
+    String dispalyedUserAuthEmail =
+        widget.userAuthEmail == null ? '' : '(${widget.userAuthEmail})';
     String displayedAccomplishedTopic =
         widget.accomplishedTopic == null ? '' : widget.accomplishedTopic!;
     _iconColor = widget.isHitGoodByMe ? Colors.red : Colors.grey;
 
     Text _cardText = Text(
-      _accomplishmentComment(dispalyedUserAuthId, displayedAccomplishedTopic),
+      _accomplishmentComment(dispalyedUserAuthEmail, displayedAccomplishedTopic),
       textAlign: TextAlign.start,
       style: YeongdeokSeaTextStyle(
         fontSize: 14.0,
@@ -236,11 +236,11 @@ class _HallOfFameCardState extends ConsumerState<HallOfFameCard>
   }
 
   String _accomplishmentComment(
-      String dispalyedUserAuthId, String displayedAccomplishedTopic) {
+      String dispalyedUserAuthEmail, String displayedAccomplishedTopic) {
     if (dotenv.get(LANGUAGE) == 'KO') {
-      return '${widget.userNickName}${dispalyedUserAuthId}님이 ${widget.accomplishedDate}에 ${displayedAccomplishedTopic} 목표를 달성하셨습니다';
+      return '${widget.userNickName}${dispalyedUserAuthEmail}님이 ${widget.accomplishedDate}에 ${displayedAccomplishedTopic} 목표를 달성하셨습니다';
     } else if (dotenv.get(LANGUAGE) == 'EN') {
-      return '${widget.userNickName}${dispalyedUserAuthId} has achieved the ${displayedAccomplishedTopic} goal on ${widget.accomplishedDate}';
+      return '${widget.userNickName}${dispalyedUserAuthEmail} has achieved the ${displayedAccomplishedTopic} goal on ${widget.accomplishedDate}';
     } else {
       throw Exception();
     }

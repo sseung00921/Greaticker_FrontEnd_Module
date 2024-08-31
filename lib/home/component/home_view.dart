@@ -472,10 +472,10 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
             option2: COMMENT_DICT[dotenv.get(LANGUAGE)]![
                 'both_nickname_and_auth_id']!,
             onNext: (selectedOption) async {
-              bool showAuthId = selectedOption == 0 ? false : true;
+              bool showAuthEmail = selectedOption == 0 ? false : true;
               HallOfFameRegisterRequestDto hallOfFameRequestDto =
                   HallOfFameRegisterRequestDto(
-                      projectId: "1", showAuthId: showAuthId);
+                      projectId: "1", showAuthEmail: showAuthEmail);
               final responseState = await ref
                   .read(widget.hallOfFameApiResponseProvider.notifier)
                   .registerHallOfFame(

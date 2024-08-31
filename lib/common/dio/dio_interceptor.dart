@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:greaticker/common/router/router.dart';
 import 'package:greaticker/user/provider/user_me_provider.dart';
 
 import '../constants/data.dart';
@@ -50,7 +51,11 @@ class CustomInterceptor extends Interceptor {
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
     //에러가 났을 때 인증이슈이면 다시 로그인 화면으로 보내기 위함.
-    ref.read(userMeProvider.notifier).getMe();
+    //401 UnAuthorized, 403 Forbidden
+    int statusCode = err.response?.statusCode ?? 0;
+    if (statusCode == 401 || statusCode == 403) {
+      ref.read(routerProvider).go("/login");
+    }
 
     return handler.reject(err);
   }

@@ -45,5 +45,27 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <!-- 이 부분에 GoogleSignIn에 사용될 Reverse client ID 추가 -->
+                <string>com.googleusercontent.apps.884290819984-s2dkioqcqqk2e9uam6cvkb7rn0t4hnta</string>
+            </array>
+        </dict>
+    </array>
+    <key>GIDClientID</key>
+    <string>884290819984-s2dkioqcqqk2e9uam6cvkb7rn0t4hnta.apps.googleusercontent.com</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>googlechrome</string>
+        <string>com.google</string>
+        <string>com.google.chrome.ios</string>
+        <string>com.google.chrome.ios.uiwebview</string>
+    </array>
+
 </dict>
 </plist>

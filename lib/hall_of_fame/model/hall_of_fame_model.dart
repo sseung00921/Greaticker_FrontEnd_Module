@@ -13,7 +13,7 @@ class HallOfFameModel extends BaseModel implements IModelWithId   {
   // 달성한 목표
   final String? accomplishedGoal;
   // 유저 auth ID
-  final String? userAuthId;
+  final String? userAuthEmail;
   // 좋아요 횟수
   final int likeCount;
   // 내가 작성한 명전 카드인지 여부
@@ -24,7 +24,7 @@ class HallOfFameModel extends BaseModel implements IModelWithId   {
     required this.id,
     required this.userNickName,
     this.accomplishedGoal,
-    this.userAuthId,
+    this.userAuthEmail,
     required this.likeCount,
     required this.isWrittenByMe,
     required this.isHitGoodByMe,

@@ -41,23 +41,27 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
 
   Future<void> getMe() async {
     final jwtToken = await storage.read(key: JWT_TOKEN);
-
     if (jwtToken == null) {
-      return;
-    }
-    try {
-      final userResp = await authRepository.getMe();
-      state = userResp;
-    } catch (e, stack) {
-      print(e);
-      print(stack);
-      state = ApiResponseError(
-          message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+      state = ApiResponseError(message: "No JWT Token.");
+    } else {
+      try {
+        if (state is ApiResponseError) {
+          state = ApiResponseLoading();
+        }
+        final userResp = await authRepository.getMe();
+        state = userResp;
+      } catch (e, stack) {
+        print(e);
+        print(stack);
+        state = ApiResponseError(
+            message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+      }
     }
   }
 
   Future<void> loginWithGoogle() async {
     try {
+      state = ApiResponseLoading();
       final GoogleSignIn googleSignIn = GoogleSignIn(
         scopes: ['email', 'profile'],
       );

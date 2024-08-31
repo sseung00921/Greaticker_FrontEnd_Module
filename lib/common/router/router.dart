@@ -22,6 +22,7 @@ import 'package:greaticker/profile/provider/profile_api_response_provider.dart';
 import 'package:greaticker/profile/provider/profile_provider.dart';
 import 'package:greaticker/profile/view/profile_screen.dart';
 import 'package:greaticker/user/provider/auth_provider.dart';
+import 'package:greaticker/user/provider/user_me_provider.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final provider = ref.read(authProvider);
@@ -140,6 +141,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           pageBuilder: (_, state) => CustomTransitionPage(
               child: SplashScreen(
                 key: SPLASH_SCREEN_KEY,
+                userMeProvider: userMeProvider,
               ),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
@@ -155,6 +157,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           pageBuilder: (_, state) => CustomTransitionPage(
               child: LoginScreen(
                 key: LOGIN_SCREEN_KEY,
+                userMeProvider: userMeProvider,
               ),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
