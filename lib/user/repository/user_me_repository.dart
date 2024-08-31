@@ -33,6 +33,11 @@ abstract class UserMeRepository extends ProfileRepositoryBase {
   Future<ApiResponse<LoginResponse>> loginWithGoogle({
       @Header("Authorization") required String authHeader,
       @Header("X-Platform") required String platform});
+
+  @POST('/delete-account')
+  @Headers({'accessToken': 'true'})
+  @override
+  Future<ApiResponse<UserModel>> deleteAccount();
 }
 
 abstract class ProfileRepositoryBase {
@@ -41,4 +46,5 @@ abstract class ProfileRepositoryBase {
       @Header("X-Platform") required String platform});
 
   Future<ApiResponse<UserModel>> getMe();
+  Future<ApiResponse<UserModel>> deleteAccount();
 }

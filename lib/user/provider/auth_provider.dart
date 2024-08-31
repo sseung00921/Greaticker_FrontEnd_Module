@@ -24,7 +24,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   void logout(){
-    ref.read(userMeProvider.notifier).logout();
+    ref.read(userMeProvider.notifier).logOut();
   }
 
   // SplashScreen

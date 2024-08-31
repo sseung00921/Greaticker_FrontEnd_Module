@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:greaticker/common/component/modal/only_close_modal.dart';
 import 'package:greaticker/common/component/text_style.dart';
 import 'package:greaticker/common/constants/language/button.dart';
+import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greaticker/common/model/api_response.dart';
@@ -68,7 +70,18 @@ class _LoginViewState extends ConsumerState<LoginScreen> {
     return SizedBox(
                 width: 240,
                 child: ElevatedButton.icon(
-                  onPressed: ref.read(userMeProvider.notifier).loginWithGoogle,
+                  onPressed: () async {
+                    final responseState = await ref.read(userMeProvider.notifier).loginWithGoogle();
+                    if (responseState is ApiResponseError ||
+                        responseState is ApiResponse && !responseState.isSuccess) {
+                      showOnlyCloseDialog(
+                        context: context,
+                        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                        'network_error']!,
+                      );
+                    }
+                  },
+                  //ref.read(userMeProvider.notifier).loginWithGoogle,
                   icon: Icon(Icons.login),
                   label: Text(
                     BUTTON_DICT[dotenv.get(LANGUAGE)]!['sign_in_with_google']!,

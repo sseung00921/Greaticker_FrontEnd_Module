@@ -16,6 +16,7 @@ import 'package:greaticker/profile/model/profile_model.dart';
 import 'package:greaticker/profile/model/request_dto/change_nickname_request_dto.dart';
 import 'package:greaticker/profile/provider/profile_api_response_provider.dart';
 import 'package:greaticker/profile/provider/profile_provider.dart';
+import 'package:greaticker/user/provider/user_me_provider.dart';
 
 // ProfileScreen 위젯
 class ProfileView extends ConsumerStatefulWidget {
@@ -135,46 +136,51 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                           context: context,
                         );
                     if (responseState is ApiResponseError ||
-                        responseState is ApiResponse && !responseState.isSuccess) {
-                      if (responseState is ApiResponse && !responseState.isSuccess) {
+                        responseState is ApiResponse &&
+                            !responseState.isSuccess) {
+                      if (responseState is ApiResponse &&
+                          !responseState.isSuccess) {
                         if (responseState.message == DUPLICATED_NICKNAME) {
                           showOnlyCloseDialog(
                             context: context,
                             comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                            'duplicated_nickname']!,
+                                'duplicated_nickname']!,
                           );
-                        } else if(responseState.message == NOT_ALLOWED_CHARACTER) {
+                        } else if (responseState.message ==
+                            NOT_ALLOWED_CHARACTER) {
                           showOnlyCloseDialog(
                             context: context,
                             comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                            'not_allowed_character']!,
+                                'not_allowed_character']!,
                           );
-                        } else if(responseState.message == TOO_SHORT_NICKNAME) {
+                        } else if (responseState.message ==
+                            TOO_SHORT_NICKNAME) {
                           showOnlyCloseDialog(
                             context: context,
                             comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                            'under_nickname_length']!,
+                                'under_nickname_length']!,
                           );
-                        } else if(responseState.message == TOO_LONG_NICKNAME) {
+                        } else if (responseState.message == TOO_LONG_NICKNAME) {
                           showOnlyCloseDialog(
                             context: context,
                             comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                            'over_nickname_length']!,
+                                'over_nickname_length']!,
                           );
                         }
                       } else {
                         showOnlyCloseDialog(
                           context: context,
                           comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                          'network_error']!,
+                              'network_error']!,
                         );
                       }
-                    } else if (responseState is ApiResponse && responseState.isSuccess) {
+                    } else if (responseState is ApiResponse &&
+                        responseState.isSuccess) {
                       if (responseState.isSuccess) {
                         showOnlyCloseDialog(
                           context: context,
                           comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                          'change_nickname_completed']!,
+                              'change_nickname_completed']!,
                         );
                       }
                     }
@@ -194,18 +200,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             width: 200,
             child: ElevatedButton(
               onPressed: () async {
-                final responseState = await ref.read(profileApiResponseProvider.notifier).logOut(context: context);
-                if (responseState is ApiResponseError ||
-                    responseState is ApiResponse && !responseState.isSuccess) {
-                  showOnlyCloseDialog(
-                    context: context,
-                    comment:
-                        COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
-                  );
-                } else if (responseState is ApiResponse &&
-                    responseState.isSuccess) {
-                  context.go("/home?${SHOW_POP_UP}=${LOG_OUT_COMPLETE}");
-                }
+                await ref.read(userMeProvider.notifier).logOut();
+                context.go("/login");
               },
               child: Text(
                 BUTTON_DICT[dotenv.get(LANGUAGE)]!['log_out']!,
@@ -225,11 +221,11 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                   comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
                       'delete_account_try']!,
                   onYes: () async {
-                    final responseState = await ref
-                        .read(profileApiResponseProvider.notifier)
-                        .deleteAccount(context: context);
+                    final responseState =
+                        await ref.read(userMeProvider.notifier).deleteAccount();
                     if (responseState is ApiResponseError ||
-                        responseState is ApiResponse && !responseState.isSuccess) {
+                        responseState is ApiResponse &&
+                            !responseState.isSuccess) {
                       showOnlyCloseDialog(
                         context: context,
                         comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
@@ -237,8 +233,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                       );
                     } else if (responseState is ApiResponse &&
                         responseState.isSuccess) {
-                      context.go(
-                          "/home?${SHOW_POP_UP}=${DELETE_ACCOUNT_COMPLETE}");
+                      context.go("/login");
                     }
                   },
                 );

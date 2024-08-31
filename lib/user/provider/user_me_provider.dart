@@ -59,7 +59,7 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
     }
   }
 
-  Future<void> loginWithGoogle() async {
+  Future<ApiResponseBase?> loginWithGoogle() async {
     try {
       state = ApiResponseLoading();
       final GoogleSignIn googleSignIn = GoogleSignIn(
@@ -80,19 +80,33 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
       LoginResponse loginResponse = resp.data as LoginResponse;
 
       await storage.write(key: JWT_TOKEN, value: loginResponse.jwtToken);
+      return state;
     } catch (e, stack) {
       print(e);
       print(stack);
       state = ApiResponseError(
           message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+      return state;
     }
   }
 
-  Future<void> logout() async {
-    await Future.wait(
-      [
-        storage.delete(key: JWT_TOKEN),
-      ],
-    );
+  Future<void> logOut() async {
+    await storage.delete(key: JWT_TOKEN);
+    state = ApiResponseError(message: "loaded User no exist since logged Out");
+  }
+
+  Future<ApiResponseBase> deleteAccount() async {
+    try {
+      await authRepository.deleteAccount();
+      await storage.delete(key: JWT_TOKEN);
+      state = ApiResponseError(message: "loaded User no exist since user is deleted");
+      return state;
+    } catch (e, stack) {
+      print(e);
+      print(stack);
+      state = ApiResponseError(
+          message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+      return state;
+    }
   }
 }

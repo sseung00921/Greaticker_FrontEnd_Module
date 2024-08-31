@@ -23,7 +23,6 @@ class SplashScreen extends ConsumerStatefulWidget {
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
-    ref.read(widget.userMeProvider.notifier).getMe();
     super.initState();
     // 필요한 초기화 작업 수행
   }

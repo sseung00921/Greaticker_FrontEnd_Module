@@ -10,4 +10,5 @@ const JWT_TOKEN = 'JWT_TOKEN';
 const emulatorIp = '10.0.2.2:3000';
 const simulatorIp = '127.0.0.1:8080';
 
-final ip = Platform.isIOS ? simulatorIp : emulatorIp;
+//final ip = Platform.isIOS ? simulatorIp : emulatorIp;
+final ip = simulatorIp;
