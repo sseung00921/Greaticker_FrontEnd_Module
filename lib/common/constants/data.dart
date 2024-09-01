@@ -7,8 +7,7 @@ const REFRESH_TOKEN_KEY = 'REFRESH_TOKEN';
 const JWT_TOKEN = 'JWT_TOKEN';
 
 // localhost
-const emulatorIp = '10.0.2.2:3000';
+const emulatorIp = '10.0.2.2:8080';
 const simulatorIp = '127.0.0.1:8080';
 
-//final ip = Platform.isIOS ? simulatorIp : emulatorIp;
-final ip = simulatorIp;
+final ip = Platform.isIOS ? simulatorIp : emulatorIp;

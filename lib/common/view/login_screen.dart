@@ -71,7 +71,7 @@ class _LoginViewState extends ConsumerState<LoginScreen> {
                 width: 240,
                 child: ElevatedButton.icon(
                   onPressed: () async {
-                    final responseState = await ref.read(userMeProvider.notifier).loginWithGoogle();
+                    final responseState = await ref.read(userMeProvider.notifier).loginWithGoogle(context: context);
                     if (responseState is ApiResponseError ||
                         responseState is ApiResponse && !responseState.isSuccess) {
                       showOnlyCloseDialog(

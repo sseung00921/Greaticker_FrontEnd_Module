@@ -222,7 +222,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                       'delete_account_try']!,
                   onYes: () async {
                     final responseState =
-                        await ref.read(userMeProvider.notifier).deleteAccount();
+                        await ref.read(userMeProvider.notifier).deleteAccount(context: context);
                     if (responseState is ApiResponseError ||
                         responseState is ApiResponse &&
                             !responseState.isSuccess) {

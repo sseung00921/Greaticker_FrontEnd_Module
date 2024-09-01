@@ -17,8 +17,6 @@ const BUTTON_DICT= {
     "register_hall_of_fame" : "명예의 전당에 등록하기",
     "next" : "next",
     "sign_in_with_google" : "구글로 로그인하기",
-    "sign_in_with_kakao" : "카카오로 로그인하기",
-
   },
   "EN" : {
     "yes" : "Yes",
@@ -38,6 +36,5 @@ const BUTTON_DICT= {
     "register_hall_of_fame" : "Induct into the Hall of Fame",
     "next" : "next",
     "sign_in_with_google" : "Sign in with Google",
-    "sign_in_with_kakao" : "Sign in with Kakao",
   }
 };
