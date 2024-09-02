@@ -16,7 +16,7 @@ const BUTTON_DICT= {
     "view_tutorial" : "듀토리얼 보기",
     "register_hall_of_fame" : "명예의 전당에 등록하기",
     "next" : "next",
-    "sign_in_with_google" : "구글로 로그인하기",
+    "sign_in_with_google" : "Google 계정으로 로그인",
   },
   "EN" : {
     "yes" : "Yes",

@@ -103,6 +103,7 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
 
   Future<void> logOut() async {
     await storage.delete(key: JWT_TOKEN);
+    await googleSignIn.signOut();
     state = ApiResponseError(message: "loaded User no exist since logged Out");
   }
 
@@ -112,6 +113,7 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
       try {
         await authRepository.deleteAccount();
         await storage.delete(key: JWT_TOKEN);
+        await googleSignIn.signOut();
         state = ApiResponseError(
             message: "loaded User no exist since user is deleted");
         return state;

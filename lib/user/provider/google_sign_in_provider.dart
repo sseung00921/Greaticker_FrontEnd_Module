@@ -10,8 +10,7 @@ final googleSignInProvider = Provider<GoogleSignIn>((ref) {
   return GoogleSignIn(
     scopes: [
       'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
-      'https://www.googleapis.com/auth/userinfo.profile',
+      'profile',
     ],
     serverClientId: getServerClientCode(),
   );

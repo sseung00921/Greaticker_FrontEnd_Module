@@ -33,6 +33,8 @@ const COMMENT_DICT= {
     "over_project_name_length" : "프로젝트 이름은 26Byte(한글 2Byte, 영대문자 1.5Byte, 공백과 영소문자 1Byte)를 넘을 수 없습니다.",
     "under_project_name_length" : "프로젝트 이름은 6Byte(한글 2Byte, 영대문자 1.5Byte, 공백과 영소문자 1Byte)이상이어야 합니다.",
     "can_hit_favorite_to_sticker_after_got_all_sticker" : "모든 스티커를 모아야 최애 스티커를 지정할 수 있습니다.",
+    "app_title" : "잘했스티커",
+    "app_description" : "목표를 달성하고 모든 스티커를 모아보세요!",
   },
   "EN" : {
     "network_error": "Failed to communicate with the server.",
@@ -66,5 +68,7 @@ const COMMENT_DICT= {
     "over_project_name_length" : "The project name cannot exceed 26 bytes (English UpperCase letters are 1.5 bytes and English LowerCase letters and spaces are 1 byte).",
     "under_project_name_length" : "The project name must be at least 6 bytes (Korean characters are 2 bytes, uppercase English letters are 1.5 bytes, spaces and lowercase English letters are 1 byte).",
     "can_hit_favorite_to_sticker_after_got_all_sticker" : "You can designate a favorite sticker only after collecting all stickers.",
+    "app_title" : "Greaticker",
+    "app_description" : "Achieve your goals \nand collect all the stickers!",
   }
 };
