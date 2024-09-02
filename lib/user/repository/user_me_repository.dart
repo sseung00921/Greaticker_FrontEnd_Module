@@ -19,7 +19,7 @@ final UserMeRepositoryProvider = Provider<UserMeRepository>(
 
 // http://$ip/product
 @RestApi()
-abstract class UserMeRepository extends ProfileRepositoryBase {
+abstract class UserMeRepository extends UserMeRepositoryBase {
   factory UserMeRepository(Dio dio, {String baseUrl}) = _UserMeRepository;
 
   @GET('/get-me')
@@ -40,7 +40,7 @@ abstract class UserMeRepository extends ProfileRepositoryBase {
   Future<ApiResponse<UserModel>> deleteAccount();
 }
 
-abstract class ProfileRepositoryBase {
+abstract class UserMeRepositoryBase {
   Future<ApiResponse<LoginResponse>> loginWithGoogle({
       @Header("Authorization") required String authHeader,
       @Header("X-Platform") required String platform});

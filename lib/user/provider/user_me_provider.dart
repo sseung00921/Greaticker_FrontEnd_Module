@@ -35,7 +35,7 @@ final userMeProvider =
 );
 
 class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
-  final UserMeRepository authRepository;
+  final UserMeRepositoryBase authRepository;
   final FlutterSecureStorage storage;
   final GoogleSignIn googleSignIn;
   final ThrottleManager throttleManager;
@@ -78,8 +78,8 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
         final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
         final GoogleSignInAuthentication googleAuth =
         await googleUser!.authentication;
-
         String platForm = Platform.isAndroid ? ANDROID : iOS;
+
         final resp = await authRepository.loginWithGoogle(
           authHeader: "Bearer " + googleAuth.idToken!,
           platform: platForm,

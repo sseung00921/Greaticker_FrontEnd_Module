@@ -7,7 +7,7 @@ import 'package:greaticker/user/model/user_model.dart';
 import 'package:greaticker/user/provider/user_me_provider.dart';
 import 'package:greaticker/user/utils/auth_utils.dart';
 
-final authProvider = ChangeNotifierProvider<AuthProvider>((ref) {
+final mockAuthProviderWithNoLogginedUser = ChangeNotifierProvider<AuthProvider>((ref) {
   return AuthProvider(ref: ref);
 });
 
@@ -34,9 +34,7 @@ class AuthProvider extends ChangeNotifier {
   // 로그인 스크린으로 보내줄지
   // 홈 스크린으로 보내줄지 확인하는 과정이 필요하다.
   String? redirect(BuildContext context, GoRouterState state) {
-    final ApiResponseBase user = ref.read(userMeProvider);
+    final ApiResponseBase user = ApiResponseError(message: "no logged in User");
     return AuthUtils.redirectLogic(state, user);
   }
-
-
 }
