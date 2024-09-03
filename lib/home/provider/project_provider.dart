@@ -79,7 +79,7 @@ class ProjectStateNotifier extends StateNotifier<ApiResponseBase> {
     }
   }
 
-  void updateProjectState(ProjectModel updatedState) {
+  Future<void> updateProjectState(ProjectModel updatedState) async {
     state = ApiResponse(isSuccess: true, data: updatedState);
   }
 

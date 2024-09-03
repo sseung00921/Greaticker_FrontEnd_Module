@@ -94,25 +94,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
     //to be revised
     if (projectState.projectStateKind == ProjectStateKind.RESET) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        ProjectRequestDto projectRequestDto = ProjectRequestDto(
-            prevProjectState: projectState.projectStateKind,
-            nextProjectState: ProjectStateKind.IN_PROGRESS);
-        final responseState = await ref
-            .read(widget.projectApiResponseProvider.notifier)
-            .updateProjectState(
-            projectRequestDto: projectRequestDto, context: context);
-        if (responseState is ApiResponseError ||
-            responseState is ApiResponse && !responseState.isSuccess) {
-          showOnlyCloseDialog(
-            context: context,
-            comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
-          );
-        } else if (responseState is ApiResponse && responseState.isSuccess) {
-          showOnlyCloseDialog(
-              context: context,
-              comment:
-              COMMENT_DICT[dotenv.get(LANGUAGE)]!['reset_project_notice']!);
-        }
+        await _processReset(projectState, context);
       });
     }
 
@@ -197,6 +179,29 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
     );
   }
 
+  Future<void> _processReset(
+      ProjectModel projectState, BuildContext context) async {
+    ProjectRequestDto projectRequestDto = ProjectRequestDto(
+        prevProjectState: projectState.projectStateKind,
+        nextProjectState: ProjectStateKind.IN_PROGRESS);
+    final responseState = await ref
+        .read(widget.projectApiResponseProvider.notifier)
+        .updateProjectState(
+            projectRequestDto: projectRequestDto, context: context);
+    if (responseState is ApiResponseError ||
+        responseState is ApiResponse && !responseState.isSuccess) {
+      showOnlyCloseDialog(
+        context: context,
+        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+      );
+    } else if (responseState is ApiResponse && responseState.isSuccess) {
+      showOnlyCloseDialog(
+          context: context,
+          comment:
+              COMMENT_DICT[dotenv.get(LANGUAGE)]!['reset_project_notice']!);
+    }
+  }
+
   Column _showOrHideGotStickerButton(ProjectModel projectState) {
     if (projectState.projectStateKind == ProjectStateKind.IN_PROGRESS) {
       return Column(
@@ -265,6 +270,10 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
                     context: context,
                     comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
                         'today_sticker_already_got']!);
+              } else if (responseState.message == ALREADY_RESET_PROJECT) {
+                ProjectModel resetProjectModel = projectState.copyWith(
+                    projectStateKind: ProjectStateKind.RESET);
+                await _processReset(resetProjectModel, context);
               }
             } else {
               showOnlyCloseDialog(
