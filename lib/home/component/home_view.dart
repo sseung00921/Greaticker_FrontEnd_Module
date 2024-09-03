@@ -93,25 +93,26 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
 
     //to be revised
     if (projectState.projectStateKind == ProjectStateKind.RESET) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showOnlyCloseDialog(
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        ProjectRequestDto projectRequestDto = ProjectRequestDto(
+            prevProjectState: projectState.projectStateKind,
+            nextProjectState: ProjectStateKind.IN_PROGRESS);
+        final responseState = await ref
+            .read(widget.projectApiResponseProvider.notifier)
+            .updateProjectState(
+            projectRequestDto: projectRequestDto, context: context);
+        if (responseState is ApiResponseError ||
+            responseState is ApiResponse && !responseState.isSuccess) {
+          showOnlyCloseDialog(
             context: context,
-            comment:
-                COMMENT_DICT[dotenv.get(LANGUAGE)]!['reset_project_notice']!);
-      });
-    }
-
-    if (widget.showPopUp == LOG_OUT_COMPLETE ||
-        widget.showPopUp == DELETE_ACCOUNT_COMPLETE) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showOnlyCloseDialog(
-          context: context,
-          comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-              widget.showPopUp == LOG_OUT_COMPLETE
-                  ? 'log_out_complete'
-                  : 'delete_account_complete']!,
-        );
-        context.go("/home");
+            comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+          );
+        } else if (responseState is ApiResponse && responseState.isSuccess) {
+          showOnlyCloseDialog(
+              context: context,
+              comment:
+              COMMENT_DICT[dotenv.get(LANGUAGE)]!['reset_project_notice']!);
+        }
       });
     }
 
