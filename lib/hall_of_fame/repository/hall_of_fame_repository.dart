@@ -19,7 +19,7 @@ final HallOfFameRepositoryProvider = Provider<HallOfFameRepository>(
   (ref) {
     final dio = ref.watch(dioProvider);
 
-    return HallOfFameRepository(dio, baseUrl: 'http://$ip/hall-of-fame');
+    return HallOfFameRepository(dio, baseUrl: 'https://$ip/hall-of-fame');
   },
 );
 

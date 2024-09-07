@@ -14,7 +14,7 @@ final ProfileRepositoryProvider = Provider<ProfileRepository>(
       (ref) {
     final dio = ref.watch(dioProvider);
 
-    return ProfileRepository(dio, baseUrl: 'http://$ip/profile');
+    return ProfileRepository(dio, baseUrl: 'https://$ip/profile');
   },
 );
 

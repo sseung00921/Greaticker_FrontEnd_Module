@@ -15,7 +15,7 @@ final DiaryRepositoryProvider = Provider<DiaryRepository>(
       (ref) {
     final dio = ref.watch(dioProvider);
 
-    return DiaryRepository(dio, baseUrl: 'http://$ip/diary');
+    return DiaryRepository(dio, baseUrl: 'https://$ip/diary');
   },
 );
 

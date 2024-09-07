@@ -16,7 +16,7 @@ final HistoryRepositoryProvider = Provider<HistoryRepository>(
       (ref) {
     final dio = ref.watch(dioProvider);
 
-    return HistoryRepository(dio, baseUrl: 'http://$ip/history');
+    return HistoryRepository(dio, baseUrl: 'https://$ip/history');
   },
 );
 

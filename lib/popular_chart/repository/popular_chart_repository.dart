@@ -16,7 +16,7 @@ final PopularChartRepositoryProvider = Provider<PopularChartRepository>(
       (ref) {
     final dio = ref.watch(dioProvider);
 
-    return PopularChartRepository(dio, baseUrl: 'http://$ip/popular-chart');
+    return PopularChartRepository(dio, baseUrl: 'https://$ip/popular-chart');
   },
 );
 
