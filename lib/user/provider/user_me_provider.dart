@@ -79,10 +79,7 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
         state = ApiResponseLoading();
         String idToken;
         try {
-          print("aaaaaa");
           var res = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.google);
-          print(res);
-          print("bbbbbb");
         } on AmplifyException catch (e) {
           print(e.message);
         }
@@ -96,14 +93,7 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
 
           // Fetch the ID token from the session
           idToken = cognitoSession.userPoolTokensResult.value.idToken.raw;
-          String id = cognitoSession.identityIdResult.value;
-          print(cognitoSession.userPoolTokensResult.value.idToken.claims.audience);
-          print(cognitoSession.userPoolTokensResult.value.idToken.claims.issuer);
-          print(cognitoSession.userPoolTokensResult.value.idToken.claims.jwtId);
 
-          // final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-          // final GoogleSignInAuthentication googleAuth =
-          // await googleUser!.authentication;
           String platForm = Platform.isAndroid ? ANDROID : iOS;
 
           final resp = await authRepository.loginWithGoogle(
@@ -116,9 +106,7 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
 
           await storage.write(key: JWT_TOKEN, value: loginResponse.jwtToken);
 
-          if (idToken != null) {
-            print("ID Token: $idToken");
-          } else {
+          if (idToken == null) {
             print("Failed to get ID Token.");
           }
         } else {
