@@ -53,7 +53,8 @@
             <key>CFBundleURLSchemes</key>
             <array>
                 <!-- 이 부분에 GoogleSignIn에 사용될 Reverse client ID 추가 -->
-                <string>com.googleusercontent.apps.884290819984-s2dkioqcqqk2e9uam6cvkb7rn0t4hnta</string>
+                <!-- <string>com.googleusercontent.apps.884290819984-s2dkioqcqqk2e9uam6cvkb7rn0t4hnta</string> -->
+                <string>myapp</string>
             </array>
         </dict>
     </array>

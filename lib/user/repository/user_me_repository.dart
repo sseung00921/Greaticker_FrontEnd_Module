@@ -13,7 +13,7 @@ final UserMeRepositoryProvider = Provider<UserMeRepository>(
   (ref) {
     final dio = ref.watch(dioProvider);
 
-    return UserMeRepository(dio, baseUrl: 'https://$ip/auth');
+    return UserMeRepository(dio, baseUrl: 'http://$ip/auth');
   },
 );
 

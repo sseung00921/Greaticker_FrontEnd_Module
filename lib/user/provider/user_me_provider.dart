@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -75,20 +77,54 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
         .executeWithModal("loginWithGoogle", context, () async {
       try {
         state = ApiResponseLoading();
-        final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-        final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
-        String platForm = Platform.isAndroid ? ANDROID : iOS;
+        String idToken;
+        try {
+          print("aaaaaa");
+          var res = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.google);
+          print(res);
+          print("bbbbbb");
+        } on AmplifyException catch (e) {
+          print(e.message);
+        }
+        // Fetch the current user session
+        var session = await Amplify.Auth.fetchAuthSession();
 
-        final resp = await authRepository.loginWithGoogle(
-          authHeader: "Bearer " + googleAuth.idToken!,
-          platform: platForm,
-        );
-        resp as ApiResponse;
-        state = resp;
-        LoginResponse loginResponse = resp.data as LoginResponse;
+        // Ensure the session is valid and authenticated
+        if (session.isSignedIn) {
+          // Get Cognito credentials
+          var cognitoSession = session as CognitoAuthSession;
 
-        await storage.write(key: JWT_TOKEN, value: loginResponse.jwtToken);
+          // Fetch the ID token from the session
+          idToken = cognitoSession.userPoolTokensResult.value.idToken.raw;
+          String id = cognitoSession.identityIdResult.value;
+          print(cognitoSession.userPoolTokensResult.value.idToken.claims.audience);
+          print(cognitoSession.userPoolTokensResult.value.idToken.claims.issuer);
+          print(cognitoSession.userPoolTokensResult.value.idToken.claims.jwtId);
+
+          // final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+          // final GoogleSignInAuthentication googleAuth =
+          // await googleUser!.authentication;
+          String platForm = Platform.isAndroid ? ANDROID : iOS;
+
+          final resp = await authRepository.loginWithGoogle(
+            authHeader: "Bearer " + idToken,
+            platform: platForm,
+          );
+          resp as ApiResponse;
+          state = resp;
+          LoginResponse loginResponse = resp.data as LoginResponse;
+
+          await storage.write(key: JWT_TOKEN, value: loginResponse.jwtToken);
+
+          if (idToken != null) {
+            print("ID Token: $idToken");
+          } else {
+            print("Failed to get ID Token.");
+          }
+        } else {
+          print("User is not signed in.");
+        };
+
         return state;
       } catch (e, stack) {
         print(e);

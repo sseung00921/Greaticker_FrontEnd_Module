@@ -13,7 +13,7 @@ final ProjectRepositoryProvider = Provider<ProjectRepository>(
       (ref) {
     final dio = ref.watch(dioProvider);
 
-    return ProjectRepository(dio, baseUrl: 'https://$ip/home');
+    return ProjectRepository(dio, baseUrl: 'http://$ip/home');
   },
 );
 
