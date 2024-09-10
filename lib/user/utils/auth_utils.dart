@@ -1,7 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:greaticker/common/model/api_response.dart';
-import 'package:greaticker/user/provider/google_sign_in_provider.dart';
 
 class AuthUtils {
   static String? redirectLogic(GoRouterState state, ApiResponseBase user) {

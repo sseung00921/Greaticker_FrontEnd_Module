@@ -221,19 +221,20 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                   comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
                       'delete_account_try']!,
                   onYes: () async {
-                    final responseState =
-                        await ref.read(userMeProvider.notifier).deleteAccount(context: context);
-                    if (responseState is ApiResponseError ||
-                        responseState is ApiResponse &&
-                            !responseState.isSuccess) {
-                      showOnlyCloseDialog(
-                        context: context,
-                        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                            'network_error']!,
-                      );
-                    } else if (responseState is ApiResponse &&
-                        responseState.isSuccess) {
-                      context.go("/login");
+                    final responseState = await ref
+                        .read(userMeProvider.notifier)
+                        .deleteAccount(context: context);
+                    if (responseState is ApiResponseError) {
+                      if (responseState.message ==
+                          GET_ME_FAILED_SINCE_USER_DELETE_ACCOUNT) {
+                        context.go("/login");
+                      } else {
+                        showOnlyCloseDialog(
+                          context: context,
+                          comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                              'network_error']!,
+                        );
+                      }
                     }
                   },
                 );

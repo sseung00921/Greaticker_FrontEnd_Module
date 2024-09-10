@@ -25,7 +25,7 @@ class AuthProvider extends ChangeNotifier {
     required this.ref,
   }) {
     ref.listen<ApiResponseBase>(userMeProvider, (previous, next) {
-      if (previous != next) {
+      if (previous is ApiResponseLoading && next is ApiResponse) {
         clearAllProviderStates();
       }
     });

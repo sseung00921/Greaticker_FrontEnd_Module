@@ -34,6 +34,7 @@ class ProfileStateNotifier extends StateNotifier<ApiResponseBase> {
 
   Future<void> getProfileModel() async {
     try {
+      state = ApiResponseLoading();
       final resp = await repository.getProfileModel();
       state = resp;
     } catch (e, stack) {

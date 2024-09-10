@@ -45,6 +45,7 @@ class DiaryStateNotifier extends StateNotifier<ApiResponseBase> {
 
   Future<void> getDiaryModel() async {
     try {
+      state = ApiResponseLoading();
       final resp = await repository.getDiaryModel();
       state = resp;
     } catch (e, stack) {

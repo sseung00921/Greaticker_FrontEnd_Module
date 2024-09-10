@@ -70,6 +70,7 @@ class ProjectStateNotifier extends StateNotifier<ApiResponseBase> {
 
   Future<void> getProjectModel() async {
     try {
+      state = ApiResponseLoading();
       final resp = await repository.getProjectModel();
       state = resp;
     } catch (e, stack) {

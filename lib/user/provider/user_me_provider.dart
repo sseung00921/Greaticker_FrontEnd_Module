@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:greaticker/common/constants/data.dart';
+import 'package:greaticker/common/constants/error_message/error_message.dart';
 import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/platform.dart';
@@ -16,7 +16,6 @@ import 'package:greaticker/common/secure_storage/secure_storage.dart';
 import 'package:greaticker/common/throttle_manager/throttle_manager.dart';
 import 'package:greaticker/user/model/login_response.dart';
 import 'package:greaticker/user/model/user_model.dart';
-import 'package:greaticker/user/provider/google_sign_in_provider.dart';
 import 'package:greaticker/user/repository/user_me_repository.dart';
 
 final userMeProvider =
@@ -24,13 +23,11 @@ final userMeProvider =
   (ref) {
     final authRepository = ref.watch(UserMeRepositoryProvider);
     final storage = ref.watch(secureStorageProvider);
-    final googleSignIn = ref.read(googleSignInProvider);
     final throttleManager = ref.read(throttleManagerProvider);
 
     return UserMeStateNotifier(
       authRepository: authRepository,
       storage: storage,
-      googleSignIn: googleSignIn,
       throttleManager: throttleManager,
     );
   },
@@ -39,13 +36,11 @@ final userMeProvider =
 class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
   final UserMeRepositoryBase authRepository;
   final FlutterSecureStorage storage;
-  final GoogleSignIn googleSignIn;
   final ThrottleManager throttleManager;
 
   UserMeStateNotifier({
     required this.authRepository,
     required this.storage,
-    required this.googleSignIn,
     required this.throttleManager,
   }) : super(ApiResponseLoading()) {
     // 내 정보 가져오기
@@ -127,8 +122,7 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
 
   Future<void> logOut() async {
     await storage.delete(key: JWT_TOKEN);
-    await googleSignIn.signOut();
-    state = ApiResponseError(message: "loaded User no exist since logged Out");
+    state = ApiResponseError(message: GET_ME_FAILED_SINCE_USER_LOG_OUT);
   }
 
   Future<ApiResponseBase?> deleteAccount({required BuildContext context}) async {
@@ -137,9 +131,8 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
       try {
         await authRepository.deleteAccount();
         await storage.delete(key: JWT_TOKEN);
-        await googleSignIn.signOut();
         state = ApiResponseError(
-            message: "loaded User no exist since user is deleted");
+            message: GET_ME_FAILED_SINCE_USER_DELETE_ACCOUNT);
         return state;
       } catch (e, stack) {
         print(e);
