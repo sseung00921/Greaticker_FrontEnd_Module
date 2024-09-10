@@ -73,11 +73,7 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
       try {
         state = ApiResponseLoading();
         String idToken;
-        try {
-          var res = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.google);
-        } on AmplifyException catch (e) {
-          print(e.message);
-        }
+        var res = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.google);
         // Fetch the current user session
         var session = await Amplify.Auth.fetchAuthSession();
 
@@ -120,9 +116,19 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
   }
 
 
-  Future<void> logOut() async {
-    await storage.delete(key: JWT_TOKEN);
-    state = ApiResponseError(message: GET_ME_FAILED_SINCE_USER_LOG_OUT);
+  Future<ApiResponseBase?> logOut() async {
+    try {
+      await Amplify.Auth.signOut();
+      await storage.delete(key: JWT_TOKEN);
+      state = ApiResponseError(message: GET_ME_FAILED_SINCE_USER_LOG_OUT);
+      return state;
+    } catch (e, stack) {
+      print(e);
+      print(stack);
+      state = ApiResponseError(
+          message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+      return state;
+    }
   }
 
   Future<ApiResponseBase?> deleteAccount({required BuildContext context}) async {

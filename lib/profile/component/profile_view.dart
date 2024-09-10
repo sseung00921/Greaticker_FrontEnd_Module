@@ -200,8 +200,19 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             width: 200,
             child: ElevatedButton(
               onPressed: () async {
-                await ref.read(userMeProvider.notifier).logOut();
-                context.go("/login");
+                final responseState = await ref.read(userMeProvider.notifier).logOut();
+                if (responseState is ApiResponseError) {
+                  if (responseState.message ==
+                      GET_ME_FAILED_SINCE_USER_LOG_OUT) {
+                    context.go("/login");
+                  } else {
+                    showOnlyCloseDialog(
+                      context: context,
+                      comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                      'network_error']!,
+                    );
+                  }
+                }
               },
               child: Text(
                 BUTTON_DICT[dotenv.get(LANGUAGE)]!['log_out']!,

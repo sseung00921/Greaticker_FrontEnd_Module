@@ -22,7 +22,13 @@ const Map<String, String> STICKER_ID_NAME_MAPPER = {
   "21" : "Bowdy",
   "22" : "Purly",
   "23" : "Bubbly",
-  "24" : "Podong"
+  "24" : "Podong",
+  '25' : "Spark",
+  '26' : "Turbo",
+  '27' : "Fashiong",
+  '28' : "Woody",
+  '29' : "Koking",
+  '30' : "Nuri",
 };
 
 const Map<String, Map<String, Map<String, String>>> STICKER_ID_STICKER_INFO_MAPPER = {
@@ -54,6 +60,12 @@ const Map<String, Map<String, Map<String, String>>> STICKER_ID_STICKER_INFO_MAPP
     "22": {"name": "펄루", "description": "리틀윈의 귀여운 장난꾸러기 남동생이에요."},
     "23": {"name": "버블리", "description": "리틀윈의 귀여운 세살베기 막내 여동생이에요. 버블티를 좋아해요."},
     "24": {"name": "포동", "description": "사족 보행을 포기하고 굴러다니기를 선택한 고양이에요."},
+    "25": {"name": "스파이크", "description": "스피드를 즐기는 토끼에요."},
+    "26": {"name": "터보", "description": "자동차 변신 로봇이에요. 출근할 때 스스로 변신해서 가요."},
+    "27": {"name": "패숑", "description": "밀라노 패션을 추구하는 원숭이에요."},
+    "28": {"name": "우디", "description": "말하는 법을 터득한 나무에요. 리프의 친구에요."},
+    "29": {"name": "코강", "description": "헬스에 미친 코알라에요."},
+    "30": {"name": "누리", "description": "허스키를 친동생으로 여기는 알래스카에 사는 소녀에요."},
   },
   "EN" : {
     "1" : {"name" : "Littlewin", "description" : "The mascot of 'Good Job Stickers'! A cute creature cheering on the start of your goals."},
@@ -80,5 +92,11 @@ const Map<String, Map<String, Map<String, String>>> STICKER_ID_STICKER_INFO_MAPP
     "22" : {"name" : "Purly", "description" : "Littlewin's cute and mischievous younger brother."},
     "23" : {"name" : "Bubbly", "description" : "Littlewin's adorable three-year-old baby sister. She loves bubble tea."},
     "24" : {"name" : "Podong", "description" : "A cat who gave up walking on four legs and chose to roll around instead."},
+    "25" : {"name": "Spark", "description": "A rabbit who loves speed."},
+    "26" : {"name": "Turbo", "description": "A car-transforming robot. He transforms himself when commuting to work."},
+    "27" : {"name": "Fashiong", "description": "A monkey who pursues Milan fashion."},
+    "28" : {"name": "Woody", "description": "A tree who learned how to speak. He is a friend of Lief."},
+    "29" : {"name": "Koking", "description": "A koala obsessed with working out."},
+    "30" : {"name": "Nuri", "description": "A girl from Alaska who considers her husky as her younger sibling."},
   }
 };
