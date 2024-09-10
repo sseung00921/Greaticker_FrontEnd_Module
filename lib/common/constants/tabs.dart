@@ -37,13 +37,19 @@ const BOTTOM_TABS = [
 
 const TOP_TABS = [
   TabInfo(
+    icon: Icons.help_outline, // 설정모양 아이콘
+    label_key: 'tutorial',
+    index: 4,
+  ),
+  TabInfo(
     icon: Icons.history, // 시계모양 아이콘
     label_key: 'history',
-    index: 4,
+    index: 5,
   ),
   TabInfo(
     icon: Icons.settings, // 설정모양 아이콘
     label_key: 'profile',
-    index: 5,
+    index: 6,
   ),
+
 ];

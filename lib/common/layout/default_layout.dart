@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:greaticker/common/component/iconWithLabel.dart';
+import 'package:greaticker/common/component/modal/swipeable_modal.dart';
 import 'package:greaticker/common/component/text_style.dart';
 import 'package:greaticker/common/constants/colors.dart';
 import 'package:greaticker/common/constants/fonts.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/language/tap_label.dart';
 import 'package:greaticker/common/constants/language/title.dart';
+import 'package:greaticker/common/constants/language/tutorial.dart';
 import 'package:greaticker/common/constants/tabs.dart';
 
 
@@ -78,14 +80,14 @@ class _DefaultLayoutState extends State<DefaultLayout>
           ),
         ),
         foregroundColor: Colors.black,
-        actions: widget.title_key == 'history' || widget.title_key == 'profile'
+        actions: widget.title_key == 'tutorial' || widget.title_key == 'history' || widget.title_key == 'profile'
             ? []
             : TOP_TABS
                 .map((e) => Material(
                       key: Key(e.label_key + "TopTapButton"),
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: () =>
+                        onTap: () => e.label_key == 'tutorial' ? _showTutorial() :
                             context.push(_transTapIndexToUrlPath(e.index!)!),
                         borderRadius: BorderRadius.circular(24.0),
                         child: Container(
@@ -157,8 +159,13 @@ class _DefaultLayoutState extends State<DefaultLayout>
       return '/hall-of-fame';
     else if (tapIndex == 3)
       return '/popular-chart';
-    else if (tapIndex == 4)
+    else if (tapIndex == 5)
       return '/history';
-    else if (tapIndex == 5) return '/profile';
+    else if (tapIndex == 6) return '/profile';
+  }
+
+  _showTutorial() {
+    List<String> turorialList = TUTORIAL_TEXT_LIST[dotenv.get(LANGUAGE)]!;
+    showSwipeableDialog(context: context, comments: turorialList);
   }
 }

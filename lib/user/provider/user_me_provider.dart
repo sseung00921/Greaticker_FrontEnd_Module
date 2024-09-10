@@ -130,6 +130,7 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
         .executeWithModal("deleteAccount", context, () async {
       try {
         await authRepository.deleteAccount();
+        await Amplify.Auth.deleteUser();
         await storage.delete(key: JWT_TOKEN);
         state = ApiResponseError(
             message: GET_ME_FAILED_SINCE_USER_DELETE_ACCOUNT);

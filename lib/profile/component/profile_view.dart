@@ -246,22 +246,6 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
               ),
             ),
           ),
-          SizedBox(height: 10),
-          // 튜토리얼 보기 버튼
-          Container(
-            width: 200,
-            child: ElevatedButton(
-              onPressed: () async {
-                // 튜토리얼 보기 로직
-                print('View Tutorial button pressed');
-              },
-              child: Text(
-                BUTTON_DICT[dotenv.get(LANGUAGE)]!['view_tutorial']!,
-                style: YeongdeokSeaTextStyle(
-                    fontSize: 24.0, fontWeight: FontWeight.w500),
-              ),
-            ),
-          ),
         ],
       ),
     );

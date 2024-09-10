@@ -5,7 +5,8 @@ const TAB_LABEL_DICT = {
     "hall_of_fame" : "명예의 전당",
     "popular_chart" : "인기차트",
     "history" : "히스토리",
-    "profile" : "프로필"
+    "profile" : "프로필",
+    "tutorial" : "듀토리얼",
   },
   "EN" : {
     "home" : "Home",
@@ -13,6 +14,7 @@ const TAB_LABEL_DICT = {
     "hall_of_fame" : "Hall of fame",
     "popular_chart" : "Top charts",
     "history" : "History",
-    "profile" : "Profile"
+    "profile" : "Profile",
+    "tutorial" : "Tutorial",
   }
 };

@@ -40,10 +40,6 @@ class AuthProvider extends ChangeNotifier {
     ref.read(diaryProvider.notifier).getDiaryModel();
   }
 
-  void logout(){
-    ref.read(userMeProvider.notifier).logOut();
-  }
-
   // SplashScreen
   // 앱을 처음 시작했을때
   // 토큰이 존재하는지 확인하고
