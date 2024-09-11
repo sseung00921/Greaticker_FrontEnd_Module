@@ -399,7 +399,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
               showOnlyCloseDialog(
                   context: context,
                   comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                      'not_allowed_character']!);
+                      'not_allowed_character_in_project_name']!);
             } else if (responseState.message == TOO_LONG_PROJECT_NAME) {
               showOnlyCloseDialog(
                   context: context,

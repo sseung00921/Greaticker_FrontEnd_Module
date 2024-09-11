@@ -109,7 +109,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                     ),
                   ],
                 ),
-                width: 228,
+                width: 196,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.0),
                   child: TextField(
@@ -151,7 +151,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                           showOnlyCloseDialog(
                             context: context,
                             comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                                'not_allowed_character']!,
+                                'not_allowed_character_in_nickname']!,
                           );
                         } else if (responseState.message ==
                             TOO_SHORT_NICKNAME) {
