@@ -150,4 +150,8 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
       }
     });
   }
+
+  void setErrorState() {
+    state = ApiResponseError(message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+  }
 }

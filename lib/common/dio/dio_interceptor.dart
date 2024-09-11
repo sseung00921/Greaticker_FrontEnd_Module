@@ -49,11 +49,12 @@ class CustomInterceptor extends Interceptor {
 
   // 3) 에러가 났을때
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) async {
+  void onError(DioError err, ErrorInterceptorHandler handler) {
     //에러가 났을 때 인증이슈이면 다시 로그인 화면으로 보내기 위함.
     //401 UnAuthorized, 403 Forbidden
     int statusCode = err.response?.statusCode ?? 0;
     if (statusCode == 401 || statusCode == 403) {
+      ref.read(userMeProvider.notifier).setErrorState();
       ref.read(routerProvider).go("/login");
     }
 
