@@ -9,8 +9,7 @@ class AuthUtils {
     } else if (user is ApiResponseError) {
       return '/login';
     } else {
-      //정상적으로 로그인된 유저 정보를 가져온 경우
-      return loginIn || state.location == '/splash' ? '/home' : null;
+      return loginIn || state.location == '/splash' ? '/login' : null;
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -56,8 +57,7 @@ class CustomInterceptor extends Interceptor {
     //401 UnAuthorized, 403 Forbidden
     int statusCode = err.response?.statusCode ?? 0;
     if (statusCode == 401 || statusCode == 403) {
-      ref.read(userMeProvider.notifier).setErrorState();
-      ref.read(routerProvider).go("/login");
+      ref.read(routerProvider).go("/login?sessionExpired=true");
     }
 
     return handler.reject(err);

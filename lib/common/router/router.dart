@@ -156,6 +156,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           name: LoginScreen.routeName,
           pageBuilder: (_, state) => CustomTransitionPage(
               child: LoginScreen(
+                sessionExpired: state.queryParameters['sessionExpired'],
                 key: LOGIN_SCREEN_KEY,
                 userMeProvider: userMeProvider,
               ),

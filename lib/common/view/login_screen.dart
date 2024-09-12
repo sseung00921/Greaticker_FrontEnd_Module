@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,11 +6,13 @@ import 'package:go_router/go_router.dart'; // GoRouter 임포트
 import 'package:greaticker/common/component/modal/only_close_modal.dart';
 import 'package:greaticker/common/component/text_style.dart';
 import 'package:greaticker/common/constants/colors.dart';
+import 'package:greaticker/common/constants/data.dart';
 import 'package:greaticker/common/constants/language/button.dart';
 import 'package:greaticker/common/constants/language/comment.dart';
 import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/runtime.dart';
 import 'package:greaticker/common/model/api_response.dart';
+import 'package:greaticker/common/secure_storage/secure_storage.dart';
 import 'package:greaticker/user/provider/user_me_provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
@@ -19,10 +22,12 @@ class LoginScreen extends ConsumerStatefulWidget {
       userMeProvider;
 
   final Key key;
+  final String? sessionExpired;
 
   LoginScreen({
     required this.key,
     required this.userMeProvider,
+    this.sessionExpired,
   }) : super(key: key);
 
   @override
@@ -47,9 +52,18 @@ class _LoginViewState extends ConsumerState<LoginScreen> {
         ],
       );
     } else if (state is ApiResponse) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.go('/home'); // 상태가 ApiResponse이면 /home/project로 이동
-      });
+      if (widget.sessionExpired != null && widget.sessionExpired == 'true') {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Amplify.Auth.signOut();
+          ref.read(secureStorageProvider).delete(key: JWT_TOKEN);
+          ref.read(userMeProvider.notifier).setErrorState();
+          context.go('/login');
+        });
+      } else {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          context.go('/home'); // 상태가 ApiResponse이면 /home/project로 이동
+        });
+      }
       return loginUI();
     } else if (state is ApiResponseError) {
       return loginUI();
