@@ -27,6 +27,7 @@ class MyApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       supportedLocales: [
         const Locale('en', 'US'), // 영어
         const Locale('ko', 'KR'), // 한국어

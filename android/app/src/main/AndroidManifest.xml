@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.sangseunglee.greaticker">
     <queries>
         <intent>
             <action android:name=
@@ -6,7 +6,7 @@
         </intent>
     </queries>
     <application
-        android:label="greaticker"
+        android:label="잘했스티커"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
