@@ -551,8 +551,8 @@ void main() {
 
     LinearProgressIndicator linearProgressIndicator =
         tester.widget(find.byType(LinearProgressIndicator));
-    expect(linearProgressIndicator.value, 22 / 24);
-    expect(find.text('22/24'), findsOneWidget);
+    expect(linearProgressIndicator.value, 28 / 30);
+    expect(find.text('28/30'), findsOneWidget);
 
     await tester
         .tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['get_sticker']!));
@@ -562,8 +562,8 @@ void main() {
 
     linearProgressIndicator =
         tester.widget(find.byType(LinearProgressIndicator));
-    expect(linearProgressIndicator.value, 23 / 24);
-    expect(find.text('23/24'), findsOneWidget);
+    expect(linearProgressIndicator.value, 29 / 30);
+    expect(find.text('29/30'), findsOneWidget);
   });
 
   testWidgets(

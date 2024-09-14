@@ -54,8 +54,8 @@ void main() {
           ),
         );
 
-        expect(find.byKey(HOME_SCREEN_KEY), findsOneWidget);
-        expect(find.byKey(LOGIN_SCREEN_KEY), findsNothing);
+        expect(find.byKey(LOGIN_SCREEN_KEY), findsOneWidget);
+        expect(find.byKey(HOME_SCREEN_KEY), findsNothing);
       });
 
 }

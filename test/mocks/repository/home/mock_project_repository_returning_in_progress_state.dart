@@ -24,8 +24,8 @@ class MockProjectRepositoryReturningInProgress extends ProjectRepositoryBase {
   ProjectModel mockInProgressStateData = ProjectModel(
       projectName: "앱 만들기",
       projectStateKind: ProjectStateKind.IN_PROGRESS,
-      startDate: DateTime.now().subtract(Duration(days: 23)),
-      dayInARow: 22);
+      startDate: DateTime.now().subtract(Duration(days: 29)),
+      dayInARow: 28);
   ApiResponse<String> mockGotStickerData =
   ApiResponse<String>(
     isSuccess: true,
