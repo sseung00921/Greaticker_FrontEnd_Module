@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -475,49 +477,82 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
     return SizedBox(
       width: 240,
       child: ElevatedButton(
-        onPressed: () {
-          showSelectOneBetweenTwoModal(
-            context: context,
-            option1: COMMENT_DICT[dotenv.get(LANGUAGE)]!['only_nickname']!,
-            option2: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                'both_nickname_and_auth_id']!,
-            onNext: (selectedOption) async {
-              bool showAuthEmail = selectedOption == 0 ? false : true;
-              HallOfFameRegisterRequestDto hallOfFameRequestDto =
-                  HallOfFameRegisterRequestDto(
-                      projectId: "1", showAuthEmail: showAuthEmail);
-              final responseState = await ref
-                  .read(widget.hallOfFameApiResponseProvider.notifier)
-                  .registerHallOfFame(
-                      hallOfFameRequestDto: hallOfFameRequestDto,
-                      context: context);
-              if (responseState is ApiResponseError ||
-                  responseState is ApiResponse && !responseState.isSuccess) {
-                if (responseState is ApiResponse && !responseState.isSuccess) {
-                  if (responseState.message == DUPLICATED_HALL_OF_FAME) {
+        onPressed: () async {
+          if (Platform.isAndroid) {
+            showSelectOneBetweenTwoModal(
+              context: context,
+              option1: COMMENT_DICT[dotenv.get(LANGUAGE)]!['only_nickname']!,
+              option2: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+              'both_nickname_and_auth_id']!,
+              onNext: (selectedOption) async {
+                bool showAuthEmail = selectedOption == 0 ? false : true;
+                HallOfFameRegisterRequestDto hallOfFameRequestDto =
+                HallOfFameRegisterRequestDto(showAuthEmail: showAuthEmail);
+                final responseState = await ref
+                    .read(widget.hallOfFameApiResponseProvider.notifier)
+                    .registerHallOfFame(
+                    hallOfFameRequestDto: hallOfFameRequestDto,
+                    context: context);
+                if (responseState is ApiResponseError ||
+                    responseState is ApiResponse && !responseState.isSuccess) {
+                  if (responseState is ApiResponse && !responseState.isSuccess) {
+                    if (responseState.message == DUPLICATED_HALL_OF_FAME) {
+                      showOnlyCloseDialog(
+                          context: context,
+                          comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                          'duplicated_hall_of_fame']!);
+                    }
+                  } else {
                     showOnlyCloseDialog(
-                        context: context,
-                        comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                            'duplicated_hall_of_fame']!);
+                      context: context,
+                      comment:
+                      COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+                    );
                   }
-                } else {
+                } else if (responseState is ApiResponse &&
+                    responseState.isSuccess) {
                   showOnlyCloseDialog(
                     context: context,
-                    comment:
-                        COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+                    comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                    'register_hall_of_fame_complete']!,
                   );
+                };
+              },
+            );
+          } else {
+            HallOfFameRegisterRequestDto hallOfFameRequestDto =
+            HallOfFameRegisterRequestDto(showAuthEmail: false);
+            final responseState = await ref
+                .read(widget.hallOfFameApiResponseProvider.notifier)
+                .registerHallOfFame(
+                hallOfFameRequestDto: hallOfFameRequestDto,
+                context: context);
+            if (responseState is ApiResponseError ||
+                responseState is ApiResponse && !responseState.isSuccess) {
+              if (responseState is ApiResponse && !responseState.isSuccess) {
+                if (responseState.message == DUPLICATED_HALL_OF_FAME) {
+                  showOnlyCloseDialog(
+                      context: context,
+                      comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                      'duplicated_hall_of_fame']!);
                 }
-              } else if (responseState is ApiResponse &&
-                  responseState.isSuccess) {
+              } else {
                 showOnlyCloseDialog(
                   context: context,
-                  comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                      'register_hall_of_fame_complete']!,
+                  comment:
+                  COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
                 );
               }
-              ;
-            },
-          );
+            } else if (responseState is ApiResponse &&
+                responseState.isSuccess) {
+              showOnlyCloseDialog(
+                context: context,
+                comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                'register_hall_of_fame_complete']!,
+              );
+            };
+          }
+
         },
         child: Text(
           textAlign: TextAlign.center,

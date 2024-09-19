@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -15,6 +17,7 @@ import 'package:greaticker/common/model/api_response.dart';
 import 'package:greaticker/common/secure_storage/secure_storage.dart';
 import 'package:greaticker/user/provider/user_me_provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   static String get routeName => 'LoginScreen';
@@ -116,13 +119,28 @@ class _LoginViewState extends ConsumerState<LoginScreen> {
         height: 50,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(30),
-          child: SignInButton(
+          child: Platform.isAndroid ? SignInButton(
             Buttons.google,
             text: BUTTON_DICT[dotenv.get(LANGUAGE)]!['sign_in_with_google']!,
             onPressed: () async {
               final responseState = await ref
                   .read(userMeProvider.notifier)
                   .loginWithGoogle(context: context);
+              if (responseState is ApiResponseError ||
+                  responseState is ApiResponse && !responseState.isSuccess) {
+                showOnlyCloseDialog(
+                  context: context,
+                  comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
+                );
+              }
+            },
+          )
+          :
+          SignInWithAppleButton(
+            onPressed: () async {
+              final responseState = await ref
+                  .read(userMeProvider.notifier)
+                  .loginWithApple(context: context);
               if (responseState is ApiResponseError ||
                   responseState is ApiResponse && !responseState.isSuccess) {
                 showOnlyCloseDialog(

@@ -27,10 +27,10 @@ abstract class UserMeRepository extends UserMeRepositoryBase {
   @override
   Future<ApiResponse<UserModel>> getMe();
 
-  @POST('/google')
+  @POST('/login')
   @Headers({'Content-Type': 'application/json'})
   @override
-  Future<ApiResponse<LoginResponse>> loginWithGoogle({
+  Future<ApiResponse<LoginResponse>> login({
       @Header("Authorization") required String authHeader,
       @Header("X-Platform") required String platform});
 
@@ -41,7 +41,7 @@ abstract class UserMeRepository extends UserMeRepositoryBase {
 }
 
 abstract class UserMeRepositoryBase {
-  Future<ApiResponse<LoginResponse>> loginWithGoogle({
+  Future<ApiResponse<LoginResponse>> login({
       @Header("Authorization") required String authHeader,
       @Header("X-Platform") required String platform});
 

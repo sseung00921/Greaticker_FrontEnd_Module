@@ -17,6 +17,7 @@ import 'package:greaticker/common/throttle_manager/throttle_manager.dart';
 import 'package:greaticker/user/model/login_response.dart';
 import 'package:greaticker/user/model/user_model.dart';
 import 'package:greaticker/user/repository/user_me_repository.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 final userMeProvider =
     StateNotifierProvider<UserMeStateNotifier, ApiResponseBase>(
@@ -87,7 +88,7 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
 
           String platForm = Platform.isAndroid ? ANDROID : iOS;
 
-          final resp = await authRepository.loginWithGoogle(
+          final resp = await authRepository.login(
             authHeader: "Bearer " + idToken,
             platform: platForm,
           );
@@ -115,6 +116,54 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
     });
   }
 
+  Future<ApiResponseBase?> loginWithApple({required BuildContext context}) async {
+    return await throttleManager
+        .executeWithModal("loginWithApple", context, () async {
+      try {
+        print("aaaaaa");
+        state = ApiResponseLoading();
+        String idToken;
+        var res = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.apple);
+        // Fetch the current user session
+        var session = await Amplify.Auth.fetchAuthSession();
+
+        // Ensure the session is valid and authenticated
+        if (session.isSignedIn) {
+          // Get Cognito credentials
+          var cognitoSession = session as CognitoAuthSession;
+
+          // Fetch the ID token from the session
+          idToken = cognitoSession.userPoolTokensResult.value.idToken.raw;
+
+          String platForm = Platform.isAndroid ? ANDROID : iOS;
+
+          final resp = await authRepository.login(
+            authHeader: "Bearer " + idToken,
+            platform: platForm,
+          );
+          resp as ApiResponse;
+          state = resp;
+          LoginResponse loginResponse = resp.data as LoginResponse;
+
+          await storage.write(key: JWT_TOKEN, value: loginResponse.jwtToken);
+
+          if (idToken == null) {
+            print("Failed to get ID Token.");
+          }
+        } else {
+          print("User is not signed in.");
+        };
+
+        return state;
+      } catch (e, stack) {
+        print(e);
+        print(stack);
+        state = ApiResponseError(
+            message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+        return state;
+      }
+    });
+  }
 
   Future<ApiResponseBase?> logOut() async {
     try {
