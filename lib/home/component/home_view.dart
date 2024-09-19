@@ -588,9 +588,10 @@ class _TableClanderForHomeView extends StatelessWidget {
       selectedDayPredicate: (day) {
         if (startDay != null) {
           day = day.toLocal();
-          DateTime endDay = startDay!.add(Duration(days: dayInARow! - 1));
-          return day.isAfter(startDay!.subtract(Duration(days: 1))) &&
-              day.isBefore(endDay);
+          day = DateTime(day.year, day.month, day.day);
+          DateTime startDateOnly = DateTime(startDay!.year, startDay!.month, startDay!.day);
+          DateTime endDateOnly = startDateOnly.add(Duration(days: dayInARow!));
+          return day.isAfter(startDateOnly.subtract(Duration(days: 1))) && day.isBefore(endDateOnly);
         } else {
           return false;
         }
