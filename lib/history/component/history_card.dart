@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:greaticker/common/component/text_style.dart';
 import 'package:greaticker/common/constants/fonts.dart';
+import 'package:greaticker/common/constants/language/common.dart';
 import 'package:greaticker/common/constants/language/stickers.dart';
 import 'package:greaticker/common/utils/date_time_utils.dart';
 import 'package:greaticker/hall_of_fame/model/hall_of_fame_model.dart';
@@ -46,7 +48,7 @@ class HistoryCard extends StatelessWidget {
       HistoryUtils.historyContentMaker(
           historyKind: historyKind,
           projectName: projectName,
-          stickerName: STICKER_ID_NAME_MAPPER[stickerId],
+          stickerName: stickerId != null ? STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![stickerId]!['name'] : null,
           dayInARow: dayInARow),
       textAlign: TextAlign.start,
       style: YeongdeokSeaTextStyle(

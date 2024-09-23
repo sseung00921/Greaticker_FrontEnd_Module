@@ -37,6 +37,17 @@ class PopularChartCard extends StatelessWidget {
     String stickerName = STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![stickerId]!["name"]!;
     String stickerDescription = STICKER_ID_STICKER_INFO_MAPPER[dotenv.get(LANGUAGE)]![stickerId]!["description"]!;
 
+    Text _cardText = Text(
+      stickerDescription,
+      textAlign: TextAlign.justify,
+      style: YeongdeokSeaTextStyle(
+        fontSize: 14.0,
+        fontWeight: FontWeight.w500,
+      ),
+      maxLines: 3,
+      overflow: TextOverflow.ellipsis,
+    );
+
     return Padding(
         padding: const EdgeInsets.all(4.0),
         child: Container(
@@ -87,15 +98,18 @@ class PopularChartCard extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: Text(
-                    stickerDescription,
-                    textAlign: TextAlign.justify,
-                    style: YeongdeokSeaTextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: _cardText,
+                          );
+                        },
+                      );
+                    },
+                    child: _cardText,
                   ),
                 ),
               ),

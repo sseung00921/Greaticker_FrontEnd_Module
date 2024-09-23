@@ -49,21 +49,36 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
   }
 
   Future<void> getMe() async {
-    final jwtToken = await storage.read(key: JWT_TOKEN);
-    if (jwtToken == null) {
-      state = ApiResponseError(message: "No JWT Token.");
-    } else {
-      try {
-        if (state is ApiResponseError) {
-          state = ApiResponseLoading();
+    try {
+      final jwtToken = await storage.read(key: JWT_TOKEN);
+      var session = await Amplify.Auth.fetchAuthSession();
+      if (jwtToken == null || !session.isSignedIn) {
+        await Amplify.Auth.signOut();
+        if (jwtToken != null) {
+          await storage.delete(key: JWT_TOKEN);
         }
-        final userResp = await authRepository.getMe();
-        state = userResp;
-      } catch (e, stack) {
-        print(e);
-        print(stack);
-        state = ApiResponseError(
-            message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+        state = ApiResponseError(message: "No JWT Token.");
+      } else {
+        try {
+          if (state is ApiResponseError) {
+            state = ApiResponseLoading();
+          }
+          final userResp = await authRepository.getMe();
+          state = userResp;
+        } catch (e, stack) {
+          print(e);
+          print(stack);
+          state = ApiResponseError(
+              message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+        }
+      }
+    } catch (e) {
+      print('Error fetching session: $e');
+      // 오류 발생 시에도 로그아웃 처리
+      await Amplify.Auth.signOut();
+      final jwtToken = await storage.read(key: JWT_TOKEN);
+      if (jwtToken != null) {
+        await storage.delete(key: JWT_TOKEN);
       }
     }
   }
@@ -109,6 +124,11 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
       } catch (e, stack) {
         print(e);
         print(stack);
+        await Amplify.Auth.signOut();
+        final jwtToken = await storage.read(key: JWT_TOKEN);
+        if (jwtToken != null) {
+          await storage.delete(key: JWT_TOKEN);
+        }
         state = ApiResponseError(
             message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
         return state;
@@ -120,10 +140,16 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
     return await throttleManager
         .executeWithModal("loginWithApple", context, () async {
       try {
-        print("aaaaaa");
         state = ApiResponseLoading();
         String idToken;
-        var res = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.apple);
+        var res = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.apple,
+          options: const SignInWithWebUIOptions(
+            pluginOptions: CognitoSignInWithWebUIPluginOptions(
+              isPreferPrivateSession: true,
+            ),
+          ),
+        );
+
         // Fetch the current user session
         var session = await Amplify.Auth.fetchAuthSession();
 
@@ -158,6 +184,11 @@ class UserMeStateNotifier extends StateNotifier<ApiResponseBase> {
       } catch (e, stack) {
         print(e);
         print(stack);
+        await Amplify.Auth.signOut();
+        final jwtToken = await storage.read(key: JWT_TOKEN);
+        if (jwtToken != null) {
+          await storage.delete(key: JWT_TOKEN);
+        }
         state = ApiResponseError(
             message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
         return state;
