@@ -1,3 +1,4 @@
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +27,19 @@ class CustomInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     print('[REQ] [${options.method}] ${options.uri}');
+    var session = await Amplify.Auth.fetchAuthSession();
 
+    // Ensure the session is valid and authenticated
+    if (session.isSignedIn) {
+      // Get Cognito credentials
+      var cognitoSession = session as CognitoAuthSession;
+
+      // Fetch the ID token from the session
+      String idToken = cognitoSession.userPoolTokensResult.value.idToken.raw;
+
+      await storage.write(key: JWT_TOKEN, value: idToken);
+
+    }
     if (options.headers['accessToken'] == 'true') {
       // 헤더 삭제
       options.headers.remove('accessToken');
