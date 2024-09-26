@@ -28,24 +28,37 @@ class ProjectApiResponseStateNotifier extends StateNotifier<ApiResponseBase> {
 
   Future<ApiResponseBase?> updateProjectState({
     required ProjectRequestDto projectRequestDto,
-    required BuildContext context, // Context 추가
+    required BuildContext context,
+    bool showThrottleModal = true,// Context 추가
   }) async {
-    return await throttleManager.executeWithModal("updateProjectState", context, () async {
-      try {
-        state = ApiResponseLoading();
-        final resp = await repository.updateProjectState(
-            projectRequestDto: projectRequestDto);
-        state = resp;
-        print(resp.isSuccess);
-        print(resp.message);
-        return state;
-      } catch (e, stack) {
-        print(e);
-        print(stack);
-        state = ApiResponseError(
-            message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
-        return state;
-      }
-    });
+    if (showThrottleModal) {
+      return await throttleManager.executeWithModal(
+          "updateProjectState", context, () async {
+        return await _updateProjectState(projectRequestDto);
+      });
+    } else {
+      return await throttleManager.execute(
+          "updateProjectState", () async {
+        return await _updateProjectState(projectRequestDto);
+      });
+    }
+  }
+
+  Future<ApiResponseBase> _updateProjectState(ProjectRequestDto projectRequestDto) async {
+    try {
+      state = ApiResponseLoading();
+      final resp = await repository.updateProjectState(
+          projectRequestDto: projectRequestDto);
+      state = resp;
+      print(resp.isSuccess);
+      print(resp.message);
+      return state;
+    } catch (e, stack) {
+      print(e);
+      print(stack);
+      state = ApiResponseError(
+          message: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!);
+      return state;
+    }
   }
 }

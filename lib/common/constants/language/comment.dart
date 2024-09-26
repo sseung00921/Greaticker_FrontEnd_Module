@@ -3,9 +3,9 @@ import 'package:greaticker/home/constants/project.dart';
 const COMMENT_DICT= {
   "KO" : {
     "network_error" : "서버와의 통신에 실패하였습니다.",
-    "delete_project_try" : "정말로 목표를 삭제하시겠습니까? 목표를 삭제하면 지금까지 모았던 스티커를 잃지만 새로운 목표를 생성할 수 있습니다.",
+    "delete_project_try" : "정말 목표를 삭제하시겠습니까? 목표를 삭제하면 지금까지 모았던 스티커를 잃게 되지만, 새로운 목표를 생성할 수 있습니다.",
     "delete_project_complete" : "목표가 삭제되었습니다.",
-    "create_project_try" : "새로운 목표의 이름을 입력해주세요.",
+    "create_project_try" : "새로운 목표의 이름을 입력해 주세요.",
     "create_project_sticker_loss_notice" : "새로운 목표를 생성하시면 지금까지 모았던 스티커가 사라집니다. 새로운 목표를 생성하시겠습니까?",
     "create_project_complete" : "목표가 생성되었습니다! 30일동안 달성하시기를 응원합니다!",
     "complete_project_notice" : "목표를 달성하셨습니다. 축하드립니다. 새로운 목표를 생성하실 때까지 모았던 스티커가 유지됩니다.",

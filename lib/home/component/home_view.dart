@@ -189,7 +189,7 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
     final responseState = await ref
         .read(widget.projectApiResponseProvider.notifier)
         .updateProjectState(
-            projectRequestDto: projectRequestDto, context: context);
+            projectRequestDto: projectRequestDto, context: context, showThrottleModal: false);
     if (responseState is ApiResponseError ||
         responseState is ApiResponse && !responseState.isSuccess) {
       showOnlyCloseDialog(
