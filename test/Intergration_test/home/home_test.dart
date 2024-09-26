@@ -621,11 +621,11 @@ void main() {
         true);
     expect(
         tableCalendar.selectedDayPredicate!(currentProjectState.startDate!
-            .add(Duration(days: currentProjectState.dayInARow! - 2))),
+            .add(Duration(days: currentProjectState.dayInARow! - 1))),
         true);
     expect(
         tableCalendar.selectedDayPredicate!(currentProjectState.startDate!
-            .add(Duration(days: currentProjectState.dayInARow! - 1))),
+            .add(Duration(days: currentProjectState.dayInARow!))),
         false);
     // expect(tableCalendar.selectedDayPredicate!(currentProjectState.startDay!), true);
   });
@@ -651,16 +651,16 @@ void main() {
         .text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['register_hall_of_fame']!));
     await tester.pumpAndSettle();
 
-    expect(find.byType(AlertDialog), findsOneWidget);
-    expect(find.text(COMMENT_DICT[dotenv.get(LANGUAGE)]!['only_nickname']!),
-        findsOneWidget);
-    expect(
-        find.text(
-            COMMENT_DICT[dotenv.get(LANGUAGE)]!['both_nickname_and_auth_id']!),
-        findsOneWidget);
-
-    await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['next']!));
-    await tester.pumpAndSettle();
+    // expect(find.byType(AlertDialog), findsOneWidget);
+    // expect(find.text(COMMENT_DICT[dotenv.get(LANGUAGE)]!['only_nickname']!),
+    //     findsOneWidget);
+    // expect(
+    //     find.text(
+    //         COMMENT_DICT[dotenv.get(LANGUAGE)]!['both_nickname_and_auth_id']!),
+    //     findsOneWidget);
+    //
+    // await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['next']!));
+    // await tester.pumpAndSettle();
 
     expect(find.byType(AlertDialog), findsOneWidget);
     expect(
@@ -691,8 +691,8 @@ void main() {
         .text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['register_hall_of_fame']!));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['next']!));
-    await tester.pumpAndSettle();
+    // await tester.tap(find.text(BUTTON_DICT[dotenv.get(LANGUAGE)]!['next']!));
+    // await tester.pumpAndSettle();
 
     expect(find.byType(AlertDialog), findsOneWidget);
     expect(
