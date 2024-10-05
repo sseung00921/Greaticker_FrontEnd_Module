@@ -189,7 +189,9 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
     final responseState = await ref
         .read(widget.projectApiResponseProvider.notifier)
         .updateProjectState(
-            projectRequestDto: projectRequestDto, context: context, showThrottleModal: false);
+            projectRequestDto: projectRequestDto,
+            context: context,
+            showThrottleModal: false);
     if (responseState is ApiResponseError ||
         responseState is ApiResponse && !responseState.isSuccess) {
       showOnlyCloseDialog(
@@ -478,81 +480,34 @@ class _HomeViewState<T> extends ConsumerState<HomeView>
       width: 240,
       child: ElevatedButton(
         onPressed: () async {
-          if (Platform.isAndroid) {
-            showSelectOneBetweenTwoModal(
-              context: context,
-              option1: COMMENT_DICT[dotenv.get(LANGUAGE)]!['only_nickname']!,
-              option2: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-              'both_nickname_and_auth_id']!,
-              onNext: (selectedOption) async {
-                bool showAuthEmail = selectedOption == 0 ? false : true;
-                HallOfFameRegisterRequestDto hallOfFameRequestDto =
-                HallOfFameRegisterRequestDto(showAuthEmail: showAuthEmail);
-                final responseState = await ref
-                    .read(widget.hallOfFameApiResponseProvider.notifier)
-                    .registerHallOfFame(
-                    hallOfFameRequestDto: hallOfFameRequestDto,
-                    context: context);
-                if (responseState is ApiResponseError ||
-                    responseState is ApiResponse && !responseState.isSuccess) {
-                  if (responseState is ApiResponse && !responseState.isSuccess) {
-                    if (responseState.message == DUPLICATED_HALL_OF_FAME) {
-                      showOnlyCloseDialog(
-                          context: context,
-                          comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                          'duplicated_hall_of_fame']!);
-                    }
-                  } else {
-                    showOnlyCloseDialog(
-                      context: context,
-                      comment:
-                      COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
-                    );
-                  }
-                } else if (responseState is ApiResponse &&
-                    responseState.isSuccess) {
-                  showOnlyCloseDialog(
+          HallOfFameRegisterRequestDto hallOfFameRequestDto =
+              HallOfFameRegisterRequestDto(showAuthEmail: false);
+          final responseState = await ref
+              .read(widget.hallOfFameApiResponseProvider.notifier)
+              .registerHallOfFame(
+                  hallOfFameRequestDto: hallOfFameRequestDto, context: context);
+          if (responseState is ApiResponseError ||
+              responseState is ApiResponse && !responseState.isSuccess) {
+            if (responseState is ApiResponse && !responseState.isSuccess) {
+              if (responseState.message == DUPLICATED_HALL_OF_FAME) {
+                showOnlyCloseDialog(
                     context: context,
                     comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                    'register_hall_of_fame_complete']!,
-                  );
-                };
-              },
-            );
-          } else {
-            HallOfFameRegisterRequestDto hallOfFameRequestDto =
-            HallOfFameRegisterRequestDto(showAuthEmail: false);
-            final responseState = await ref
-                .read(widget.hallOfFameApiResponseProvider.notifier)
-                .registerHallOfFame(
-                hallOfFameRequestDto: hallOfFameRequestDto,
-                context: context);
-            if (responseState is ApiResponseError ||
-                responseState is ApiResponse && !responseState.isSuccess) {
-              if (responseState is ApiResponse && !responseState.isSuccess) {
-                if (responseState.message == DUPLICATED_HALL_OF_FAME) {
-                  showOnlyCloseDialog(
-                      context: context,
-                      comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                      'duplicated_hall_of_fame']!);
-                }
-              } else {
-                showOnlyCloseDialog(
-                  context: context,
-                  comment:
-                  COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
-                );
+                        'duplicated_hall_of_fame']!);
               }
-            } else if (responseState is ApiResponse &&
-                responseState.isSuccess) {
+            } else {
               showOnlyCloseDialog(
                 context: context,
-                comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
-                'register_hall_of_fame_complete']!,
+                comment: COMMENT_DICT[dotenv.get(LANGUAGE)]!['network_error']!,
               );
-            };
+            }
+          } else if (responseState is ApiResponse && responseState.isSuccess) {
+            showOnlyCloseDialog(
+              context: context,
+              comment: COMMENT_DICT[dotenv.get(LANGUAGE)]![
+                  'register_hall_of_fame_complete']!,
+            );
           }
-
         },
         child: Text(
           textAlign: TextAlign.center,
@@ -589,9 +544,11 @@ class _TableClanderForHomeView extends StatelessWidget {
         if (startDay != null) {
           day = day.toLocal();
           day = DateTime(day.year, day.month, day.day);
-          DateTime startDateOnly = DateTime(startDay!.year, startDay!.month, startDay!.day);
+          DateTime startDateOnly =
+              DateTime(startDay!.year, startDay!.month, startDay!.day);
           DateTime endDateOnly = startDateOnly.add(Duration(days: dayInARow!));
-          return day.isAfter(startDateOnly.subtract(Duration(days: 1))) && day.isBefore(endDateOnly);
+          return day.isAfter(startDateOnly.subtract(Duration(days: 1))) &&
+              day.isBefore(endDateOnly);
         } else {
           return false;
         }
